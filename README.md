@@ -23,8 +23,12 @@ Welcome to **VGAMES**, where artificial intelligence and gaming come together in
 3. **Send Feedback**: We'd love to hear from you! Click the feedback button and send us your thoughts via email.
 
 ## Feedback
-Feel free to reach out if you have suggestions or comments! You can send feedback via the built-in button on the website or directly by emailing us at: **vuyaniphila86@gmail.com**
+Feel free to reach out if you have suggestions or comments! You can send feedback via the built-in button on the website or directly by emailing us at: **vuyaniphila86@gmail.com**.
 
 ## 2024 © Copyright
 
 This website is protected under **VGAMES** copyright laws. All rights reserved.
+
+## Visit Other Games
+
+Explore more games at **[Vuyani's Gaming Site](https://vuyani1.github.io)**.
