@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Unscramble</title>
+    <style>
+        /* General reset */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background: black;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Main container */
+        #main-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, white 20%, black 80%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Scrambled word display */
+        #scrambled-word {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        /* Input area */
+        input[type="text"] {
+            width: 60%;
+            padding: 15px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            box-shadow: 0 0 10px 2px white;
+        }
+
+        /* Submit button */
+        #submit-btn {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ff4c4c;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #submit-btn:hover {
+            background-color: #ff1a1a;
+        }
+
+        /* Response section */
+        #response {
+            margin-top: 20px;
+            font-size: 22px;
+            display: none;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            input[type="text"] {
+                width: 80%;
+                font-size: 16px;
+            }
+
+            #submit-btn {
+                font-size: 16px;
+            }
+
+            #scrambled-word {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="main-container">
+        <h1>AI-Unscramble</h1>
+        <p style="color: #ff4c4c;">Unscramble the letters to form a name!</p>
+
+        <div id="scrambled-word">Loading...</div>
+
+        <input type="text" id="user-input" placeholder="Type your answer here..." />
+        <button id="submit-btn">Submit</button>
+
+        <div id="response"></div>
+    </div>
+
+    <script>
+        // List of random names for the game
+        const names = ['Albert Einstein', 'Isaac Newton', 'Marie Curie', 'Charles Darwin', 'Galileo Galilei', 'Ada Lovelace'];
+        let currentScrambledWord = '';
+        let correctAnswer = '';
+
+        // Function to scramble a name
+        function scramble(word) {
+            return word.split('').sort(() => 0.5 - Math.random()).join('');
+        }
+
+        // Function to load a new scrambled name
+        function loadNewScramble() {
+            const randomIndex = Math.floor(Math.random() * names.length);
+            correctAnswer = names[randomIndex];
+            currentScrambledWord = scramble(correctAnswer.replace(/\s+/g, '')); // Scramble without spaces
+            document.getElementById('scrambled-word').textContent = currentScrambledWord;
+            document.getElementById('response').style.display = 'none';
+        }
+
+        // Check the player's answer
+        document.getElementById('submit-btn').addEventListener('click', function() {
+            let userAnswer = document.getElementById('user-input').value.trim();
+            let responseDiv = document.getElementById('response');
+
+            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                responseDiv.textContent = 'Correct! 🎉 The answer is: ' + correctAnswer;
+                responseDiv.style.color = 'lime';
+            } else {
+                responseDiv.textContent = 'Incorrect! Try again.';
+                responseDiv.style.color = 'red';
+            }
+
+            responseDiv.style.display = 'block';
+        });
+
+        // Allow Enter key to trigger submit
+        document.getElementById('user-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('submit-btn').click();
+            }
+        });
+
+        // Load the first scrambled word
+        window.onload = loadNewScramble;
+    </script>
+</body>
+</html>
