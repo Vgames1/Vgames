@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VUYANI AI - Search</title>
+    <style>
+        /* General reset */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background: black;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Background effect */
+        #main-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, white 20%, black 80%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Search bar */
+        input[type="text"] {
+            width: 60%;
+            padding: 15px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            box-shadow: 0 0 10px 2px white;
+        }
+
+        /* Search button */
+        #search-btn {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ff4c4c;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #search-btn:hover {
+            background-color: #ff1a1a;
+        }
+
+        /* AI Response area */
+        #response {
+            margin-top: 30px;
+            width: 80%;
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            font-size: 18px;
+            display: none;
+            text-align: left;
+            animation: fadeIn 1s ease;
+        }
+
+        /* Loading effect */
+        #loading {
+            display: none;
+            margin-top: 20px;
+        }
+
+        /* Fade-in effect for response */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            input[type="text"] {
+                width: 80%;
+                font-size: 16px;
+            }
+
+            #search-btn {
+                font-size: 16px;
+            }
+
+            #response {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="main-container">
+        <h1>VUYANI AI</h1>
+        <p style="color: #ff4c4c;">Ask anything, and I will find the answer.</p>
+        
+        <input type="text" id="query" placeholder="Type your question here..." />
+        <button id="search-btn">Search</button>
+        
+        <div id="loading">🔍 Searching...</div>
+        
+        <div id="response"></div>
+    </div>
+
+    <script>
+        // Simulate AI search
+        document.getElementById('search-btn').addEventListener('click', function() {
+            let query = document.getElementById('query').value.trim();
+            let responseDiv = document.getElementById('response');
+            let loadingDiv = document.getElementById('loading');
+
+            if (query === '') {
+                alert('Please enter a question.');
+                return;
+            }
+
+            // Show loading effect
+            loadingDiv.style.display = 'block';
+            responseDiv.style.display = 'none';
+
+            // Simulate AI fetching answer with delay
+            setTimeout(() => {
+                loadingDiv.style.display = 'none';
+
+                // AI Response simulation
+                let aiResponse = "I have searched the web, and here's what I found regarding '" + query + "':\n\n" + 
+                                 "This is where your AI-generated answer will appear, based on the search term you provided.";
+
+                responseDiv.textContent = aiResponse;
+                responseDiv.style.display = 'block';
+            }, 3000); // Simulating 3-second search time
+        });
+
+        // Allow Enter key to trigger search
+        document.getElementById('query').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('search-btn').click();
+            }
+        });
+    </script>
+</body>
+</html>
