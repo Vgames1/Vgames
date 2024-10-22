@@ -80,6 +80,43 @@
             display: none;
         }
 
+        /* Timer display */
+        #timer {
+            font-size: 24px;
+            color: white;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        /* Score display */
+        #score {
+            font-size: 24px;
+            color: white;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        /* Home button */
+        #home-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: pink;
+            color: white;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        #home-btn:hover {
+            background-color: #ff66b2;
+        }
+
         /* Responsive styles */
         @media (max-width: 600px) {
             input[type="text"] {
@@ -102,18 +139,24 @@
         <h1>AI-Unscramble</h1>
         <p style="color: red;">Unscramble the letters to form a name!</p>
 
+        <div id="timer">Time Left: <span id="time">60</span>s</div>
+        <div id="score">Score: <span id="score-value">0</span></div>
         <div id="scrambled-word">Loading...</div>
 
         <input type="text" id="user-input" placeholder="Type your answer here..." />
         <button id="submit-btn">Submit</button>
 
         <div id="response"></div>
+        <div id="home-btn" onclick="goHome()">Home</div>
     </div>
 
     <script>
         const names = ['Albert Einstein', 'Isaac Newton', 'Marie Curie', 'Charles Darwin', 'Galileo Galilei', 'Ada Lovelace'];
         let currentScrambledWord = '';
         let correctAnswer = '';
+        let score = 0;
+        let timer;
+        const timeLimit = 60; // 1 minute timer
 
         function scramble(word) {
             return word.split('').sort(() => 0.5 - Math.random()).join('');
@@ -125,13 +168,33 @@
             currentScrambledWord = scramble(correctAnswer.replace(/\s+/g, '')); // Scramble without spaces
             document.getElementById('scrambled-word').textContent = currentScrambledWord;
             document.getElementById('response').style.display = 'none';
+            startTimer();
+        }
+
+        function startTimer() {
+            let timeLeft = timeLimit;
+            document.getElementById('time').innerText = timeLeft;
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('time').innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    alert("Time's up! You lose!");
+                    endGame();
+                }
+            }, 1000);
         }
 
         document.getElementById('submit-btn').addEventListener('click', function() {
             let userAnswer = document.getElementById('user-input').value.trim();
             let responseDiv = document.getElementById('response');
 
-            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+            if (userAnswer.toLowerCase() === "vuyani2007") {
+                score += 500; // Cheat code
+                responseDiv.textContent = 'How did you know? 🎉 You earned 500 points!';
+                responseDiv.style.color = 'lime';
+            } else if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                score += 5; // Correct answer earns 5 points
                 responseDiv.textContent = 'Correct! 🎉 The answer is: ' + correctAnswer;
                 responseDiv.style.color = 'lime';
             } else {
@@ -139,7 +202,9 @@
                 responseDiv.style.color = 'red';
             }
 
+            document.getElementById('score-value').innerText = score;
             responseDiv.style.display = 'block';
+            loadNewScramble(); // Load a new scramble
         });
 
         document.getElementById('user-input').addEventListener('keypress', function(e) {
@@ -147,6 +212,18 @@
                 document.getElementById('submit-btn').click();
             }
         });
+
+        function endGame() {
+            alert(`Game Over! Your score is: ${score}`);
+            // Optionally, reset the game
+            score = 0;
+            document.getElementById('score-value').innerText = score;
+            loadNewScramble(); // Restart fetching questions
+        }
+
+        function goHome() {
+            window.location.href = "https://vgames1.github.io/vgames.github.io/";
+        }
 
         window.onload = loadNewScramble;
     </script>
