@@ -33,10 +33,12 @@
             text-align: center;
         }
 
-        /* Scrambled word display */
+        /* Scrambled word display - gold and giant size */
         #scrambled-word {
-            font-size: 40px;
+            font-size: 60px;
             margin-bottom: 20px;
+            color: gold;
+            font-weight: bold;
         }
 
         /* Input area */
@@ -55,14 +57,14 @@
             box-shadow: 0 0 10px 2px white;
         }
 
-        /* Submit button */
+        /* Submit button - black text */
         #submit-btn {
             padding: 10px 20px;
             font-size: 18px;
             background-color: #ff4c4c;
             border: none;
             border-radius: 5px;
-            color: white;
+            color: black;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
@@ -90,7 +92,7 @@
             }
 
             #scrambled-word {
-                font-size: 30px;
+                font-size: 40px;
             }
         }
     </style>
@@ -98,7 +100,7 @@
 <body>
     <div id="main-container">
         <h1>AI-Unscramble</h1>
-        <p style="color: #ff4c4c;">Unscramble the letters to form a name!</p>
+        <p style="color: red;">Unscramble the letters to form a name!</p>
 
         <div id="scrambled-word">Loading...</div>
 
@@ -109,17 +111,14 @@
     </div>
 
     <script>
-        // List of random names for the game
         const names = ['Albert Einstein', 'Isaac Newton', 'Marie Curie', 'Charles Darwin', 'Galileo Galilei', 'Ada Lovelace'];
         let currentScrambledWord = '';
         let correctAnswer = '';
 
-        // Function to scramble a name
         function scramble(word) {
             return word.split('').sort(() => 0.5 - Math.random()).join('');
         }
 
-        // Function to load a new scrambled name
         function loadNewScramble() {
             const randomIndex = Math.floor(Math.random() * names.length);
             correctAnswer = names[randomIndex];
@@ -128,7 +127,6 @@
             document.getElementById('response').style.display = 'none';
         }
 
-        // Check the player's answer
         document.getElementById('submit-btn').addEventListener('click', function() {
             let userAnswer = document.getElementById('user-input').value.trim();
             let responseDiv = document.getElementById('response');
@@ -144,14 +142,12 @@
             responseDiv.style.display = 'block';
         });
 
-        // Allow Enter key to trigger submit
         document.getElementById('user-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 document.getElementById('submit-btn').click();
             }
         });
 
-        // Load the first scrambled word
         window.onload = loadNewScramble;
     </script>
 </body>
