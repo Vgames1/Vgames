@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BALL DIE - Math Challenge</title>
+    <style>
+        /* General reset */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Main Container */
+        #main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #a8e0ff, #ffcbf5);
+            position: relative;
+            text-align: center;
+        }
+
+        /* Title */
+        h1 {
+            font-size: 48px;
+            color: #333;
+        }
+
+        /* Question and Answers */
+        #question {
+            font-size: 28px;
+            margin: 20px;
+        }
+
+        .answer-btn {
+            display: block;
+            width: 200px;
+            padding: 15px;
+            margin: 10px;
+            background-color: #ff8c00;
+            color: white;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .answer-btn:hover {
+            background-color: #ffa500;
+        }
+
+        /* Celebration */
+        #celebration {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 10;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Celebration Message */
+        #celebration h2 {
+            font-size: 48px;
+            color: #28a745;
+            margin: 20px;
+        }
+
+        /* Back Button */
+        .nav-btn {
+            margin-top: 30px;
+            background-color: #007bff;
+            padding: 15px;
+            color: white;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive Styles */
+        @media only screen and (max-width: 600px) {
+            h1 {
+                font-size: 32px;
+            }
+            #question {
+                font-size: 24px;
+            }
+            .answer-btn, .nav-btn {
+                width: 150px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-container">
+        <h1>BALL DIE - Math Challenge</h1>
+        <div id="question">Loading question...</div>
+        <div id="answers"></div>
+        <div id="celebration">
+            <h2>You're a Math Genius! 🎉</h2>
+            <p>You scored 50 points! Keep up the great work!</p>
+            <button class="nav-btn" onclick="resetGame()">Play Again</button>
+        </div>
+        <a href="https://vgames1.github.io/vgames.github.io" class="nav-btn">Home</a>
+    </div>
+
+    <script>
+        let score = 0;
+
+        // Function to fetch math questions from the web (Placeholder for AI integration)
+        async function fetchMathQuestion() {
+            // Here you would typically call your AI service to get questions.
+            // For demonstration purposes, we'll use a simple random math question generator.
+            const num1 = Math.floor(Math.random() * 100);
+            const num2 = Math.floor(Math.random() * 100);
+            const operation = Math.random() > 0.5 ? '+' : '-';
+            const correctAnswer = operation === '+' ? num1 + num2 : num1 - num2;
+
+            const options = [correctAnswer];
+            while (options.length < 4) {
+                const wrongAnswer = Math.floor(Math.random() * 200);
+                if (!options.includes(wrongAnswer)) {
+                    options.push(wrongAnswer);
+                }
+            }
+
+            options.sort(() => Math.random() - 0.5); // Shuffle answers
+
+            // Display the question and answers
+            document.getElementById('question').innerText = `${num1} ${operation} ${num2} = ?`;
+            document.getElementById('answers').innerHTML = options.map(answer => 
+                `<div class="answer-btn" onclick="checkAnswer(${answer}, ${correctAnswer})">${answer}</div>`
+            ).join('');
+        }
+
+        // Function to check the selected answer
+        function checkAnswer(selected, correct) {
+            if (selected === correct) {
+                score += 10;
+                if (score >= 50) {
+                    showCelebration();
+                } else {
+                    fetchMathQuestion(); // Load next question
+                }
+            } else {
+                alert('Wrong answer! Try again.');
+                resetGame(); // Reset game if wrong answer is chosen
+            }
+        }
+
+        // Function to show celebration message
+        function showCelebration() {
+            document.getElementById('celebration').style.display = 'flex';
+            document.getElementById('answers').style.display = 'none';
+            document.getElementById('question').style.display = 'none';
+        }
+
+        // Function to reset the game
+        function resetGame() {
+            score = 0;
+            document.getElementById('celebration').style.display = 'none';
+            document.getElementById('answers').style.display = 'flex';
+            document.getElementById('question').style.display = 'block';
+            fetchMathQuestion();
+        }
+
+        // Start the game
+        fetchMathQuestion();
+    </script>
+
+</body>
+</html>
