@@ -3,284 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VGAMES - Home</title>
+    <title>VGAMES - Welcome to the Future of AI Games</title>
     <style>
-        /* General reset */
         body, html {
             margin: 0;
             padding: 0;
             overflow: hidden;
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, purple, navy, darkgreen);
         }
 
-        /* Main Container */
-        #main-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(135deg, purple, white);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background 2s ease-in-out;
-            text-align: center;
-        }
-
-        /* VGAMES Text animation */
-        #vgames {
-            font-size: 120px;
-            font-weight: bold;
-            color: transparent;
-            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.6);
-            animation: textFlyIn 3s ease-in-out, rainbowEffect 5s infinite;
+        /* Center text for VGAMES with particle effect */
+        #particle-container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-        }
-
-        /* Animation for letters flying in */
-        @keyframes textFlyIn {
-            0% {
-                letter-spacing: 200px;
-                opacity: 0;
-            }
-            100% {
-                letter-spacing: normal;
-                opacity: 1;
-            }
-        }
-
-        /* Rainbow effect */
-        @keyframes rainbowEffect {
-            0% { color: red; }
-            20% { color: orange; }
-            40% { color: yellow; }
-            60% { color: green; }
-            80% { color: blue; }
-            100% { color: violet; }
-        }
-
-        /* Game selection buttons */
-        .game-btn {
-            display: block;
-            width: 200px;
-            padding: 20px;
-            margin: 20px;
-            background-color: pink;
-            color: white;
             text-align: center;
-            font-size: 24px;
+            z-index: 2;
+        }
+
+        #vgames-title {
+            font-size: 100px;
             font-weight: bold;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .game-btn:hover {
-            background-color: #ff66b2;
-        }
-
-        #game-section {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: navy;
             color: white;
-            text-align: center;
+            opacity: 0;
         }
 
-        /* Feedback section */
-        #feedback {
+        #signature {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 50px;
+            color: white;
+            opacity: 0;
+        }
+
+        /* Shrink animation to the top left corner */
+        #vgames-logo {
             position: fixed;
-            bottom: 10px;
+            top: 10px;
             left: 10px;
-            padding: 10px;
-            background-color: pink;
+            font-size: 40px;
             color: white;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        /* README content */
-        #readme {
             display: none;
-            padding: 20px;
-            background-color: navy;
+        }
+
+        #signature-logo {
+            position: fixed;
+            top: 60px;
+            left: 10px;
+            font-size: 20px;
+            font-family: 'Brush Script MT', cursive;
             color: white;
-            border-radius: 10px;
-            margin: 20px;
-            text-align: left;
+            display: none;
         }
 
-        /* Slider styles */
-        #slider {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .slides {
-            display: flex;
-            transition: transform 0.5s ease-in;
-            width: 500%; /* 100% for each slide */
+        /* Game Slide Section */
+        #slides {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
         }
 
         .slide {
-            min-width: 100%;
-            box-sizing: border-box;
-            padding: 20px;
-            text-align: center;
-            color: white;
+            font-size: 30px;
+            margin: 20px;
         }
 
-        /* Responsive Styles */
-        @media only screen and (max-width: 600px) {
-            #vgames {
-                font-size: 60px;
-            }
+        /* Button Section */
+        #game-buttons {
+            display: none;
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
 
-            .game-btn {
-                width: 150px;
-                font-size: 18px;
-            }
+        .game-btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 20px 40px;
+            font-size: 24px;
+            color: white;
+            background-color: darkblue;
+            border: 3px solid white;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-btn:hover {
+            background-color: royalblue;
+            transform: scale(1.1);
+        }
+
+        /* Footer */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        footer .emojis {
+            font-size: 24px;
         }
     </style>
 </head>
 <body>
 
-    <div id="main-container">
-        <div id="vgames">VGAMES 🎮✨</div>
+    <!-- Particle Container -->
+    <div id="particle-container">
+        <div id="vgames-title">VGAMES</div>
+        <div id="signature">V.S. Vilakazi</div>
     </div>
 
-    <div id="game-section">
-        <h1 style="margin-bottom: 20px;">Choose Your Game:</h1>
-        <div id="slider">
-            <div class="slides">
-                <div class="slide">
-                    <h2>AQUIZ 🧠</h2>
-                    <p>Test your knowledge with an AI-driven quiz game.</p>
-                    <a href="https://vgames1.github.io/vgames.github.io/aquiz.html" class="game-btn">Play AQUIZ</a>
-                </div>
-                <div class="slide">
-                    <h2>BALL DIE ⚽</h2>
-                    <p>Navigate through challenging levels in this tough survival game.</p>
-                    <a href="https://vgames1.github.io/vgames.github.io/ball.html" class="game-btn">Play BALL DIE</a>
-                </div>
-                <div class="slide">
-                    <h2>ATRIVIA ❓</h2>
-                    <p>AI Trivia game that pulls random questions from the web.</p>
-                    <a href="https://vgames1.github.io/vgames.github.io/atrivia.html" class="game-btn">Play ATRIVIA</a>
-                </div>
-                <div class="slide">
-                    <h2>AUNSCRAMBLE 🔤</h2>
-                    <p>Unscramble words with keyboard input.</p>
-                    <a href="https://vgames1.github.io/vgames.github.io/scram.html" class="game-btn">Play AUNSCRAMBLE</a>
-                </div>
-                <div class="slide">
-                    <h2>Visit Other Games 🎲</h2>
-                    <p>Explore more exciting games on another platform.</p>
-                    <a href="https://vuyani1.github.io" class="game-btn">Visit Other Games</a>
-                </div>
-            </div>
-        </div>
+    <!-- Shrinking VGAMES Logo -->
+    <div id="vgames-logo">VGAMES</div>
+    <div id="signature-logo">V.S. Vilakazi</div>
+
+    <!-- Slides Section -->
+    <div id="slides">
+        <div class="slide">🎮 Welcome to the world of AI-powered games! 🧠</div>
+        <div class="slide">💡 Games that push the boundaries of technology! 🚀</div>
+        <div class="slide">❤️ VGAMES is designed for game lovers like you! ✨</div>
     </div>
 
-    <div id="readme">
-        <h1>Welcome to VGAMES</h1>
-        <p>Your ultimate AI game hub! This website is your go-to for a collection of AI-powered games that you can enjoy on any device.</p>
-        
-        <h2>Available Games</h2>
-        <ul>
-            <li><strong><a href="https://vgames1.github.io/vgames.github.io/aquiz.html" style="color: white;">AQUIZ</a></strong>: Test your knowledge with an AI-driven quiz game.</li>
-            <li><strong><a href="https://vgames1.github.io/vgames.github.io/ball.html" style="color: white;">BALL DIE</a></strong>: Navigate through challenging levels in this tough survival game.</li>
-            <li><strong><a href="https://vgames1.github.io/vgames.github.io/atrivia.html" style="color: white;">ATRIVIA</a></strong>: AI Trivia game that pulls random questions from the web.</li>
-            <li><strong><a href="https://vgames1.github.io/vgames.github.io/scram.html" style="color: white;">AUNSCRAMBLE</a></strong>: Unscramble words with keyboard input.</li>
-        </ul>
-        
-        <h2>Feedback</h2>
-        <p>Feel free to reach out if you have suggestions or comments! You can send feedback via the built-in button on the website or directly by emailing us at: <strong>vuyaniphila86@gmail.com</strong></p>
+    <!-- Button Section -->
+    <div id="game-buttons">
+        <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/aquiz.html'">AQUIZ 🧠</button>
+        <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/ball.html'">BALL DIE ⚽</button>
+        <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/atrivia.html'">ATRIVIA ❓</button>
+        <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/scram.html'">AI-UNSCRAMBLE 🔤</button>
+        <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/vai.html'">VUYANI AI 🤖</button>
+        <button class="game-btn" onclick="window.location.href='https://vuyani1.github.io'">MORE GAMES 🎲</button>
     </div>
 
-    <div id="feedback">💭 Do you have feedback?</div>
+    <!-- Footer -->
+    <footer>
+        Copyright &copy; 2024 V.S. Vilakazi. All Rights Reserved. 🚀🌟✨🌍🎮
+        <div class="emojis">👍👏🤩😎🤖🔥🎯💪🚀🌟🎲💻</div>
+    </footer>
 
     <script>
-        // Array for loading images/emojis
-        const loadingImages = [
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Emoji_1f600.svg/1200px-Emoji_1f600.svg.png', // Grinning Face
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Emoji_1f601.svg/1200px-Emoji_1f601.svg.png', // Grinning Face with Smiling Eyes
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Emoji_1f602.svg/1200px-Emoji_1f602.svg.png'  // Face with Tears of Joy
-        ];
+        let slideIndex = 0;
 
-        let currentSlide = 0;
-        const slideDuration = 4000; // Duration for each slide
+        function startAnimation() {
+            const vgamesTitle = document.getElementById('vgames-title');
+            const signature = document.getElementById('signature');
+            const vgamesLogo = document.getElementById('vgames-logo');
+            const signatureLogo = document.getElementById('signature-logo');
+            const slides = document.getElementById('slides');
+            const gameButtons = document.getElementById('game-buttons');
 
-        // Function to show slides with loading effect
-        function showLoadingSlides() {
-            const mainContainer = document.getElementById('main-container');
-            const vgamesText = document.getElementById('vgames');
-            const gameSection = document.getElementById('game-section');
-            const readme = document.getElementById('readme');
-            const slides = document.querySelector('.slides');
+            // Particle and text animation
+            setTimeout(() => {
+                vgamesTitle.style.opacity = 1;
+                signature.style.opacity = 1;
+            }, 1000);
 
-            const interval = setInterval(() => {
-                vgamesText.innerHTML = `VGAMES <img src="${loadingImages[currentSlide % loadingImages.length]}" alt="Loading" width="50" />`;
-                currentSlide++;
+            setTimeout(() => {
+                vgamesTitle.style.transform = 'scale(0.5)';
+                vgamesTitle.style.position = 'fixed';
+                vgamesTitle.style.top = '10px';
+                vgamesTitle.style.left = '10px';
+                signature.style.display = 'none';
+                vgamesLogo.style.display = 'block';
+                signatureLogo.style.display = 'block';
+            }, 3000);
 
-                if (currentSlide === loadingImages.length * 2) {
-                    clearInterval(interval);
-                    mainContainer.style.transition = 'all 2s ease';
-                    mainContainer.style.background = 'navy';
-                    gameSection.style.display = 'flex'; // Show the game section after loading
-                    readme.style.display = 'block'; // Show README section
-                    jumpText(); // Start jumping animation for the game title
-                    startSlideShow(slides); // Start the slideshow for games
-                }
-            }, slideDuration);
+            setTimeout(() => {
+                slides.style.display = 'block';
+                nextSlide();
+            }, 4000);
+
+            setTimeout(() => {
+                slides.style.display = 'none';
+                gameButtons.style.display = 'block';
+            }, 9000);
         }
 
-        // Jumping animation for VGAMES text
-        function jumpText() {
-            const vgamesText = document.getElementById('vgames');
-            vgamesText.style.animation = 'jump 0.5s infinite alternate';
+        function nextSlide() {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((slide, i) => {
+                slide.style.display = i === slideIndex ? 'block' : 'none';
+            });
+            slideIndex = (slideIndex + 1) % slides.length;
         }
 
-        // Start the slideshow for games
-        function startSlideShow(slides) {
-            const totalSlides = slides.children.length;
-            setInterval(() => {
-                currentSlide = (currentSlide + 1) % totalSlides;
-                slides.style.transform = `translateX(-${currentSlide * 100}%)`;
-            }, 5000); // Change slides every 5 seconds
-        }
-
-        // Jump animation keyframes
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes jump {
-                0% { transform: translateY(0); }
-                100% { transform: translateY(-20px); }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Show loading slides when the page loads
-        window.onload = showLoadingSlides;
-
-        // Feedback button action
-        document.getElementById('feedback').addEventListener('click', () => {
-            window.location.href = "mailto:vuyaniphila86@gmail.com?subject=Feedback for VGAMES";
-        });
-
-        // Easter egg: clicking VGAMES text says "DONT CHEAT!"
-        document.getElementById('vgames').addEventListener('click', () => {
-            alert("DON'T CHEAT!!!!");
-        });
+        // Start animation on page load
+        window.onload = startAnimation;
     </script>
 
 </body>
