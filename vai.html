@@ -13,7 +13,7 @@
             height: 100%;
             font-family: 'Arial', sans-serif;
             background: black;
-            color: white;
+            color: darkgray;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -65,16 +65,18 @@
             background-color: #ff1a1a;
         }
 
-        /* AI Response area */
+        /* AI Response area in a bubble, red and gold text */
         #response {
             margin-top: 30px;
             width: 80%;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 20px;
             background: rgba(255, 255, 255, 0.1);
-            font-size: 18px;
+            font-size: 22px;
+            color: gold;
+            border: 3px solid red;
             display: none;
-            text-align: left;
+            text-align: center;
             animation: fadeIn 1s ease;
         }
 
@@ -82,6 +84,7 @@
         #loading {
             display: none;
             margin-top: 20px;
+            color: red;
         }
 
         /* Fade-in effect for response */
@@ -102,7 +105,7 @@
             }
 
             #response {
-                font-size: 16px;
+                font-size: 18px;
             }
         }
     </style>
@@ -121,7 +124,6 @@
     </div>
 
     <script>
-        // Simulate AI search
         document.getElementById('search-btn').addEventListener('click', function() {
             let query = document.getElementById('query').value.trim();
             let responseDiv = document.getElementById('response');
@@ -132,24 +134,20 @@
                 return;
             }
 
-            // Show loading effect
             loadingDiv.style.display = 'block';
             responseDiv.style.display = 'none';
 
-            // Simulate AI fetching answer with delay
             setTimeout(() => {
                 loadingDiv.style.display = 'none';
 
-                // AI Response simulation
-                let aiResponse = "I have searched the web, and here's what I found regarding '" + query + "':\n\n" + 
-                                 "This is where your AI-generated answer will appear, based on the search term you provided.";
+                let aiResponse = "Here's what I found for '" + query + "':\n\n" + 
+                                 "This AI-generated answer is based on your search term.";
 
                 responseDiv.textContent = aiResponse;
                 responseDiv.style.display = 'block';
-            }, 3000); // Simulating 3-second search time
+            }, 3000); 
         });
 
-        // Allow Enter key to trigger search
         document.getElementById('query').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 document.getElementById('search-btn').click();
