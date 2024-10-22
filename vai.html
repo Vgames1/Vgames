@@ -93,6 +93,22 @@
             to { opacity: 1; }
         }
 
+        /* Home button */
+        #home-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff4c4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #home-btn:hover {
+            background-color: #ff1a1a;
+        }
+
         /* Responsive Styles */
         @media (max-width: 600px) {
             input[type="text"] {
@@ -121,11 +137,24 @@
         <div id="loading">🔍 Searching...</div>
         
         <div id="response"></div>
+        <button id="home-btn" onclick="goHome()">Home</button>
     </div>
 
     <script>
-        document.getElementById('search-btn').addEventListener('click', function() {
-            let query = document.getElementById('query').value.trim();
+        async function getDefinition(query) {
+            const response = await fetch(`https://wordsapiv1.p.rapidapi.com/words/${query}/definitions`, {
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+                    'x-rapidapi-key': 'YOUR_RAPIDAPI_KEY' // Replace with your RapidAPI key
+                }
+            });
+            const data = await response.json();
+            return data.definitions.length > 0 ? data.definitions[0].definition : "No definition found.";
+        }
+
+        document.getElementById('search-btn').addEventListener('click', async function() {
+            let query = document.getElementById('query').value.trim().toLowerCase();
             let responseDiv = document.getElementById('response');
             let loadingDiv = document.getElementById('loading');
 
@@ -137,15 +166,17 @@
             loadingDiv.style.display = 'block';
             responseDiv.style.display = 'none';
 
-            setTimeout(() => {
+            // Get the definition
+            try {
+                const definition = await getDefinition(query);
                 loadingDiv.style.display = 'none';
-
-                let aiResponse = "Here's what I found for '" + query + "':\n\n" + 
-                                 "This AI-generated answer is based on your search term.";
-
-                responseDiv.textContent = aiResponse;
+                responseDiv.textContent = `${query.toUpperCase()} means: ${definition}`;
                 responseDiv.style.display = 'block';
-            }, 3000); 
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                responseDiv.textContent = "Sorry, I couldn't find an answer.";
+                responseDiv.style.display = 'block';
+            }
         });
 
         document.getElementById('query').addEventListener('keypress', function(e) {
@@ -153,6 +184,10 @@
                 document.getElementById('search-btn').click();
             }
         });
+
+        function goHome() {
+            window.location.href = "https://vgames1.github.io/vgames.github.io/";
+        }
     </script>
 </body>
 </html>
