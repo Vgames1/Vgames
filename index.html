@@ -136,40 +136,35 @@
     <div id="feedback">💭 Do you have feedback?</div>
 
     <script>
-        // Array for loading images/emojis (add your image URLs)
+        // Array for loading images/emojis
         const loadingImages = [
-            'https://example.com/emoji1.png',
-            'https://example.com/emoji2.png',
-            'https://example.com/emoji3.png'
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Emoji_1f600.svg/1200px-Emoji_1f600.svg.png', // Grinning Face
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Emoji_1f601.svg/1200px-Emoji_1f601.svg.png', // Grinning Face with Smiling Eyes
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Emoji_1f602.svg/1200px-Emoji_1f602.svg.png'  // Face with Tears of Joy
         ];
 
         let currentSlide = 0;
-        const slideDuration = [7000, 18000, 18000]; // Duration for each slide
+        const slideDuration = [4000, 14000, 14000]; // Duration for each slide
         const totalSlides = slideDuration.length;
 
         // Function to show slides with loading effect
         function showLoadingSlides() {
             const mainContainer = document.getElementById('main-container');
             const vgamesText = document.getElementById('vgames');
-            setInterval(() => {
+            const gameSection = document.getElementById('game-section');
+            
+            const interval = setInterval(() => {
                 if (currentSlide < totalSlides) {
                     vgamesText.innerHTML = `VGAMES <img src="${loadingImages[currentSlide]}" alt="Loading" width="50" />`;
                     currentSlide++;
                 } else {
-                    clearInterval();
+                    clearInterval(interval);
+                    mainContainer.style.transition = 'all 2s ease';
                     mainContainer.style.background = 'navy';
-                    showGameSection();
+                    gameSection.style.display = 'flex'; // Show the game section after loading
+                    jumpText(); // Start jumping animation for the game title
                 }
             }, slideDuration[currentSlide]);
-        }
-
-        // Function to show game section after loading
-        function showGameSection() {
-            const mainContainer = document.getElementById('main-container');
-            const gameSection = document.getElementById('game-section');
-            mainContainer.style.transition = 'all 2s ease';
-            gameSection.style.display = 'flex';
-            jumpText(); // Start jumping animation for the game title
         }
 
         // Jumping animation for VGAMES text
