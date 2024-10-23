@@ -145,7 +145,6 @@
     <!-- Slide 3: Automatic login -->
     <div class="slide" id="slide3">
         <h1>Logging in...</h1>
-        <button class="game-btn" id="skipBtn">Skip Login</button>
         <div id="loginStatus" style="margin-top: 20px;"></div>
     </div>
     <!-- Slide 4: YouTube promotion -->
@@ -179,6 +178,7 @@
             <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/adventure.html'">ADVENTURE TIME 🏞️</button>
             <button class="game-btn" onclick="window.location.href='https://vuyani1.github.io'">MORE GAMES 🎲</button>
         </div>
+        <div id="usernameDisplay" style="margin-top: 20px; font-size: 1.2em;"></div>
     </div>
     <!-- Digital clock -->
     <div class="clock" id="clock"></div>
@@ -225,25 +225,27 @@
             document.getElementById('clock').innerText = `${hours}:${minutes}`;
         }
 
-        setInterval(updateClock, 1000);
-        updateClock(); // initial call to set clock immediately
+        setInterval(updateClock, 60000);
+        updateClock(); // Initial call to set the time immediately
 
-        // Automatic login function
-        function autoLogin() {
-            const username = "User" + Math.floor(Math.random() * 1000);
-            localStorage.setItem('username', username);
-            document.getElementById('loginStatus').innerText = `Logged in as: ${username}`;
+        // Random username generator
+        function generateRandomUsername() {
+            const adjectives = ['Cool', 'Mighty', 'Epic', 'Quick', 'Brave', 'Charming', 'Fierce', 'Stealthy', 'Savvy', 'Clever'];
+            const nouns = ['Lion', 'Tiger', 'Eagle', 'Dragon', 'Phoenix', 'Warrior', 'Ninja', 'Knight', 'Sphinx', 'Wizard'];
+            const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+            return `${randomAdjective}${randomNoun}`;
         }
 
-        // Skip button functionality
-        document.getElementById('skipBtn').addEventListener('click', () => {
-            autoLogin();
-            showNextSlide();
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = generateRandomUsername();
+            document.getElementById('usernameDisplay').innerText = `Your random username: ${username}`;
         });
 
-        // Initiate automatic login
-        autoLogin();
-
+        // Automatic login simulation
+        setTimeout(() => {
+            document.getElementById('loginStatus').innerText = "Login successful!";
+        }, 3000); // Simulate login after 3 seconds
     </script>
 </body>
 </html>
