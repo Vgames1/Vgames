@@ -48,6 +48,7 @@
             font-size: 40px;
             color: white;
             display: none;
+            animation: logo-glow 4s infinite alternate;
         }
 
         #signature-logo {
@@ -128,6 +129,12 @@
             0% { opacity: 0; transform: translateY(-30px); }
             100% { opacity: 1; transform: translateY(0); }
         }
+
+        /* Glow effect for logo */
+        @keyframes logo-glow {
+            0% { text-shadow: 0 0 5px white, 0 0 10px white, 0 0 15px blue; }
+            100% { text-shadow: 0 0 10px white, 0 0 20px red, 0 0 30px green; }
+        }
     </style>
 </head>
 <body>
@@ -144,6 +151,7 @@
 
     <!-- Slides Section -->
     <div id="slides">
+        <div class="slide">© 2024 VUYANI SIYANDA. ALL RIGHTS RESERVED.</div>
         <div class="slide">🎮 Welcome to the world of AI-powered games! 🧠</div>
         <div class="slide">💡 Games that push the boundaries of technology! 🚀</div>
         <div class="slide">❤️ VGAMES is designed for game lovers like you! ✨</div>
@@ -156,6 +164,7 @@
         <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/atrivia.html'">ATRIVIA ❓</button>
         <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/scram.html'">AI-UNSCRAMBLE 🔤</button>
         <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/vai.html'">VUYANI AI 🤖</button>
+        <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/adventure.html'">ADVENTURE TIME 🏞️</button> <!-- New Adventure Button -->
         <button class="game-btn" onclick="window.location.href='https://vuyani1.github.io'">MORE GAMES 🎲</button>
     </div>
 
@@ -200,7 +209,7 @@
             setTimeout(() => {
                 slides.style.display = 'none';
                 gameButtons.style.display = 'block';
-            }, 9000);
+            }, 17000); // Increased to 17 seconds for loading delay
         }
 
         function nextSlide() {
