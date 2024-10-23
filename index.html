@@ -36,6 +36,23 @@
             opacity: 1;
         }
 
+        /* Logo animation: Vilakazi Games to VGAMES */
+        .logo {
+            font-size: 4em;
+            animation: logoRetract 5s forwards;
+        }
+
+        @keyframes logoRetract {
+            0% {content: "Vilakazi Games"; font-size: 4em;}
+            50% {content: "Vilakazi Games"; font-size: 3em;}
+            100% {content: "VGAMES"; font-size: 5em;}
+        }
+
+        .loading {
+            font-size: 2em;
+            margin-top: 1em;
+        }
+
         /* Game button styles */
         #game-buttons {
             display: flex;
@@ -59,7 +76,25 @@
             background-color: #555;
         }
 
-        /* Clock styles */
+        /* Responsive layout for mobile and PC */
+        @media (max-width: 768px) {
+            #game-buttons {
+                flex-direction: column;
+            }
+            .clock {
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (min-width: 769px) {
+            #game-buttons {
+                flex-direction: row;
+            }
+        }
+
+        /* Digital clock styling */
         .clock {
             position: absolute;
             top: 20px;
@@ -70,14 +105,22 @@
             border-radius: 10px;
         }
 
-        /* Feedback robot */
+        /* Robot feedback link */
         .feedback {
             position: absolute;
             bottom: 20px;
             right: 20px;
             cursor: pointer;
         }
-        
+
+        /* Slide 2 background */
+        #slide2 {
+            background-image: url('space_background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Footer and copyright info */
         footer {
             position: absolute;
             bottom: 0;
@@ -87,164 +130,120 @@
             background-color: rgba(0, 0, 0, 0.5);
             font-size: 0.9em;
         }
-
-        /* Login form */
-        #login-form, #create-account-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        #login-form input, #create-account-form input {
-            padding: 10px;
-            font-size: 1.2em;
-            border-radius: 5px;
-            border: none;
-            width: 250px;
-        }
-
-        #login-form button, #create-account-form button {
-            padding: 10px 20px;
-            font-size: 1.2em;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #333;
-            color: white;
-        }
-
-        #login-form button:hover, #create-account-form button:hover {
-            background-color: #555;
-        }
     </style>
 </head>
 <body>
-
-    <!-- Login Slide -->
-    <div class="slide visible" id="login-slide">
-        <form id="login-form">
-            <h2>Login</h2>
-            <input type="text" id="username" placeholder="Enter Username" required />
-            <input type="password" id="password" placeholder="Enter Password" required />
-            <button type="submit">Sign In</button>
-            <button type="button" id="show-create-account">Create Account</button>
-        </form>
-    </div>
-
-    <!-- Create Account Slide -->
-    <div class="slide" id="create-account-slide">
-        <form id="create-account-form">
-            <h2>Create Account</h2>
-            <input type="text" id="new-username" placeholder="Enter Username" required />
-            <input type="password" id="new-password" placeholder="Enter Password" required />
-            <button type="submit">Create Account</button>
-            <button type="button" id="show-login">Back to Login</button>
-        </form>
-    </div>
-
     <!-- Slide 1: Vilakazi Games retracting to VGAMES -->
-    <div class="slide" id="slide1">
+    <div class="slide visible" id="slide1">
         <div class="logo">Vilakazi Games</div>
         <div class="loading">Loading...</div>
     </div>
-
-    <!-- Other Slides -->
+    <!-- Slide 2: Universal space background and message -->
     <div class="slide" id="slide2">
         <h1>Have Fun My Friend!</h1>
     </div>
-
+    <!-- Slide 3: Automatic login -->
     <div class="slide" id="slide3">
-        <h1>Follow us on YouTube</h1>
-        <a href="https://youtube.com/@POOF-f5c" target="_blank">youtube.com/@POOF-f5c</a>
+        <h1>Logging in...</h1>
+        <button class="game-btn" id="skipBtn">Skip Login</button>
+        <div id="loginStatus" style="margin-top: 20px;"></div>
     </div>
-
-    <div class="slide" id="slide4" style="background-color: blue;">
+    <!-- Slide 4: YouTube promotion -->
+    <div class="slide" id="slide4">
+        <div style="width: 100%; display: flex; flex-direction: column;">
+            <div style="flex: 1;">Follow us on YouTube</div>
+            <div style="flex: 1;">
+                <a href="https://youtube.com/@POOF-f5c" target="_blank">youtube.com/@POOF-f5c</a>
+            </div>
+            <div style="flex: 1;">
+                <a href="https://youtube.com/@VUYANI_SIYANDA_VILAKAZI" target="_blank">youtube.com/@VUYANI_SIYANDA_VILAKAZI</a>
+            </div>
+        </div>
+    </div>
+    <!-- Slide 5: Sponsors -->
+    <div class="slide" id="slide5" style="background-color: blue;">
         <h1>Made possible by</h1>
+        <img src="upload.wikimedia.org/wikipedia/commons/6/69/Notepad%2B%2B_Logo.svg" alt="Notepad++" width="100">
+        <img src="facebook.com/photo/?fbid=646832160806374&set=a.646832154139708" alt="GitHub" width="100">
+        <img src="en.wikipedia.org/wiki/ChatGPT#/media/File:ChatGPT-Logo.svg" alt="ChatGPT" width="100">
+        <div><a href="vuyani1.github.io/your_random_page_here.html" target="_blank">Legal Notice</a></div>
     </div>
-
+    <!-- Slide 6: Game buttons -->
+    <div class="slide" id="slide6">
+        <div id="game-buttons">
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/aquiz.html'">AQUIZ 🧠</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/ball.html'">BALL DIE ⚽</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/atrivia.html'">ATRIVIA ❓</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/scram.html'">AI-UNSCRAMBLE 🔤</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vai.html'">VUYANI AI 🤖</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/adventure.html'">ADVENTURE TIME 🏞️</button>
+            <button class="game-btn" onclick="window.location.href='https://vuyani1.github.io'">MORE GAMES 🎲</button>
+        </div>
+    </div>
     <!-- Digital clock -->
     <div class="clock" id="clock"></div>
-
     <!-- Feedback robot -->
     <div class="feedback">
         <a href="mailto:vuyaniphila86@gmail.com?subject=I have a problem with your website or games">
             <img src="https://dreamstime.com/stock-illustration-robot-relaxed-position-holds-word-feedback-d-illustration-image82194493" alt="Feedback Robot" width="100">
         </a>
     </div>
-
+    <!-- Footer with copyright -->
     <footer>
         <p>© 2024 Vuyani Siyanda Vilakazi. All Rights Reserved. | Email: vuyaniphila86@gmail.com</p>
     </footer>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+    <script>
+        // Slide transition logic
+        let slides = document.getElementsByClassName('slide');
+        let currentSlide = 0;
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyB3RaZOVULa7PTLdJgqJwQF0DtNlzTR3gA",
-            authDomain: "vgames1-5d285.firebaseapp.com",
-            projectId: "vgames1-5d285",
-            storageBucket: "gs://vgames1-5d285.appspot.com",
-            messagingSenderId: "753970393017",
-            appId: "1:753970393017:web:a26af14816209953f71068"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
-        function transitionToSlide(slideId) {
-            const slides = document.querySelectorAll('.slide');
-            slides.forEach(slide => {
-                slide.classList.remove('visible');
-            });
-            document.getElementById(slideId).classList.add('visible');
+        function showNextSlide() {
+            slides[currentSlide].classList.remove('visible');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('visible');
         }
 
-        document.getElementById('login-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // Simulate login with Firebase
-            get(ref(db, 'users/' + username)).then((snapshot) => {
-                if (snapshot.exists() && snapshot.val().password === password) {
-                    transitionToSlide('slide2');
+        // 70 seconds for the fifth slide
+        function startSlideShow() {
+            setInterval(() => {
+                if (currentSlide === 5) {
+                    setTimeout(showNextSlide, 70000); // 70 seconds for slide 6
                 } else {
-                    alert('Invalid username or password');
+                    showNextSlide();
                 }
-            });
+            }, 5000);
+        }
+
+        startSlideShow();
+
+        // Digital clock logic without seconds
+        function updateClock() {
+            let now = new Date();
+            let hours = String(now.getHours()).padStart(2, '0');
+            let minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').innerText = `${hours}:${minutes}`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock(); // initial call to set clock immediately
+
+        // Automatic login function
+        function autoLogin() {
+            const username = "User" + Math.floor(Math.random() * 1000);
+            localStorage.setItem('username', username);
+            document.getElementById('loginStatus').innerText = `Logged in as: ${username}`;
+        }
+
+        // Skip button functionality
+        document.getElementById('skipBtn').addEventListener('click', () => {
+            autoLogin();
+            showNextSlide();
         });
 
-        document.getElementById('create-account-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const newUsername = document.getElementById('new-username').value;
-            const newPassword = document.getElementById('new-password').value;
+        // Initiate automatic login
+        autoLogin();
 
-            // Store new user in Firebase
-            set(ref(db, 'users/' + newUsername), {
-                username: newUsername,
-                password: newPassword
-            }).then(() => {
-                alert('Account created successfully!');
-                transitionToSlide('login-slide');
-            }).catch((error) => {
-                alert('Error creating account: ' + error);
-            });
-        });
-
-        document.getElementById('show-create-account').addEventListener('click', function() {
-            transitionToSlide('create-account-slide');
-        });
-
-        document.getElementById('show-login').addEventListener('click', function() {
-            transitionToSlide('login-slide');
-        });
-
-        // Simple clock script
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('clock').textContent = now.toLocaleTimeString();
-        }, 1000);
     </script>
 </body>
 </html>
