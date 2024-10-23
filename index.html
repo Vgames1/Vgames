@@ -162,10 +162,10 @@
     <!-- Slide 5: Sponsors -->
     <div class="slide" id="slide5" style="background-color: blue;">
         <h1>Made possible by</h1>
-        <img src="upload.wikimedia.org/wikipedia/commons/6/69/Notepad%2B%2B_Logo.svg" alt="Notepad++" width="100">
-        <img src="facebook.com/photo/?fbid=646832160806374&set=a.646832154139708" alt="GitHub" width="100">
-        <img src="en.wikipedia.org/wiki/ChatGPT#/media/File:ChatGPT-Logo.svg" alt="ChatGPT" width="100">
-        <div><a href="vuyani1.github.io/your_random_page_here.html" target="_blank">Legal Notice</a></div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Notepad%2B%2B_Logo.svg" alt="Notepad++" width="100">
+        <img src="https://facebook.com/photo/?fbid=646832160806374&set=a.646832154139708" alt="GitHub" width="100">
+        <img src="https://en.wikipedia.org/wiki/ChatGPT#/media/File:ChatGPT-Logo.svg" alt="ChatGPT" width="100">
+        <div><a href="https://vuyani1.github.io/your_random_page_here.html" target="_blank">Legal Notice</a></div>
     </div>
     <!-- Slide 6: Game buttons -->
     <div class="slide" id="slide6">
@@ -179,6 +179,8 @@
             <button class="game-btn" onclick="window.location.href='https://vuyani1.github.io'">MORE GAMES 🎲</button>
         </div>
         <div id="usernameDisplay" style="margin-top: 20px; font-size: 1.2em;"></div>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7484489054116946"
+                crossorigin="anonymous"></script>
     </div>
     <!-- Digital clock -->
     <div class="clock" id="clock"></div>
@@ -222,30 +224,16 @@
             let now = new Date();
             let hours = String(now.getHours()).padStart(2, '0');
             let minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('clock').innerText = `${hours}:${minutes}`;
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
         }
 
-        setInterval(updateClock, 60000);
-        updateClock(); // Initial call to set the time immediately
-
-        // Random username generator
-        function generateRandomUsername() {
-            const adjectives = ['Cool', 'Mighty', 'Epic', 'Quick', 'Brave', 'Charming', 'Fierce', 'Stealthy', 'Savvy', 'Clever'];
-            const nouns = ['Lion', 'Tiger', 'Eagle', 'Dragon', 'Phoenix', 'Warrior', 'Ninja', 'Knight', 'Sphinx', 'Wizard'];
-            const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
-            return `${randomAdjective}${randomNoun}`;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const username = generateRandomUsername();
-            document.getElementById('usernameDisplay').innerText = `Your random username: ${username}`;
-        });
+        setInterval(updateClock, 1000); // Update the clock every second
 
         // Automatic login simulation
         setTimeout(() => {
-            document.getElementById('loginStatus').innerText = "Login successful!";
-        }, 3000); // Simulate login after 3 seconds
+            document.getElementById('loginStatus').textContent = 'Logged in successfully!';
+            document.getElementById('usernameDisplay').textContent = 'Welcome back, User!';
+        }, 3000); // 3 seconds for login simulation
     </script>
 </body>
 </html>
