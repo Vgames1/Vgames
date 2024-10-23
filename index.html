@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vilakazi Games - VGAMES</title>
-    <link rel="icon" href="facebook.com/photo/?fbid=187353377136694&set=a.187353363803362">
+    <title>VGAMES</title>
+    <link rel="icon" href="https://facebook.com/photo/?fbid=187353377136694&set=a.187353363803362">
     <style>
         /* General styles for layout, fonts, and background */
         body, html {
@@ -36,15 +36,16 @@
             opacity: 1;
         }
 
-        /* Logo and animation */
+        /* Logo animation: Vilakazi Games to VGAMES */
         .logo {
-            font-size: 3em;
-            animation: colorChange 5s infinite alternate;
+            font-size: 4em;
+            animation: logoRetract 5s forwards;
         }
 
-        @keyframes colorChange {
-            from {color: #ffffff;}
-            to {color: #ff0000;}
+        @keyframes logoRetract {
+            0% {content: "Vilakazi Games"; font-size: 4em;}
+            50% {content: "Vilakazi Games"; font-size: 3em;}
+            100% {content: "VGAMES"; font-size: 5em;}
         }
 
         .loading {
@@ -100,6 +101,9 @@
             top: 20px;
             right: 20px;
             font-size: 2em;
+            padding: 10px;
+            border: 2px solid white;
+            border-radius: 10px;
         }
 
         /* Robot feedback link */
@@ -110,7 +114,7 @@
             cursor: pointer;
         }
 
-        /* Additional styling for the slides */
+        /* Slide 2 background */
         #slide2 {
             background-image: url('space_background.jpg');
             background-size: cover;
@@ -132,7 +136,7 @@
 </head>
 <body>
 
-    <!-- Slide 1: Logo animation and loading -->
+    <!-- Slide 1: Vilakazi Games retracting to VGAMES -->
     <div class="slide visible" id="slide1">
         <div class="logo">Vilakazi Games</div>
         <div class="loading">Loading...</div>
@@ -203,18 +207,28 @@
             slides[currentSlide].classList.add('visible');
         }
 
-        setInterval(showNextSlide, 5000);
+        // 70 seconds for the fifth slide
+        function startSlideShow() {
+            setInterval(() => {
+                if (currentSlide === 4) {
+                    setTimeout(showNextSlide, 70000); // 70 seconds for slide 5
+                } else {
+                    showNextSlide();
+                }
+            }, 5000);
+        }
 
-        // Digital clock logic
+        startSlideShow();
+
+        // Digital clock logic without seconds
         function updateClock() {
             let now = new Date();
             let hours = now.getHours().toString().padStart(2, '0');
             let minutes = now.getMinutes().toString().padStart(2, '0');
-            let seconds = now.getSeconds().toString().padStart(2, '0');
-            document.getElementById('clock').innerHTML = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('clock').innerHTML = `${hours}:${minutes}`;
         }
 
-        setInterval(updateClock, 1000);
+        setInterval(updateClock, 60000); // Update every minute
         updateClock();  // Initial call
 
     </script>
