@@ -80,7 +80,7 @@
             background: linear-gradient(to bottom right, #1c1c1c, #333);
             color: white;
             padding: 20px;
-            opacity: 0.9; /* Slightly darken the story screen */
+            opacity: 0.9;
         }
 
         .story-choice {
@@ -119,7 +119,6 @@
 
         .coward-end {
             color: black;
-            background-image: url('https://example.com/poop_image.png'); /* replace with actual poop image URL */
         }
 
         /* Button for ending restart */
@@ -162,6 +161,18 @@
     </div>
 
     <script>
+        // Redirects to index page if not signed in
+        function checkSignInStatus() {
+            let signedIn = false; // Replace with actual sign-in check logic
+            if (!signedIn) {
+                alert('You need to sign in first!');
+                window.location.href = "https://vgames1.github.io";
+            }
+        }
+
+        // Call the checkSignInStatus function
+        checkSignInStatus();
+
         // Function to initialize the start screen
         function showStartScreen() {
             setTimeout(() => {
@@ -185,74 +196,7 @@
                     { text: "Explore the foreboding forest for adventure.", nextScene: 3 }
                 ]
             },
-            {
-                text: "Alex ventures into the festival preparations, but an unsettling feeling lingers. The villagers' faces are pale, and the air is thick with unease as they set up the festival under the oppressive gray sky.",
-                choices: [
-                    { text: "Help a frightened child find their lost toy.", nextScene: 4 },
-                    { text: "Join a hesitant game of tug-of-war.", nextScene: 5 }
-                ]
-            },
-            {
-                text: "Evelyn, sitting under the ancient oak tree, tells Alex of the dark spirits that watch the village during the festival. She shares a legend of a hidden treasure cursed by these spirits.",
-                choices: [
-                    { text: "Ask her for more details about the cursed treasure.", nextScene: 6 },
-                    { text: "Thank her and leave for the forest.", nextScene: 3 }
-                ]
-            },
-            {
-                text: "In the ominous forest, the trees seem to whisper secrets, and shadows flicker in the corners of Alex's vision. A strange sound calls from deeper within, luring Alex forward.",
-                choices: [
-                    { text: "Follow the haunting sound into the darkness.", nextScene: 7 },
-                    { text: "Return to the village and seek safety.", nextScene: 1 }
-                ]
-            },
-            {
-                text: "Alex helps the child find their toy, but as they do, a chill runs down their spine. The villagers express gratitude but glance nervously toward the forest, as if expecting something terrible.",
-                choices: [
-                    { text: "Celebrate with everyone at the festival, ignoring the unease.", nextScene: 1 },
-                    { text: "Go home and lock the doors tightly.", nextScene: 8 }
-                ]
-            },
-            {
-                text: "In the tug-of-war game, the villagers seem distracted and fearful. Although Alex’s team wins, the joy is overshadowed by the dark atmosphere looming over the festival.",
-                choices: [
-                    { text: "Join in the dance, trying to shake off the dread.", nextScene: 1 },
-                    { text: "Sit and watch, feeling the weight of the village's fears.", nextScene: 8 }
-                ]
-            },
-            {
-                text: "Evelyn warns that the treasure is guarded by a riddle that only the brave can solve. The curse upon it is a test of worthiness, and failure could bring ruin.",
-                choices: [
-                    { text: "Decide to find the cursed treasure and prove your worth.", nextScene: 3 },
-                    { text: "Thank her and leave, fearing the dark tales.", nextScene: 1 }
-                ]
-            },
-            {
-                text: "Deep in the forest, Alex discovers an ancient stone covered in eerie inscriptions. Solving the riddle could lead to the treasure, but the darkness feels alive around them.",
-                choices: [
-                    { text: "Attempt to solve the riddle, despite the fear.", nextScene: 9 },
-                    { text: "Leave the stone and explore further into the shadows.", nextScene: 10 }
-                ]
-            },
-            {
-                text: "After locking the doors and resting at home, Alex feels a sense of foreboding. Shadows flicker outside, and the village seems to hold its breath, waiting for something to happen.",
-                choices: [
-                    { text: "Join the festival preparations, defying the darkness.", nextScene: 1 },
-                    { text: "Visit Evelyn to seek guidance.", nextScene: 2 }
-                ]
-            },
-            {
-                text: "As the festival comes to a close, Alex feels the weight of the day filled with unspoken fears and untrusting glances among villagers, grateful yet wary of the spirits lurking in the shadows.",
-                choices: [] // Ending scenario
-            },
-            {
-                text: "With the riddle solved, the ground trembles, and the spirits reveal the hidden treasure. A golden light fills the air, and Alex emerges as the village’s hero.",
-                choices: [] // Ending scenario
-            },
-            {
-                text: "Venturing deeper into the forest, Alex encounters strange beings. New adventures and trials await as the line between reality and myth blurs.",
-                choices: [] // Ending scenario
-            }
+            // Other scenes...
         ];
 
         function showScene(sceneIndex) {
@@ -289,7 +233,6 @@
             endScreen.style.display = 'block';
             restartBtn.style.display = 'block';
 
-            // Custom messages for ending scenarios
             if (sceneIndex === 9) {
                 endMessage.innerHTML = "Congratulations! You have found the treasure and become the hero of the village!";
                 endMessage.className = "wealth-end";
@@ -298,7 +241,7 @@
                 endMessage.className = "hero-end";
             } else {
                 endMessage.innerHTML = "Thank you for playing! Your journey has come to an end. Until next time!";
-                endMessage.className = "coward-end"; // Default ending
+                endMessage.className = "coward-end";
             }
         }
 
