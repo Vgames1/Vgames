@@ -14,7 +14,6 @@
             color: white;
             text-align: center;
         }
-
         #quiz-container {
             margin: 50px auto;
             padding: 20px;
@@ -23,19 +22,16 @@
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         }
-
         h1 {
             font-size: 36px;
             margin-bottom: 20px;
             color: #fff;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
-
         #question-box {
             font-size: 24px;
             margin-bottom: 20px;
         }
-
         .option {
             margin: 10px 0;
             padding: 10px;
@@ -44,11 +40,9 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
         .option:hover {
             background-color: rgba(255, 255, 255, 0.6);
         }
-
         #submit-btn {
             margin-top: 20px;
             padding: 10px 20px;
@@ -58,21 +52,17 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
         #submit-btn:hover {
             background-color: #c0392b;
         }
-
         #feedback {
             margin-top: 20px;
             font-size: 16px;
         }
-
         #score {
             margin-top: 20px;
             font-size: 20px;
         }
-
         .speech-bubble {
             position: relative;
             background: #3498db;
@@ -82,7 +72,6 @@
             display: inline-block;
             margin-top: 20px;
         }
-
         .speech-bubble:after {
             content: '';
             position: absolute;
@@ -100,7 +89,6 @@
     </style>
 </head>
 <body>
-
     <div id="quiz-container">
         <h1>AQuiz - The Ultimate AI Quiz</h1>
         <div id="question-box">
@@ -112,7 +100,6 @@
         <input type="text" id="typed-answer" placeholder="Type your answer here">
         <button id="submit-btn">Submit Answer</button>
         <p id="score">Score: 0</p>
-
         <div class="speech-bubble" id="feedback">
             <p>Type your feedback here...</p>
         </div>
@@ -121,7 +108,6 @@
             <button type="submit">Send Feedback</button>
         </form>
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const questionBox = document.getElementById('question');
@@ -155,14 +141,12 @@
                 questionBox.innerHTML = questionData.question;
                 optionsContainer.innerHTML = '';
                 typedAnswer.style.display = 'none';
-
-                questionData.options.forEach((option, index) => {
+                questionData.options.forEach((option) => {
                     const optionDiv = document.createElement('div');
                     optionDiv.classList.add('option');
                     optionDiv.textContent = option;
                     optionDiv.setAttribute('data-answer', option);
                     optionsContainer.appendChild(optionDiv);
-
                     optionDiv.addEventListener('click', () => {
                         checkAnswer(option);
                     });
@@ -194,6 +178,5 @@
             fetchQuestion();
         });
     </script>
-
 </body>
 </html>
