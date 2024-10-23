@@ -89,14 +89,14 @@
         }
 
         /* Login form */
-        #login-form {
+        #login-form, #create-account-form {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 10px;
         }
 
-        #login-form input {
+        #login-form input, #create-account-form input {
             padding: 10px;
             font-size: 1.2em;
             border-radius: 5px;
@@ -104,7 +104,7 @@
             width: 250px;
         }
 
-        #login-form button {
+        #login-form button, #create-account-form button {
             padding: 10px 20px;
             font-size: 1.2em;
             border-radius: 5px;
@@ -113,7 +113,7 @@
             color: white;
         }
 
-        #login-form button:hover {
+        #login-form button:hover, #create-account-form button:hover {
             background-color: #555;
         }
     </style>
@@ -127,6 +127,18 @@
             <input type="text" id="username" placeholder="Enter Username" required />
             <input type="password" id="password" placeholder="Enter Password" required />
             <button type="submit">Sign In</button>
+            <button type="button" id="show-create-account">Create Account</button>
+        </form>
+    </div>
+
+    <!-- Create Account Slide -->
+    <div class="slide" id="create-account-slide">
+        <form id="create-account-form">
+            <h2>Create Account</h2>
+            <input type="text" id="new-username" placeholder="Enter Username" required />
+            <input type="password" id="new-password" placeholder="Enter Password" required />
+            <button type="submit">Create Account</button>
+            <button type="button" id="show-login">Back to Login</button>
         </form>
     </div>
 
@@ -166,7 +178,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB3RaZOVULa7PTLdJgqJwQF0DtNlzTR3gA",
@@ -180,21 +192,12 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        function sendEmail(username) {
-            const mailto = `mailto:pooftheman2@gmail.com?vuyaniphila86@gmail.com&subject=Login Notification&body=${username} has logged in anonymously.`;
-            window.location.href = mailto;
-        }
-
-        function saveCredentials(username, password) {
-            localStorage.setItem('username', username);
-            localStorage.setItem('password', password);
-        }
-
-        function storeInFirebase(username, password) {
-            set(ref(db, 'users/' + username), {
-                username: username,
-                password: password
+        function transitionToSlide(slideId) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => {
+                slide.classList.remove('visible');
             });
+            document.getElementById(slideId).classList.add('visible');
         }
 
         document.getElementById('login-form').addEventListener('submit', function(event) {
@@ -202,36 +205,46 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            saveCredentials(username, password);
-            sendEmail(username);
-            storeInFirebase(username, password);
+            // Simulate login with Firebase
+            get(ref(db, 'users/' + username)).then((snapshot) => {
+                if (snapshot.exists() && snapshot.val().password === password) {
+                    transitionToSlide('slide2');
+                } else {
+                    alert('Invalid username or password');
+                }
+            });
+        });
 
-            document.getElementById('login-slide').classList.remove('visible');
-            if (username === 'VUYANI2007' && password === 'vuyanilikeshimself') {
-                document.getElementById('slide2').innerHTML = '<h1>THE BOSS HAS COME!</h1>';
-            }
-            document.getElementById('slide1').classList.add('visible');
+        document.getElementById('create-account-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const newUsername = document.getElementById('new-username').value;
+            const newPassword = document.getElementById('new-password').value;
+
+            // Store new user in Firebase
+            set(ref(db, 'users/' + newUsername), {
+                username: newUsername,
+                password: newPassword
+            }).then(() => {
+                alert('Account created successfully!');
+                transitionToSlide('login-slide');
+            }).catch((error) => {
+                alert('Error creating account: ' + error);
+            });
+        });
+
+        document.getElementById('show-create-account').addEventListener('click', function() {
+            transitionToSlide('create-account-slide');
+        });
+
+        document.getElementById('show-login').addEventListener('click', function() {
+            transitionToSlide('login-slide');
         });
 
         // Simple clock script
         setInterval(() => {
             const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
             document.getElementById('clock').textContent = now.toLocaleTimeString();
         }, 1000);
-
-        // Block bots or suspicious IPs (simple example)
-        const blockedIPs = ['123.45.67.89', '987.65.43.21']; // List of suspicious IPs
-
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                if (blockedIPs.includes(data.ip)) {
-                    document.body.innerHTML = '<h1>Access Denied</h1>';
-                }
-            })
-            .catch(error => console.error('Error fetching IP:', error));
     </script>
 </body>
 </html>
