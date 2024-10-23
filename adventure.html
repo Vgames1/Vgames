@@ -14,7 +14,7 @@
             text-align: center;
             overflow: hidden;
         }
-
+        
         /* Glowing corners */
         body::before {
             content: '';
@@ -68,7 +68,6 @@
         #start-screen {
             font-size: 60px;
             display: none;
-            animation: fadeIn 1s forwards;
         }
 
         #village-title {
@@ -78,14 +77,15 @@
         /* Story screen styles */
         #story-screen {
             display: none;
-            background: linear-gradient(to bottom right, #6441A5, #2A0845, #2B5876);
+            background: linear-gradient(to bottom right, #1c1c1c, #333);
             color: white;
             padding: 20px;
+            opacity: 0.9; /* Slightly darken the story screen */
         }
 
         .story-choice {
             background-color: #87CEEB;
-            color: white;
+            color: black;
             border: none;
             padding: 15px;
             font-size: 18px;
@@ -93,7 +93,6 @@
             margin: 10px;
             border-radius: 8px;
             width: 200px;
-            transition: background-color 0.3s ease;
         }
 
         .story-choice:hover {
@@ -132,16 +131,6 @@
             color: white;
             font-size: 18px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        #restart-btn:hover {
-            background-color: #e65c00;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
     </style>
 </head>
@@ -162,10 +151,8 @@
 
     <!-- Story Screen -->
     <div id="story-screen">
-        <p id="story-text">One sunny morning in Eldoria, Alex awakens to the sounds of laughter and the hustle of the market. The villagers are preparing for the annual Harvest Festival, a time of celebration and community. As Alex steps outside, they feel a tug at their heart, sensing that today could change everything.</p>
-        <button class="story-choice" onclick="choose('A')">Join the festival preparations.</button>
-        <button class="story-choice" onclick="choose('B')">Visit Evelyn to hear the village’s tales.</button>
-        <button class="story-choice" onclick="choose('C')">Explore the forest for adventure.</button>
+        <p id="story-text">Loading story...</p>
+        <div id="choices"></div>
     </div>
 
     <!-- End Screen -->
@@ -175,48 +162,155 @@
     </div>
 
     <script>
-        window.onload = function() {
-            document.getElementById('start-screen').style.display = 'block'; // Show start screen on load
-        };
+        // Function to initialize the start screen
+        function showStartScreen() {
+            setTimeout(() => {
+                document.getElementById('intro').style.display = 'none';
+                document.getElementById('start-screen').style.display = 'block';
+            }, 10000); // Show start screen after 10 seconds
+        }
 
         function startStory() {
-            document.getElementById('intro').style.display = 'none';
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('story-screen').style.display = 'block';
+            showScene(0); // Start from the first scene
         }
 
-        function choose(option) {
-            let storyText = document.getElementById('story-text');
-            if (option === 'A') {
-                storyText.innerHTML = "Alex dives into the festival preparations, helping to decorate the town square...";
-            } else if (option === 'B') {
-                storyText.innerHTML = "Alex finds Evelyn sitting under an ancient oak tree, weaving a basket. She shares a legend...";
-            } else if (option === 'C') {
-                storyText.innerHTML = "Alex wanders into the forest, drawn by a mysterious sound...";
+        const scenes = [
+            {
+                text: "One gloomy morning in the shadowy village of Eldoria, Alex awakens to eerie silence. The market is empty, and the villagers whisper of dark omens surrounding the annual Harvest Festival, a time when ancient spirits roam.",
+                choices: [
+                    { text: "Join the festival preparations, despite the warnings.", nextScene: 1 },
+                    { text: "Visit Evelyn to hear about the village’s dark tales.", nextScene: 2 },
+                    { text: "Explore the foreboding forest for adventure.", nextScene: 3 }
+                ]
+            },
+            {
+                text: "Alex ventures into the festival preparations, but an unsettling feeling lingers. The villagers' faces are pale, and the air is thick with unease as they set up the festival under the oppressive gray sky.",
+                choices: [
+                    { text: "Help a frightened child find their lost toy.", nextScene: 4 },
+                    { text: "Join a hesitant game of tug-of-war.", nextScene: 5 }
+                ]
+            },
+            {
+                text: "Evelyn, sitting under the ancient oak tree, tells Alex of the dark spirits that watch the village during the festival. She shares a legend of a hidden treasure cursed by these spirits.",
+                choices: [
+                    { text: "Ask her for more details about the cursed treasure.", nextScene: 6 },
+                    { text: "Thank her and leave for the forest.", nextScene: 3 }
+                ]
+            },
+            {
+                text: "In the ominous forest, the trees seem to whisper secrets, and shadows flicker in the corners of Alex's vision. A strange sound calls from deeper within, luring Alex forward.",
+                choices: [
+                    { text: "Follow the haunting sound into the darkness.", nextScene: 7 },
+                    { text: "Return to the village and seek safety.", nextScene: 1 }
+                ]
+            },
+            {
+                text: "Alex helps the child find their toy, but as they do, a chill runs down their spine. The villagers express gratitude but glance nervously toward the forest, as if expecting something terrible.",
+                choices: [
+                    { text: "Celebrate with everyone at the festival, ignoring the unease.", nextScene: 1 },
+                    { text: "Go home and lock the doors tightly.", nextScene: 8 }
+                ]
+            },
+            {
+                text: "In the tug-of-war game, the villagers seem distracted and fearful. Although Alex’s team wins, the joy is overshadowed by the dark atmosphere looming over the festival.",
+                choices: [
+                    { text: "Join in the dance, trying to shake off the dread.", nextScene: 1 },
+                    { text: "Sit and watch, feeling the weight of the village's fears.", nextScene: 8 }
+                ]
+            },
+            {
+                text: "Evelyn warns that the treasure is guarded by a riddle that only the brave can solve. The curse upon it is a test of worthiness, and failure could bring ruin.",
+                choices: [
+                    { text: "Decide to find the cursed treasure and prove your worth.", nextScene: 3 },
+                    { text: "Thank her and leave, fearing the dark tales.", nextScene: 1 }
+                ]
+            },
+            {
+                text: "Deep in the forest, Alex discovers an ancient stone covered in eerie inscriptions. Solving the riddle could lead to the treasure, but the darkness feels alive around them.",
+                choices: [
+                    { text: "Attempt to solve the riddle, despite the fear.", nextScene: 9 },
+                    { text: "Leave the stone and explore further into the shadows.", nextScene: 10 }
+                ]
+            },
+            {
+                text: "After locking the doors and resting at home, Alex feels a sense of foreboding. Shadows flicker outside, and the village seems to hold its breath, waiting for something to happen.",
+                choices: [
+                    { text: "Join the festival preparations, defying the darkness.", nextScene: 1 },
+                    { text: "Visit Evelyn to seek guidance.", nextScene: 2 }
+                ]
+            },
+            {
+                text: "As the festival comes to a close, Alex feels the weight of the day filled with unspoken fears and untrusting glances among villagers, grateful yet wary of the spirits lurking in the shadows.",
+                choices: [] // Ending scenario
+            },
+            {
+                text: "With the riddle solved, the ground trembles, and the spirits reveal the hidden treasure. A golden light fills the air, and Alex emerges as the village’s hero.",
+                choices: [] // Ending scenario
+            },
+            {
+                text: "Venturing deeper into the forest, Alex encounters strange beings. New adventures and trials await as the line between reality and myth blurs.",
+                choices: [] // Ending scenario
             }
+        ];
 
-            // Continue with further choices and endings
-            setTimeout(showEndScreen, 3000); // Example transition to end
+        function showScene(sceneIndex) {
+            const scene = scenes[sceneIndex];
+            const storyText = document.getElementById('story-text');
+            const choicesDiv = document.getElementById('choices');
+
+            // Update story text
+            storyText.innerHTML = scene.text;
+
+            // Clear previous choices
+            choicesDiv.innerHTML = '';
+
+            // Create choice buttons
+            scene.choices.forEach(choice => {
+                const button = document.createElement('button');
+                button.className = 'story-choice';
+                button.innerText = choice.text;
+                button.onclick = () => showScene(choice.nextScene);
+                choicesDiv.appendChild(button);
+            });
+
+            // Handle ending scenes
+            if (scene.choices.length === 0) {
+                showEndScreen(sceneIndex);
+            }
         }
 
-        function showEndScreen() {
-            document.getElementById('story-screen').style.display = 'none';
-            let endingType = 'hero'; // Change this to different ending types dynamically
+        function showEndScreen(sceneIndex) {
+            const endScreen = document.getElementById('end-screen');
+            const endMessage = document.getElementById('end-message');
+            const restartBtn = document.getElementById('restart-btn');
 
-            let endMessage = document.getElementById('end-message');
-            if (endingType === 'hero') {
-                endMessage.innerHTML = "YOU ARE A HERO!";
-                endMessage.classList.add('hero-end');
-                document.getElementById('restart-btn').style.display = 'block';
+            endScreen.style.display = 'block';
+            restartBtn.style.display = 'block';
+
+            // Custom messages for ending scenarios
+            if (sceneIndex === 9) {
+                endMessage.innerHTML = "Congratulations! You have found the treasure and become the hero of the village!";
+                endMessage.className = "wealth-end";
+            } else if (sceneIndex === 10) {
+                endMessage.innerHTML = "As you journey further into the forest, new adventures await you. The village will remember your bravery!";
+                endMessage.className = "hero-end";
+            } else {
+                endMessage.innerHTML = "Thank you for playing! Your journey has come to an end. Until next time!";
+                endMessage.className = "coward-end"; // Default ending
             }
-            // Repeat for other endings
-            document.getElementById('end-screen').style.display = 'block';
         }
 
         function restartGame() {
-            location.reload();
+            document.getElementById('end-screen').style.display = 'none';
+            document.getElementById('story-screen').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'block';
+            showStartScreen();
         }
-    </script>
 
+        // Show the initial start screen after the intro
+        showStartScreen();
+    </script>
 </body>
 </html>
