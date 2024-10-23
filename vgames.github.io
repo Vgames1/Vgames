@@ -1,1 +1,30 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VILAKAZI GAMES</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgba(15, 0, 50, 1) 50%, rgba(0, 0, 0, 1) 100%), url('https://source.unsplash.com/1920x1080/?galaxy,space') no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+        }
+        h1 {
+            font-size: 4em;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+        }
+    </style>
+    <meta http-equiv="refresh" content="5;url=https://vgames1.github.io">
+</head>
+<body>
+    <h1>WE ARE GOING HOME</h1>
+</body>
+</html>
