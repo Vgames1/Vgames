@@ -3,225 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VGAMES - Welcome to the Future of AI Games</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vilakazi Games - VGAMES</title>
+    <link rel="icon" href="facebook.com/photo/?fbid=187353377136694&set=a.187353363803362">
     <style>
+        /* General styles for layout, fonts, and background */
         body, html {
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, purple, lime, orange);
-            height: 100vh;
-        }
-
-        /* Center text for VGAMES with particle effect */
-        #particle-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 2;
-        }
-
-        #vgames-title {
-            font-size: 100px;
-            font-weight: bold;
-            color: white;
-            opacity: 0;
-            animation: particle-effect 2s forwards;
-        }
-
-        #signature {
-            font-family: 'Brush Script MT', cursive;
-            font-size: 50px;
-            color: white;
-            opacity: 0;
-            animation: signature-effect 2.5s forwards;
-        }
-
-        /* Shrink animation to the top left corner */
-        #vgames-logo {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            font-size: 40px;
-            color: white;
-            display: none;
-            animation: logo-glow 4s infinite alternate;
-        }
-
-        #signature-logo {
-            position: fixed;
-            top: 60px;
-            left: 10px;
-            font-size: 20px;
-            font-family: 'Brush Script MT', cursive;
-            color: white;
-            display: none;
-        }
-
-        /* Game Slide Section */
-        #slides {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: white;
-        }
-
-        .slide {
-            font-size: 30px;
-            margin: 20px;
-        }
-
-        /* Button Section */
-        #game-buttons {
-            display: none;
-            position: absolute;
-            bottom: 20px;
             width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+            color: white;
+        }
+
+        /* Common slide styles */
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .visible {
+            opacity: 1;
+        }
+
+        /* Logo and animation */
+        .logo {
+            font-size: 3em;
+            animation: colorChange 5s infinite alternate;
+        }
+
+        @keyframes colorChange {
+            from {color: #ffffff;}
+            to {color: #ff0000;}
+        }
+
+        .loading {
+            font-size: 2em;
+            margin-top: 1em;
+        }
+
+        /* Game button styles */
+        #game-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
         }
 
         .game-btn {
-            display: inline-block;
-            margin: 10px;
-            padding: 20px 40px;
-            font-size: 24px;
+            padding: 15px 25px;
+            font-size: 1.5em;
             color: white;
-            background-color: darkblue;
-            border: 3px solid white;
-            border-radius: 15px;
+            background-color: #333;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
         }
 
         .game-btn:hover {
-            background-color: royalblue;
-            transform: scale(1.1);
+            background-color: #555;
         }
 
-        /* Footer */
+        /* Responsive layout for mobile and PC */
+        @media (max-width: 768px) {
+            #game-buttons {
+                flex-direction: column;
+            }
+
+            .clock {
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (min-width: 769px) {
+            #game-buttons {
+                flex-direction: row;
+            }
+        }
+
+        /* Digital clock styling */
+        .clock {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+        }
+
+        /* Robot feedback link */
+        .feedback {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        /* Additional styling for the slides */
+        #slide2 {
+            background-image: url('space_background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Footer and copyright info */
         footer {
-            position: fixed;
+            position: absolute;
             bottom: 0;
             width: 100%;
             text-align: center;
-            color: white;
-            font-size: 16px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            font-size: 0.9em;
         }
 
-        footer .emojis {
-            font-size: 24px;
-        }
-
-        /* Particle and Signature Effects */
-        @keyframes particle-effect {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
-            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-
-        @keyframes signature-effect {
-            0% { opacity: 0; transform: translateY(-30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Glow effect for logo */
-        @keyframes logo-glow {
-            0% { text-shadow: 0 0 5px white, 0 0 10px white, 0 0 15px blue; }
-            100% { text-shadow: 0 0 10px white, 0 0 20px red, 0 0 30px green; }
-        }
     </style>
 </head>
 <body>
 
-    <!-- Particle Container -->
-    <div id="particle-container">
-        <div id="vgames-title">VGAMES</div>
-        <div id="signature">V.S. Vilakazi</div>
+    <!-- Slide 1: Logo animation and loading -->
+    <div class="slide visible" id="slide1">
+        <div class="logo">Vilakazi Games</div>
+        <div class="loading">Loading...</div>
     </div>
 
-    <!-- Shrinking VGAMES Logo -->
-    <div id="vgames-logo">VGAMES</div>
-    <div id="signature-logo">V.S. Vilakazi</div>
-
-    <!-- Slides Section -->
-    <div id="slides">
-        <div class="slide">© 2024 VUYANI SIYANDA. ALL RIGHTS RESERVED.</div>
-        <div class="slide">🎮 Welcome to the world of AI-powered games! 🧠</div>
-        <div class="slide">💡 Games that push the boundaries of technology! 🚀</div>
-        <div class="slide">❤️ VGAMES is designed for game lovers like you! ✨</div>
+    <!-- Slide 2: Universal space background and message -->
+    <div class="slide" id="slide2">
+        <h1>Have Fun My Friend!</h1>
     </div>
 
-    <!-- Button Section -->
-    <div id="game-buttons">
-        <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/aquiz.html'">AQUIZ 🧠</button>
-        <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/ball.html'">BALL DIE ⚽</button>
-        <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/atrivia.html'">ATRIVIA ❓</button>
-        <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/scram.html'">AI-UNSCRAMBLE 🔤</button>
-        <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/vai.html'">VUYANI AI 🤖</button>
-        <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/adventure.html'">ADVENTURE TIME 🏞️</button> <!-- New Adventure Button -->
-        <button class="game-btn" onclick="window.location.href='https://vuyani1.github.io'">MORE GAMES 🎲</button>
+    <!-- Slide 3: YouTube promotion -->
+    <div class="slide" id="slide3">
+        <div style="width: 100%; display: flex; flex-direction: column;">
+            <div style="flex: 1;">Follow us on YouTube</div>
+            <div style="flex: 1;">
+                <a href="https://youtube.com/@POOF-f5c" target="_blank">youtube.com/@POOF-f5c</a>
+            </div>
+            <div style="flex: 1;">
+                <a href="https://youtube.com/@VUYANI_SIYANDA_VILAKAZI" target="_blank">youtube.com/@VUYANI_SIYANDA_VILAKAZI</a>
+            </div>
+        </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Slide 4: Sponsors -->
+    <div class="slide" id="slide4" style="background-color: blue;">
+        <h1>Made possible by</h1>
+        <img src="upload.wikimedia.org/wikipedia/commons/6/69/Notepad%2B%2B_Logo.svg" alt="Notepad++" width="100">
+        <img src="facebook.com/photo/?fbid=646832160806374&set=a.646832154139708" alt="GitHub" width="100">
+        <img src="en.wikipedia.org/wiki/ChatGPT#/media/File:ChatGPT-Logo.svg" alt="ChatGPT" width="100">
+    </div>
+
+    <!-- Slide 5: Game buttons -->
+    <div class="slide" id="slide5">
+        <div id="game-buttons">
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/aquiz.html'">AQUIZ 🧠</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/ball.html'">BALL DIE ⚽</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/atrivia.html'">ATRIVIA ❓</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/scram.html'">AI-UNSCRAMBLE 🔤</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/vai.html'">VUYANI AI 🤖</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vgames.github.io/adventure.html'">ADVENTURE TIME 🏞️</button>
+            <button class="game-btn" onclick="window.location.href='https://vuyani1.github.io'">MORE GAMES 🎲</button>
+        </div>
+    </div>
+
+    <!-- Digital clock -->
+    <div class="clock" id="clock"></div>
+
+    <!-- Feedback robot -->
+    <div class="feedback">
+        <a href="mailto:vuyaniphila86@gmail.com?subject=I have a problem with your website or games">
+            <img src="https://dreamstime.com/stock-illustration-robot-relaxed-position-holds-word-feedback-d-illustration-image82194493" alt="Feedback Robot" width="100">
+        </a>
+    </div>
+
+    <!-- Footer with copyright -->
     <footer>
-        Copyright &copy; 2024 V.S. Vilakazi. All Rights Reserved. 🚀🌟✨🌍🎮
-        <div class="emojis">👍👏🤩😎🤖🔥🎯💪🚀🌟🎲💻</div>
+        <p>© 2024 Vuyani Siyanda Vilakazi. All Rights Reserved. | Email: vuyaniphila86@gmail.com</p>
     </footer>
 
     <script>
-        let slideIndex = 0;
+        // Slide transition logic
+        let slides = document.getElementsByClassName('slide');
+        let currentSlide = 0;
 
-        function startAnimation() {
-            const vgamesTitle = document.getElementById('vgames-title');
-            const signature = document.getElementById('signature');
-            const vgamesLogo = document.getElementById('vgames-logo');
-            const signatureLogo = document.getElementById('signature-logo');
-            const slides = document.getElementById('slides');
-            const gameButtons = document.getElementById('game-buttons');
-
-            // Particle and text animation
-            setTimeout(() => {
-                vgamesTitle.style.opacity = 1;
-                signature.style.opacity = 1;
-            }, 1000);
-
-            setTimeout(() => {
-                vgamesTitle.style.transform = 'scale(0.5)';
-                vgamesTitle.style.position = 'fixed';
-                vgamesTitle.style.top = '10px';
-                vgamesTitle.style.left = '10px';
-                signature.style.display = 'none';
-                vgamesLogo.style.display = 'block';
-                signatureLogo.style.display = 'block';
-            }, 3000);
-
-            setTimeout(() => {
-                slides.style.display = 'block';
-                nextSlide();
-            }, 4000);
-
-            setTimeout(() => {
-                slides.style.display = 'none';
-                gameButtons.style.display = 'block';
-            }, 17000); // Increased to 17 seconds for loading delay
+        function showNextSlide() {
+            slides[currentSlide].classList.remove('visible');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('visible');
         }
 
-        function nextSlide() {
-            const slides = document.querySelectorAll('.slide');
-            slides.forEach((slide, i) => {
-                slide.style.display = i === slideIndex ? 'block' : 'none';
-            });
-            slideIndex = (slideIndex + 1) % slides.length;
+        setInterval(showNextSlide, 5000);
+
+        // Digital clock logic
+        function updateClock() {
+            let now = new Date();
+            let hours = now.getHours().toString().padStart(2, '0');
+            let minutes = now.getMinutes().toString().padStart(2, '0');
+            let seconds = now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('clock').innerHTML = `${hours}:${minutes}:${seconds}`;
         }
 
-        // Start animation on page load
-        window.onload = startAnimation;
+        setInterval(updateClock, 1000);
+        updateClock();  // Initial call
+
     </script>
 
 </body>
