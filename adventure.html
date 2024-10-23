@@ -14,7 +14,7 @@
             text-align: center;
             overflow: hidden;
         }
-        
+
         /* Glowing corners */
         body::before {
             content: '';
@@ -68,6 +68,7 @@
         #start-screen {
             font-size: 60px;
             display: none;
+            animation: fadeIn 1s forwards;
         }
 
         #village-title {
@@ -92,6 +93,7 @@
             margin: 10px;
             border-radius: 8px;
             width: 200px;
+            transition: background-color 0.3s ease;
         }
 
         .story-choice:hover {
@@ -130,6 +132,16 @@
             color: white;
             font-size: 18px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #restart-btn:hover {
+            background-color: #e65c00;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
@@ -163,6 +175,10 @@
     </div>
 
     <script>
+        window.onload = function() {
+            document.getElementById('start-screen').style.display = 'block'; // Show start screen on load
+        };
+
         function startStory() {
             document.getElementById('intro').style.display = 'none';
             document.getElementById('start-screen').style.display = 'none';
