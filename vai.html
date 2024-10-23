@@ -30,7 +30,6 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: black;
         }
 
         /* Letter positions for animation */
@@ -44,12 +43,12 @@
 
         /* Animations to form VAI */
         #letter-v {
-            left: 10%;
+            left: -100px;
             animation: moveV 2s forwards ease-in-out 0.5s;
         }
 
         #letter-a {
-            right: 10%;
+            right: -100px;
             animation: moveA 2s forwards ease-in-out 0.5s;
         }
 
@@ -87,6 +86,155 @@
             0% { opacity: 0; }
             100% { opacity: 1; }
         }
+
+        /* Background color loop */
+        @keyframes bgLoop {
+            0% { background-color: lightblue; }
+            20% { background-color: blue; }
+            40% { background-color: lime; }
+            60% { background-color: green; }
+            80% { background-color: darkgreen; }
+            100% { background-color: darkblue; }
+        }
+
+        #main-container {
+            animation: bgLoop 10s infinite;
+        }
+
+        /* Second Slide: "READY" text and logo moving to the corner */
+        #ready-text {
+            font-size: 50px;
+            position: absolute;
+            opacity: 0;
+            animation: fadeInReady 2s forwards ease-in-out 4s;
+        }
+
+        @keyframes fadeInReady {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        #logo-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translate(-100px, -100px);
+            animation: moveLogoToCorner 2s forwards ease-in-out 4s;
+        }
+
+        @keyframes moveLogoToCorner {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-250px, -250px); }
+        }
+
+        /* Third Slide: "Powered by Serper" text */
+        #powered-by {
+            position: absolute;
+            opacity: 0;
+            font-size: 40px;
+            top: 50%;
+            animation: fadeInPoweredBy 2s forwards ease-in-out 6s;
+        }
+
+        @keyframes fadeInPoweredBy {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Fourth Slide: Search bar */
+        #search-bar {
+            position: absolute;
+            width: 60%;
+            padding: 15px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            outline: none;
+            display: none;
+            animation: showSearchBar 2s forwards ease-in-out 8s;
+        }
+
+        @keyframes showSearchBar {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Search button */
+        #search-btn {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ff4c4c;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: none;
+            animation: showSearchBtn 2s forwards ease-in-out 8s;
+        }
+
+        #search-btn:hover {
+            background-color: #ff1a1a;
+        }
+
+        @keyframes showSearchBtn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* AI Response area */
+        #response {
+            margin-top: 30px;
+            width: 80%;
+            padding: 20px;
+            border-radius: 20px;
+            background: white;
+            font-size: 22px;
+            color: black;
+            border: 3px solid red;
+            display: none;
+        }
+
+        /* Time display */
+        #time {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 20px;
+            color: white;
+        }
+
+        /* Emoji-triggered keyboard */
+        #emoji {
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+            font-size: 50px;
+            cursor: pointer;
+            display: none;
+            animation: showEmoji 2s forwards ease-in-out 8s;
+        }
+
+        @keyframes showEmoji {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        #keyboard {
+            position: absolute;
+            bottom: 60px;
+            left: 20px;
+            width: 300px;
+            height: 150px;
+            background-color: #333;
+            display: none;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -99,15 +247,65 @@
 
         <!-- Signature -->
         <div id="vai-signature">v.s vilakazi</div>
+
+        <!-- Second Slide: "READY" text -->
+        <div id="ready-text">READY</div>
+
+        <!-- Third Slide: "Powered by Serper" -->
+        <div id="powered-by">Powered by Serper</div>
+
+        <!-- Fourth Slide: Search bar and button -->
+        <input type="text" id="search-bar" placeholder="Type your question here..." />
+        <button id="search-btn">Search</button>
+
+        <!-- Emoji and keyboard -->
+        <div id="emoji">😊</div>
+        <div id="keyboard">[Keyboard appears here]</div>
+
+        <!-- Response area -->
+        <div id="response"></div>
+
+        <!-- Time display -->
+        <div id="time"></div>
     </div>
 
     <script>
-        // Handle animations to form VAI
-        setTimeout(() => {
-            document.querySelectorAll('.letter').forEach(letter => {
-                letter.style.opacity = '1';
+        // Time display
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('time').textContent = `${hours}:${minutes}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Emoji keyboard toggle
+        document.getElementById('emoji').addEventListener('click', () => {
+            const keyboard = document.getElementById('keyboard');
+            keyboard.style.display = keyboard.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Search functionality with Serper
+        async function searchSerper(query) {
+            const response = await fetch('https://google.serper.dev/search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ q: query })
             });
-        }, 500);
+            const data = await response.json();
+            return data;
+        }
+
+        // Handle search button click
+        document.getElementById('search-btn').addEventListener('click', async () => {
+            const query = document.getElementById('search-bar').value;
+            if (query) {
+                const result = await searchSerper(query);
+                document.getElementById('response').textContent = result;
+                document.getElementById('response').style.display = 'block';
+            }
+        });
     </script>
 </body>
 </html>
