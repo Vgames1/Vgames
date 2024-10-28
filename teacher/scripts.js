@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const previewWindow = window.open("", "_blank");
         previewWindow.document.write(buildSlideHtml(userHtml));
         previewWindow.document.close();
+        previewWindow.document.body.requestFullscreen();
     });
 
     // Download Button: Generate downloadable HTML file
@@ -27,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         link.click();
     });
 
-    // Construct HTML with custom slides
+    // Construct HTML with custom slides and logo
     function buildSlideHtml(userHtml) {
         return `
 <!DOCTYPE html>
@@ -37,22 +38,41 @@ document.addEventListener("DOMContentLoaded", () => {
     <title>Custom Slide</title>
     <style>
         body { margin: 0; font-family: Arial, sans-serif; background: black; color: white; }
-        .slide { display: flex; align-items: center; justify-content: center; height: 100vh; }
-        #slide1 { background: black; animation: fade 5s forwards; }
-        #slide2 { background: linear-gradient(to bottom, #111, #800000); animation: fade 5s forwards 5s; }
-        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+        #logo {
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+        #logo h1 {
+            font-size: 100px;
+            font-weight: bold;
+            text-transform: uppercase;
+            animation: glow 2s infinite alternate;
+        }
+        #logo h2 {
+            font-size: 30px;
+            font-style: italic;
+            margin-top: 20px;
+            animation: glow 3s infinite alternate;
+        }
+        @keyframes glow {
+            from {
+                color: white;
+                text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white;
+            }
+            to {
+                color: blue;
+                text-shadow: 0 0 20px blue, 0 0 40px blue, 0 0 50px blue;
+            }
+        }
     </style>
 </head>
 <body>
-    <div id="slide1" class="slide">
-        <div>
-            <h1>VGAMES</h1>
-            <h2>V.S VILAKAZI</h2>
-        </div>
+    <div id="logo">
+        <h1>VGAMES</h1>
+        <h2>V.S VILAKAZI</h2>
     </div>
-    <div id="slide2" class="slide">
-        ${userHtml}
-    </div>
+    <div>${userHtml}</div>
 </body>
 </html>`;
     }
