@@ -1,3 +1,4 @@
+/* General Body Styles */
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(to bottom, #111, #800000);
@@ -6,12 +7,14 @@ body {
     margin: 0;
 }
 
+/* Container for Main Content */
 #container {
     margin: 2em auto;
     width: 90%;
     max-width: 600px;
 }
 
+/* Textarea for HTML Content */
 #htmlContent {
     width: 100%;
     height: 200px;
@@ -19,13 +22,15 @@ body {
     color: #fff;
     padding: 1em;
     border: none;
-    resize: none;
+    resize: none; /* Prevent resizing */
 }
 
+/* Control Buttons */
 #controls {
     margin: 1em 0;
 }
 
+/* Button Styles */
 button {
     background-color: #444;
     color: white;
@@ -33,22 +38,27 @@ button {
     margin: 5px;
     border: none;
     cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth hover transition */
 }
 
+/* Button Hover Effect */
 button:hover {
-    background-color: #800000;
+    background-color: #800000; /* Change to a darker red on hover */
 }
 
+/* Footer Styles */
 #footer {
     margin-top: 2em;
 }
 
+/* Time Display */
 #time {
     display: block;
     font-size: 1.2em;
     margin-bottom: 10px;
 }
 
+/* Logo Styles */
 #logo {
     font-weight: bold;
     font-size: 1.5em;
