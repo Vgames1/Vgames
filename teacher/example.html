@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mobile Trivia & PC Tic Tac Toe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* General Styles */
+        body { margin: 0; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; color: white; }
+        #game-container { max-width: 500px; width: 100%; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); }
+        
+        /* Trivia Game Styles */
+        #trivia { display: none; background: linear-gradient(135deg, #2b2b2b, #4b79a1); border-radius: 10px; padding: 20px; text-align: center; }
+        #trivia h2 { margin-bottom: 10px; }
+        #trivia p { margin: 15px 0; }
+        #timer, #score { font-size: 14px; float: right; }
+        
+        /* Tic Tac Toe Styles */
+        #tic-tac-toe { display: none; text-align: center; }
+        #tic-tac-toe h2 { color: #00A0E3; }
+        #board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+        .cell { width: 100px; height: 100px; background-color: #333; font-size: 2em; color: white; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        .bot-won { color: red; }
+        .player-won { color: green; }
+        .draw { color: yellow; }
+        
+        /* Buttons */
+        .btn { padding: 10px 15px; background-color: #333; color: white; border: none; cursor: pointer; margin: 5px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <!-- Trivia Game (Mobile) -->
+        <div id="trivia">
+            <h2>Trivia Game</h2>
+            <div id="timer">Timer: 15s</div>
+            <div id="score">Score: 0</div>
+            <p id="question">Loading question...</p>
+            <button id="option1" class="btn">Option 1</button>
+            <button id="option2" class="btn">Option 2</button>
+            <button id="option3" class="btn">Option 3</button>
+            <button id="option4" class="btn">Option 4</button>
+        </div>
+
+        <!-- Tic Tac Toe Game (PC) -->
+        <div id="tic-tac-toe">
+            <h2>Tic Tac Toe</h2>
+            <button id="play-friend" class="btn">Play with a Friend</button>
+            <button id="play-bot" class="btn">Play with a Bot</button>
+            <div id="board"></div>
+        </div>
+    </div>
+
+    <script>
+        // Detect Device and Show Correct Game
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        const triviaGame = document.getElementById('trivia');
+        const ticTacToeGame = document.getElementById('tic-tac-toe');
+
+        if (isMobile) {
+            triviaGame.style.display = 'block';
+            loadTriviaGame();
+        } else {
+            ticTacToeGame.style.display = 'block';
+            loadTicTacToeGame();
+        }
+
+        // Trivia Game Logic
+        function loadTriviaGame() {
+            const questions = [
+                { question: "What is the capital of France?", options: ["Paris", "London", "Berlin", "Rome"], answer: "Paris" },
+                { question: "What is 2 + 2?", options: ["3", "4", "5", "6"], answer: "4" },
+{ 
+        question: "What is the capital of Japan?", 
+        options: ["Tokyo", "Seoul", "Beijing", "Bangkok"], 
+        answer: "Tokyo" 
+    },
+    { 
+        question: "Which planet is known as the Red Planet?", 
+        options: ["Mars", "Venus", "Jupiter", "Saturn"], 
+        answer: "Mars" 
+    },
+    { 
+        question: "What is the largest mammal in the world?", 
+        options: ["Elephant", "Blue Whale", "Giraffe", "Great White Shark"], 
+        answer: "Blue Whale" 
+    },
+    { 
+        question: "Who wrote 'Hamlet'?", 
+        options: ["William Wordsworth", "Charles Dickens", "William Shakespeare", "Jane Austen"], 
+        answer: "William Shakespeare" 
+    },
+    { 
+        question: "What is the chemical symbol for water?", 
+        options: ["O2", "CO2", "H2O", "NaCl"], 
+        answer: "H2O" 
+    },
+    { 
+        question: "What is the square root of 64?", 
+        options: ["6", "7", "8", "9"], 
+        answer: "8" 
+    },
+    { 
+        question: "Which animal is known as the 'King of the Jungle'?", 
+        options: ["Tiger", "Elephant", "Lion", "Leopard"], 
+        answer: "Lion" 
+    },
+    { 
+        question: "In which continent is the Amazon Rainforest located?", 
+        options: ["Africa", "Asia", "South America", "Australia"], 
+        answer: "South America" 
+    },
+    { 
+        question: "What is the hardest natural substance on Earth?", 
+        options: ["Gold", "Iron", "Diamond", "Silver"], 
+        answer: "Diamond" 
+    },
+    { 
+        question: "Who painted the Mona Lisa?", 
+        options: ["Pablo Picasso", "Vincent van Gogh", "Leonardo da Vinci", "Claude Monet"], 
+        answer: "Leonardo da Vinci" 
+    },
+    { 
+        question: "What is the longest river in the world?", 
+        options: ["Amazon", "Nile", "Mississippi", "Yangtze"], 
+        answer: "Nile" 
+    },
+    { 
+        question: "How many continents are there?", 
+        options: ["5", "6", "7", "8"], 
+        answer: "7" 
+    },
+    { 
+        question: "Which element has the atomic number 1?", 
+        options: ["Oxygen", "Carbon", "Hydrogen", "Nitrogen"], 
+        answer: "Hydrogen" 
+    },
+    { 
+        question: "What is the capital of Canada?", 
+        options: ["Toronto", "Ottawa", "Vancouver", "Montreal"], 
+        answer: "Ottawa" 
+    },
+    { 
+        question: "Who discovered penicillin?", 
+        options: ["Marie Curie", "Albert Einstein", "Alexander Fleming", "Isaac Newton"], 
+        answer: "Alexander Fleming" 
+    }
+];
+            const questions = [
+    { 
+        question: "What is the capital of France?", 
+        options: ["Paris", "London", "Rome", "Berlin"], 
+        answer: "Paris" 
+    },
+    { 
+        question: "In which year did the Titanic sink?", 
+        options: ["1912", "1918", "1923", "1905"], 
+        answer: "1912" 
+    },
+    { 
+        question: "What is the smallest planet in our solar system?", 
+        options: ["Mercury", "Venus", "Earth", "Mars"], 
+        answer: "Mercury" 
+    },
+    { 
+        question: "How many bones are in the human body?", 
+        options: ["206", "195", "210", "150"], 
+        answer: "206" 
+    },
+    { 
+        question: "What is the capital city of Australia?", 
+        options: ["Sydney", "Melbourne", "Canberra", "Brisbane"], 
+        answer: "Canberra" 
+    },
+    { 
+        question: "Which country is known as the Land of the Rising Sun?", 
+        options: ["China", "Japan", "South Korea", "Thailand"], 
+        answer: "Japan" 
+    },
+    { 
+        question: "What is the primary ingredient in guacamole?", 
+        options: ["Tomato", "Avocado", "Onion", "Garlic"], 
+        answer: "Avocado" 
+    },
+    { 
+        question: "Who was the first man to walk on the moon?", 
+        options: ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "Alan Shepard"], 
+        answer: "Neil Armstrong" 
+    },
+    { 
+        question: "Which is the largest ocean on Earth?", 
+        options: ["Indian Ocean", "Atlantic Ocean", "Pacific Ocean", "Arctic Ocean"], 
+        answer: "Pacific Ocean" 
+    },
+    { 
+        question: "Which planet is known for its rings?", 
+        options: ["Jupiter", "Mars", "Saturn", "Venus"], 
+        answer: "Saturn" 
+    },
+    { 
+        question: "What does DNA stand for?", 
+        options: ["Deoxyribonucleic Acid", "Diaphonic Neuron Acid", "Dynamic Nuclear Acid", "Dioxynuclear Acid"], 
+        answer: "Deoxyribonucleic Acid" 
+    },
+    { 
+        question: "Which artist painted the ceiling of the Sistine Chapel?", 
+        options: ["Leonardo da Vinci", "Michelangelo", "Raphael", "Donatello"], 
+        answer: "Michelangelo" 
+    },
+    { 
+        question: "What is the tallest mountain in the world?", 
+        options: ["K2", "Kangchenjunga", "Mount Everest", "Mount Kilimanjaro"], 
+        answer: "Mount Everest" 
+    },
+    { 
+        question: "What is the freezing point of water in Fahrenheit?", 
+        options: ["32°F", "0°F", "100°F", "212°F"], 
+        answer: "32°F" 
+    },
+    { 
+        question: "Which animal is known to have three hearts?", 
+        options: ["Elephant", "Blue Whale", "Octopus", "Shark"], 
+        answer: "Octopus" 
+    },
+    { 
+        question: "How many stripes are there on the United States flag?", 
+        options: ["13", "10", "15", "7"], 
+        answer: "13" 
+    },
+    { 
+        question: "What is the name of the longest river in South America?", 
+        options: ["Amazon", "Nile", "Mississippi", "Orinoco"], 
+        answer: "Amazon" 
+    },
+    { 
+        question: "Which planet has the most moons?", 
+        options: ["Mars", "Jupiter", "Saturn", "Uranus"], 
+        answer: "Saturn" 
+    },
+    { 
+        question: "In which country is the Great Barrier Reef located?", 
+        options: ["Australia", "New Zealand", "Indonesia", "South Africa"], 
+        answer: "Australia" 
+    },
+    { 
+        question: "What year did World War II end?", 
+        options: ["1941", "1945", "1939", "1943"], 
+        answer: "1945" 
+    },
+    { 
+        question: "What is the largest land animal?", 
+        options: ["Giraffe", "Elephant", "Rhinoceros", "Hippopotamus"], 
+        answer: "Elephant" 
+    },
+    { 
+        question: "Which is the smallest continent by land area?", 
+        options: ["Europe", "Australia", "South America", "Antarctica"], 
+        answer: "Australia" 
+    },
+    { 
+        question: "What is the name of the largest desert on Earth?", 
+        options: ["Sahara", "Arabian", "Gobi", "Antarctic Desert"], 
+        answer: "Antarctic Desert" 
+    },
+    { 
+        question: "Which country produces the most coffee in the world?", 
+        options: ["Brazil", "Colombia", "Vietnam", "Ethiopia"], 
+        answer: "Brazil" 
+    },
+    { 
+        question: "Who is the author of 'Harry Potter'?", 
+        options: ["J.K. Rowling", "J.R.R. Tolkien", "George R.R. Martin", "C.S. Lewis"], 
+        answer: "J.K. Rowling" 
+    },
+    { 
+        question: "What type of tree do acorns come from?", 
+        options: ["Pine", "Maple", "Oak", "Birch"], 
+        answer: "Oak" 
+    },
+    { 
+        question: "In what year was the first iPhone released?", 
+        options: ["2005", "2007", "2010", "2012"], 
+        answer: "2007" 
+    },
+    { 
+        question: "What is the smallest prime number?", 
+        options: ["1", "2", "3", "5"], 
+        answer: "2" 
+    },
+    { 
+        question: "What is the capital of Canada?", 
+        options: ["Toronto", "Vancouver", "Montreal", "Ottawa"], 
+        answer: "Ottawa" 
+    },
+    { 
+        question: "What element does 'O' represent on the periodic table?", 
+        options: ["Osmium", "Oxygen", "Oxide", "Organium"], 
+        answer: "Oxygen" 
+    },
+    { 
+        question: "What is the largest continent by population?", 
+        options: ["Africa", "Europe", "Asia", "North America"], 
+        answer: "Asia" 
+    },
+    { 
+        question: "What is the main ingredient in traditional Japanese miso soup?", 
+        options: ["Rice", "Soybeans", "Seaweed", "Fish"], 
+        answer: "Soybeans" 
+    },
+    { 
+        question: "How many rings are there on the Olympic flag?", 
+        options: ["4", "5", "6", "7"], 
+        answer: "5" 
+    },
+    { 
+        question: "Which organ is affected by hepatitis?", 
+        options: ["Heart", "Liver", "Kidney", "Lungs"], 
+        answer: "Liver" 
+    },
+    { 
+        question: "Who invented the telephone?", 
+        options: ["Thomas Edison", "Nikola Tesla", "Alexander Graham Bell", "Isaac Newton"], 
+        answer: "Alexander Graham Bell" 
+    },
+    { 
+        question: "What is the most widely spoken language in the world?", 
+        options: ["Spanish", "English", "Mandarin Chinese", "Hindi"], 
+        answer: "Mandarin Chinese" 
+    },
+    { 
+        question: "Which planet is closest to the sun?", 
+        options: ["Venus", "Earth", "Mercury", "Mars"], 
+        answer: "Mercury" 
+    },
+    { 
+        question: "Who wrote the play 'Romeo and Juliet'?", 
+        options: ["Charles Dickens", "William Shakespeare", "Mark Twain", "Jane Austen"], 
+        answer: "William Shakespeare" 
+    },
+    { 
+        question: "Which country is home to the kangaroo?", 
+        options: ["New Zealand", "Australia", "South Africa", "Brazil"], 
+        answer: "Australia" 
+    },
+    { 
+        question: "What is the powerhouse of the cell?", 
+        options: ["Nucleus", "Ribosome", "Mitochondria", "Cell wall"], 
+        answer: "Mitochondria" 
+    },
+    { 
+        question: "What is the national flower of Japan?", 
+        options: ["Cherry Blossom", "Rose", "Sunflower", "Lily"], 
+        answer: "Cherry Blossom" 
+    },
+    { 
+        question: "Which planet is the hottest in the solar system?", 
+        options: ["Mars", "Mercury", "Venus", "Jupiter"], 
+        answer: "Venus" 
+    },
+    { 
+        question: "What year did the Berlin Wall fall?", 
+        options: ["1987", "1989", "1990", "1991"], 
+        answer: "1989" 
+    },
+    { 
+        question: "What is the capital city of Thailand?", 
+        options: ["Bangkok", "Phuket", "Chiang Mai", "Pattaya"], 
+        answer: "Bangkok" 
+    },
+    { 
+        question: "Which element has the atomic number 1?", 
+        options: ["Helium", "Oxygen", "Hydrogen", "Nitrogen"], 
+        answer: "Hydrogen" 
+    },
+    { 
+        question: "What is the national sport of Canada?", 
+        options: ["Soccer", "Hockey", "Baseball", "Basketball"], 
+        answer: "Hockey" 
+    },
+    { 
+        question: "What is the main ingredient in hummus?", 
+        options: ["Lentils", "Chickpeas", "Beans", "Tofu"], 
+        answer: "Chickpeas" 
+    },
+];
+
+                // Add more random questions here
+            ];
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let timer = 15;
+            let timerInterval;
+
+            function nextQuestion() {
+                if (currentQuestionIndex >= questions.length) currentQuestionIndex = 0;
+                const questionData = questions[currentQuestionIndex];
+                document.getElementById('question').textContent = questionData.question;
+                document.getElementById('option1').textContent = questionData.options[0];
+                document.getElementById('option2').textContent = questionData.options[1];
+                document.getElementById('option3').textContent = questionData.options[2];
+                document.getElementById('option4').textContent = questionData.options[3];
+                timer = 15;
+                document.getElementById('timer').textContent = `Timer: ${timer}s`;
+                currentQuestionIndex++;
+            }
+
+            function startTimer() {
+                clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    timer--;
+                    document.getElementById('timer').textContent = `Timer: ${timer}s`;
+                    if (timer === 0) {
+                        clearInterval(timerInterval);
+                        nextQuestion();
+                    }
+                }, 1000);
+            }
+
+            function selectOption(option) {
+                const questionData = questions[currentQuestionIndex - 1];
+                if (option.textContent === questionData.answer) score++;
+                document.getElementById('score').textContent = `Score: ${score}`;
+                nextQuestion();
+                startTimer();
+            }
+
+            document.getElementById('option1').onclick = () => selectOption(document.getElementById('option1'));
+            document.getElementById('option2').onclick = () => selectOption(document.getElementById('option2'));
+            document.getElementById('option3').onclick = () => selectOption(document.getElementById('option3'));
+            document.getElementById('option4').onclick = () => selectOption(document.getElementById('option4'));
+
+            nextQuestion();
+            startTimer();
+        }
+
+        // Tic Tac Toe Game Logic
+        function loadTicTacToeGame() {
+            const board = document.getElementById('board');
+            const cells = [];
+            let player = 'X';
+            let gameActive = true;
+
+            function createBoard() {
+                board.innerHTML = '';
+                cells.length = 0;
+                for (let i = 0; i < 9; i++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.addEventListener('click', () => cellClicked(i));
+                    cells.push(cell);
+                    board.appendChild(cell);
+                }
+            }
+
+            function cellClicked(index) {
+                if (!gameActive || cells[index].textContent) return;
+                cells[index].textContent = player;
+                if (checkWin(player)) {
+                    gameActive = false;
+                    document.getElementById('tic-tac-toe').innerHTML += `<h3 class="${player === 'X' ? 'player-won' : 'bot-won'}">${player} wins!</h3>`;
+                } else if (cells.every(cell => cell.textContent)) {
+                    gameActive = false;
+                    document.getElementById('tic-tac-toe').innerHTML += `<h3 class="draw">Draw!</h3>`;
+                } else {
+                    player = player === 'X' ? 'O' : 'X';
+                    if (player === 'O') botMove();
+                }
+            }
+
+            function botMove() {
+                const availableCells = cells.filter(cell => !cell.textContent);
+                const cell = availableCells[Math.floor(Math.random() * availableCells.length)];
+                cell.textContent = player;
+                if (checkWin(player)) {
+                    gameActive = false;
+                    document.getElementById('tic-tac-toe').innerHTML += `<h3 class="bot-won">Bot wins!</h3>`;
+                } else {
+                    player = 'X';
+                }
+            }
+
+            function checkWin(player) {
+                const winPatterns = [
+                    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                    [0, 4, 8], [2, 4, 6]
+                ];
+                return winPatterns.some(pattern => pattern.every(index => cells[index].textContent === player));
+            }
+
+            createBoard();
+        }
+    </script>
+</body>
+</html>
