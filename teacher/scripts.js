@@ -2,8 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const previewButton = document.getElementById("previewButton");
     const downloadButton = document.getElementById("downloadButton");
     const timeDisplay = document.getElementById("time");
+    const htmlContentInput = document.getElementById("htmlContent");
 
-    // Display current time
+    // Function to update the current time every second
     setInterval(() => {
         const now = new Date();
         timeDisplay.textContent = now.toLocaleTimeString();
@@ -11,21 +12,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Preview Button: Open a new window to preview HTML content
     previewButton.addEventListener("click", () => {
-        const userHtml = document.getElementById("htmlContent").value;
-        const previewWindow = window.open("", "_blank");
-        previewWindow.document.write(buildSlideHtml(userHtml));
-        previewWindow.document.close();
-        previewWindow.document.body.requestFullscreen();
+        const userHtml = htmlContentInput.value.trim();
+        if (userHtml) {
+            const previewWindow = window.open("", "_blank");
+            previewWindow.document.write(buildSlideHtml(userHtml));
+            previewWindow.document.close();
+            previewWindow.document.body.requestFullscreen();
+        } else {
+            alert("Please enter HTML content to preview.");
+        }
     });
 
     // Download Button: Generate downloadable HTML file
     downloadButton.addEventListener("click", () => {
-        const userHtml = document.getElementById("htmlContent").value;
-        const blob = new Blob([buildSlideHtml(userHtml)], { type: "text/html" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "custom_slide.html";
-        link.click();
+        const userHtml = htmlContentInput.value.trim();
+        if (userHtml) {
+            const blob = new Blob([buildSlideHtml(userHtml)], { type: "text/html" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "custom_slide.html";
+            link.click();
+        } else {
+            alert("Please enter HTML content to download.");
+        }
     });
 
     // Construct HTML with custom slides and logo
@@ -35,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Slide</title>
     <style>
         body { margin: 0; font-family: Arial, sans-serif; background: black; color: white; }
