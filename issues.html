@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGAMES</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟣</text></svg>">
+    <style>
+        /* Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Background */
+        body {
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #ff007f, #ff00ff, #007fff, #00ff7f);
+            background-size: 400% 400%;
+            animation: bgColorChange 10s ease infinite;
+            color: white;
+        }
+        @keyframes bgColorChange {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Title */
+        .title {
+            font-size: 2rem;
+            font-weight: bold;
+            animation: colorChange 5s infinite;
+        }
+        @keyframes colorChange {
+            0%, 100% { color: #ff007f; }
+            33% { color: #ff00ff; }
+            66% { color: #007fff; }
+        }
+
+        /* Time Display Box */
+        .time-box {
+            padding: 0.5rem 1rem;
+            font-size: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            transition: transform 0.5s;
+        }
+
+        /* Button */
+        .move-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            background: #ff00ff;
+            cursor: pointer;
+            color: white;
+            font-size: 0.9rem;
+        }
+        .move-button:hover {
+            background: #ff007f;
+        }
+
+        /* Links */
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .link-btn {
+            padding: 0.5rem 1rem;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .link-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container { gap: 1rem; }
+            .title { font-size: 1.5rem; }
+            .time-box { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <!-- Title that changes colors -->
+        <div class="title" id="title">VGAMES</div>
+
+        <!-- Time display box -->
+        <div class="time-box" id="timeBox"></div>
+
+        <!-- Links to external sites -->
+        <div class="links">
+            <button class="link-btn" onclick="window.open('https://vuyani1.github.io')">VUYANI GAMES</button>
+            <button class="link-btn" onclick="window.open('https://vcloud24.github.io')">VCLOUD GAMES</button>
+            <button class="link-btn" onclick="window.open('https://vgames1.github.io')">VILAKAZI GAMES</button>
+        </div>
+
+        <!-- Move Button to Change Template -->
+        <button class="move-button" onclick="moveElements()">Move Elements</button>
+    </div>
+
+    <!-- JavaScript for Online Time and Element Movement -->
+    <script>
+        // Time display
+        function updateTime() {
+            const timeBox = document.getElementById("timeBox");
+            const date = new Date();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            timeBox.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateTime, 1000); // Update every second
+
+        // Move Elements
+        let isMoved = false;
+        function moveElements() {
+            const container = document.getElementById("container");
+            isMoved = !isMoved;
+            container.style.flexDirection = isMoved ? "row" : "column";
+            document.getElementById("timeBox").style.alignSelf = isMoved ? "flex-end" : "center";
+        }
+
+        // Initialize time on page load
+        updateTime();
+    </script>
+</body>
+</html>
