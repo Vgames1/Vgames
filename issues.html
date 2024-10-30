@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VGAMES</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟣</text></svg>">
+    <link rel="icon" href="thewone.png" type="image/png">
     <style>
         /* Reset */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -21,26 +21,19 @@
             background-size: 400% 400%;
             animation: bgColorChange 10s ease infinite;
             color: white;
+            position: relative;
         }
         @keyframes bgColorChange {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
         }
 
-        /* Container */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            text-align: center;
-            position: relative;
-        }
-
         /* Title */
         .title {
             font-size: 2rem;
             font-weight: bold;
+            position: absolute;
+            cursor: move;
             animation: colorChange 5s infinite;
         }
         @keyframes colorChange {
@@ -55,32 +48,12 @@
             font-size: 1.5rem;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 5px;
+            position: absolute;
+            cursor: move;
             transition: transform 0.5s;
         }
 
         /* Button */
-        .move-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 5px;
-            background: #ff00ff;
-            cursor: pointer;
-            color: white;
-            font-size: 0.9rem;
-        }
-        .move-button:hover {
-            background: #ff007f;
-        }
-
-        /* Links */
-        .links {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
         .link-btn {
             padding: 0.5rem 1rem;
             font-size: 1.1rem;
@@ -89,6 +62,7 @@
             border-radius: 5px;
             color: white;
             cursor: pointer;
+            position: absolute;
             transition: background 0.3s;
         }
         .link-btn:hover {
@@ -97,32 +71,25 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .container { gap: 1rem; }
             .title { font-size: 1.5rem; }
             .time-box { font-size: 1.2rem; }
+            .link-btn { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
-    <div class="container" id="container">
-        <!-- Title that changes colors -->
-        <div class="title" id="title">VGAMES</div>
+    <!-- Title -->
+    <div class="title" id="title" draggable="true" ondragstart="dragStart(event)">VGAMES</div>
 
-        <!-- Time display box -->
-        <div class="time-box" id="timeBox"></div>
+    <!-- Time display box -->
+    <div class="time-box" id="timeBox" draggable="true" ondragstart="dragStart(event)"></div>
 
-        <!-- Links to external sites -->
-        <div class="links">
-            <button class="link-btn" onclick="window.open('https://vuyani1.github.io')">VUYANI GAMES</button>
-            <button class="link-btn" onclick="window.open('https://vcloud24.github.io')">VCLOUD GAMES</button>
-            <button class="link-btn" onclick="window.open('https://vgames1.github.io')">VILAKAZI GAMES</button>
-        </div>
+    <!-- Links to external sites -->
+    <button class="link-btn" draggable="true" ondragstart="dragStart(event)" onclick="window.open('https://vuyani1.github.io')" style="top: 10%; left: 10%;">VUYANI GAMES</button>
+    <button class="link-btn" draggable="true" ondragstart="dragStart(event)" onclick="window.open('https://vcloud24.github.io')" style="top: 20%; left: 20%;">VCLOUD GAMES</button>
+    <button class="link-btn" draggable="true" ondragstart="dragStart(event)" onclick="window.open('https://vgames1.github.io')" style="top: 30%; left: 30%;">VILAKAZI GAMES</button>
 
-        <!-- Move Button to Change Template -->
-        <button class="move-button" onclick="moveElements()">Move Elements</button>
-    </div>
-
-    <!-- JavaScript for Online Time and Element Movement -->
+    <!-- JavaScript for Online Time and Drag-and-Drop Functionality -->
     <script>
         // Time display
         function updateTime() {
@@ -135,14 +102,24 @@
         }
         setInterval(updateTime, 1000); // Update every second
 
-        // Move Elements
-        let isMoved = false;
-        function moveElements() {
-            const container = document.getElementById("container");
-            isMoved = !isMoved;
-            container.style.flexDirection = isMoved ? "row" : "column";
-            document.getElementById("timeBox").style.alignSelf = isMoved ? "flex-end" : "center";
+        // Drag-and-drop functionality
+        function dragStart(event) {
+            event.dataTransfer.setData("text/plain", event.target.id);
         }
+
+        document.addEventListener("dragover", function(event) {
+            event.preventDefault();
+        });
+
+        document.addEventListener("drop", function(event) {
+            event.preventDefault();
+            const id = event.dataTransfer.getData("text/plain");
+            const draggableElement = document.getElementById(id);
+            const offsetX = draggableElement.offsetWidth / 2;
+            const offsetY = draggableElement.offsetHeight / 2;
+            draggableElement.style.left = `${event.pageX - offsetX}px`;
+            draggableElement.style.top = `${event.pageY - offsetY}px`;
+        });
 
         // Initialize time on page load
         updateTime();
