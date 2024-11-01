@@ -1,262 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VGAMES Multiplayer Trivia Game</title>
-  <link rel="icon" href="ilogot.jpeg" type="image/jpeg">
-  <style>
-    body, html {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(45deg, pink, blue);
-      animation: glowing 3s infinite alternate;
-      color: white;
-    }
-    h1 {
-      font-size: 3em;
-      text-align: center;
-    }
-    #game-container, #winner-screen, #name-input-modal {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.8);
-      border-radius: 10px;
-      color: #fff;
-    }
-    .player-info {
-      font-size: 1.2em;
-      margin: 10px 0;
-    }
-    #question {
-      font-size: 1.5em;
-      margin: 20px 0;
-      text-align: center;
-    }
-    .answer {
-      padding: 10px;
-      background-color: rgba(255, 255, 255, 0.1);
-      border: 2px solid white;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px;
-      transition: transform 0.2s;
-    }
-    .answer:hover {
-      transform: scale(1.1);
-      background-color: #ffffff50;
-    }
-    #winner-screen, #name-input-modal {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: black;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
-    #name-input-modal input {
-      font-size: 1.2em;
-      padding: 10px;
-      margin: 5px 0;
-    }
-    #name-input-modal button {
-      font-size: 1em;
-      padding: 8px 16px;
-      cursor: pointer;
-    }
-    #winner-name {
-      font-size: 3em;
-      font-weight: bold;
-      margin-top: 20px;
-    }
-    #crown {
-      font-size: 1.5em;
-      color: gold;
-    }
-    @keyframes glowing {
-      from {background-color: pink;}
-      to {background-color: blue;}
-    }
-    .hearts {
-      font-size: 1.5em;
-      display: inline-block;
-      margin-left: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Trivia Game</title>
+    <style>
+        /* Basic styles for layout */
+        body {
+            background-color: #1a1a2e;
+            color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1, h2 {
+            color: #f9f871;
+            text-shadow: 0 0 10px pink, 0 0 20px blue;
+        }
+
+        #gameContainer {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(50, 50, 70, 0.9);
+            box-shadow: 0 0 10px #ff9a9e, 0 0 20px #ff9a9e;
+        }
+
+        .glow {
+            color: #39ff14;
+            text-shadow: 0 0 10px #39ff14, 0 0 20px blue;
+        }
+
+        #VGAMESLogo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #time {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .player-list {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .player {
+            border: 2px solid #ff9a9e;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .crown {
+            font-size: 24px;
+            color: gold;
+        }
+
+        .heart {
+            color: red;
+        }
+
+        #question {
+            margin-top: 20px;
+            font-size: 1.5em;
+            padding: 15px;
+            border-radius: 5px;
+            background: rgba(100, 100, 200, 0.2);
+        }
+
+        #answers {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        .answer {
+            cursor: pointer;
+            padding: 10px;
+            color: white;
+            background-color: #3e6f9c;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+
+        .answer:hover {
+            background-color: #1b4a72;
+        }
+    </style>
 </head>
 <body>
-  <h1>VGAMES Multiplayer Trivia</h1>
 
-  <div id="setup-container">
-    <h2>Choose number of players (1-4):</h2>
-    <input type="number" id="num-players" min="1" max="4" value="2">
-    <button onclick="startNameInput()">Start Game</button>
-  </div>
+    <!-- Logo and Timer -->
+    <div id="VGAMESLogo" class="glow">VGAMES</div>
+    <div id="time" class="glow">00:00</div>
 
-  <div id="game-container">
-    <h2 id="turn-info"></h2>
-    <div id="player-setup"></div>
-    <div id="question-container">
-      <div id="question">Question will appear here</div>
-      <div id="answers">
-        <div class="answer" onclick="checkAnswer(0)">Answer 1</div>
-        <div class="answer" onclick="checkAnswer(1)">Answer 2</div>
-        <div class="answer" onclick="checkAnswer(2)">Answer 3</div>
-        <div class="answer" onclick="checkAnswer(3)">Answer 4</div>
-      </div>
+    <!-- Game Container -->
+    <div id="gameContainer">
+        <h1>Trivia Battle Royale</h1>
+        <h2 id="roundInfo">Player 1's Turn</h2>
+
+        <!-- Player List and Crown -->
+        <div class="player-list">
+            <div id="player1" class="player">Player 1: <span id="hearts1">❤️❤️❤️</span></div>
+            <div id="player2" class="player">Player 2: <span id="hearts2">❤️❤️❤️</span></div>
+            <div id="player3" class="player">Player 3: <span id="hearts3">❤️❤️❤️</span></div>
+            <div id="player4" class="player">Player 4: <span id="hearts4">❤️❤️❤️</span></div>
+        </div>
+
+        <!-- Question Display -->
+        <div id="question">What is the first Avenger's name?</div>
+
+        <!-- Answer Options -->
+        <div id="answers">
+            <div class="answer" onclick="submitAnswer(1)">A) Tony Stark</div>
+            <div class="answer" onclick="submitAnswer(2)">B) Steve Rogers</div>
+            <div class="answer" onclick="submitAnswer(3)">C) Bruce Wayne</div>
+            <div class="answer" onclick="submitAnswer(4)">D) Clark Kent</div>
+        </div>
+
+        <!-- Winner Display -->
+        <h2 id="winner" style="display:none;">Winner: Player <span id="winnerName"></span> <span class="crown">👑</span></h2>
     </div>
-  </div>
 
-  <div id="name-input-modal">
-    <h2>Enter Player Names</h2>
-    <div id="name-inputs"></div>
-    <button onclick="finishNameInput()">Submit</button>
-  </div>
+    <script>
+        // Sample Marvel/DC questions
+       const questions = [
+    // Marvel
+    { question: "Who is the leader of the Avengers?", options: ["Iron Man", "Captain America", "Thor", "Hulk"], answer: 1 },
+    { question: "What is Superman's weakness?", options: ["Gold", "Lead", "Kryptonite", "Magic"], answer: 2 },
+    { question: "Who is Batman's butler?", options: ["Jeeves", "Alfred", "Bernard", "Arthur"], answer: 1 },
+    { question: "What is Iron Man's real name?", options: ["Tony Stark", "Steve Rogers", "Bruce Wayne", "Clark Kent"], answer: 0 },
+    { question: "What metal is Wolverine's skeleton coated with?", options: ["Vibranium", "Steel", "Adamantium", "Copper"], answer: 2 },
+    { question: "Which superhero is known as the 'Merc with a Mouth'?", options: ["Spider-Man", "Deadpool", "Wolverine", "Hawkeye"], answer: 1 },
+    { question: "What is the name of Thor’s hammer?", options: ["Mjolnir", "Stormbreaker", "Vanir", "Aesir"], answer: 0 },
+    { question: "What race is Thanos?", options: ["Human", "Celestial", "Asgardian", "Eternal"], answer: 3 },
+    { question: "Who is Peter Parker’s love interest in Spider-Man?", options: ["Mary Jane", "Gwen Stacy", "Felicia Hardy", "Lois Lane"], answer: 0 },
+    { question: "Where is Wakanda located?", options: ["South America", "Asia", "Africa", "Europe"], answer: 2 },
+    { question: "Which hero is a member of the X-Men?", options: ["Iron Man", "Wolverine", "Captain Marvel", "Thor"], answer: 1 },
+    { question: "Which villain is obsessed with order and balance?", options: ["Joker", "Lex Luthor", "Thanos", "Green Goblin"], answer: 2 },
+    { question: "Which character is a Guardian of the Galaxy?", options: ["Ant-Man", "Gamora", "Loki", "Hawkeye"], answer: 1 },
+    { question: "Which Avenger does Hawkeye have a close friendship with?", options: ["Iron Man", "Thor", "Black Widow", "Hulk"], answer: 2 },
+    { question: "Who is the Scarlet Witch's brother?", options: ["Vision", "Quicksilver", "Doctor Strange", "Spider-Man"], answer: 1 },
+    
+    // DC
+    { question: "What city does Batman protect?", options: ["Metropolis", "Gotham", "Star City", "Central City"], answer: 1 },
+    { question: "Which hero is also known as the 'Fastest Man Alive'?", options: ["Superman", "Wonder Woman", "Flash", "Green Lantern"], answer: 2 },
+    { question: "Who is Wonder Woman’s mother?", options: ["Athena", "Hera", "Hippolyta", "Demeter"], answer: 2 },
+    { question: "What is Superman’s real name?", options: ["Clark Kent", "Kal-El", "Bruce Wayne", "Hal Jordan"], answer: 1 },
+    { question: "Which hero wields a green power ring?", options: ["Flash", "Green Arrow", "Green Lantern", "Aquaman"], answer: 2 },
+    { question: "What is the Joker's real name?", options: ["Arthur Fleck", "Jack Napier", "Joe Chill", "Unknown"], answer: 3 },
+    { question: "Who is Superman's arch-nemesis?", options: ["Lex Luthor", "Joker", "Two-Face", "Darkseid"], answer: 0 },
+    { question: "What planet is Superman from?", options: ["Earth", "Mars", "Krypton", "Asgard"], answer: 2 },
+    { question: "Who is Harley Quinn's original love interest?", options: ["Batman", "Joker", "Penguin", "Bane"], answer: 1 },
+    { question: "Which DC hero uses a lasso of truth?", options: ["Batman", "Superman", "Green Lantern", "Wonder Woman"], answer: 3 },
+    { question: "Who is Aquaman's half-brother?", options: ["Ocean Master", "Black Manta", "Aqualad", "Mera"], answer: 0 },
+    { question: "Which DC character is known as the 'Man of Steel'?", options: ["Flash", "Batman", "Superman", "Green Arrow"], answer: 2 },
+    { question: "Where does Wonder Woman come from?", options: ["Atlantis", "Themyscira", "Gotham", "Metropolis"], answer: 1 },
+    { question: "Which villain is known for using fear gas?", options: ["Joker", "Scarecrow", "Riddler", "Penguin"], answer: 1 },
+    { question: "Who is Bruce Wayne's sidekick?", options: ["Batgirl", "Nightwing", "Robin", "Alfred"], answer: 2 },
 
-  <div id="winner-screen">
-    <div>VGAMES</div>
-    <div id="winner-name"></div>
-    <div id="crown">👑</div>
-    <div id="leaderboard">
-      <h3>Leaderboard</h3>
-      <ol id="top-players"></ol>
-    </div>
-  </div>
+    // Disney
+    { question: "Who is the first Disney princess?", options: ["Cinderella", "Snow White", "Ariel", "Aurora"], answer: 1 },
+    { question: "What is the name of Simba’s evil uncle?", options: ["Mufasa", "Scar", "Zazu", "Timon"], answer: 1 },
+    { question: "What is the name of the castle in Disney's logo?", options: ["Beast's Castle", "Arendelle Castle", "Cinderella's Castle", "Aurora's Castle"], answer: 2 },
+    { question: "Who is the villain in 'Sleeping Beauty'?", options: ["Maleficent", "Cruella", "Evil Queen", "Ursula"], answer: 0 },
+    { question: "In 'Frozen', what is the name of Elsa's sister?", options: ["Anna", "Rapunzel", "Moana", "Merida"], answer: 0 },
+    { question: "What kind of animal is Abu in 'Aladdin'?", options: ["Tiger", "Monkey", "Elephant", "Parrot"], answer: 1 },
+    { question: "Which Disney princess has a pet tiger?", options: ["Belle", "Mulan", "Jasmine", "Ariel"], answer: 2 },
+    { question: "What is the name of Mickey Mouse's dog?", options: ["Goofy", "Pluto", "Donald", "Max"], answer: 1 },
+    { question: "What does Cinderella's fairy godmother turn into a carriage?", options: ["Horse", "Apple", "Pumpkin", "Carrot"], answer: 2 },
+    { question: "Who is the villain in 'The Little Mermaid'?", options: ["Ursula", "Ariel", "Jafar", "Captain Hook"], answer: 0 },
+    { question: "In 'Beauty and the Beast,' who is Gaston’s sidekick?", options: ["Lumiere", "LeFou", "Maurice", "Chip"], answer: 1 },
+    { question: "Which Disney movie features a rat as a chef?", options: ["Ratatouille", "Bambi", "Finding Nemo", "Cars"], answer: 0 },
+    { question: "What is Moana's island called?", options: ["Motunui", "Te Fiti", "Timbuktu", "Nauru"], answer: 0 },
+    { question: "What does Ariel in 'The Little Mermaid' trade her voice for?", options: ["Magic", "Legs", "Money", "Treasure"], answer: 1 },
+    { question: "Who is the villain in '101 Dalmatians'?", options: ["Cruella de Vil", "Ursula", "Maleficent", "Scar"], answer: 0 },
 
-  <script>
-    const questions = [
-  {question: "What is the capital of France?", answers: ["Paris", "Rome", "Berlin", "Madrid"], correct: 0},
-  {question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "J.K. Rowling", "Mark Twain", "Jane Austen"], correct: 0},
-  {question: "What is the largest planet in our solar system?", answers: ["Earth", "Mars", "Jupiter", "Saturn"], correct: 2},
-  {question: "What is the smallest country in the world?", answers: ["Monaco", "Vatican City", "Luxembourg", "Malta"], correct: 1},
-  {question: "What element does 'O' represent on the periodic table?", answers: ["Gold", "Oxygen", "Osmium", "Organium"], correct: 1},
-  {question: "What year did the Titanic sink?", answers: ["1912", "1905", "1898", "1921"], correct: 0},
-  {question: "Which planet is known as the Red Planet?", answers: ["Mars", "Venus", "Jupiter", "Saturn"], correct: 0},
-  {question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Michelangelo", "Raphael"], correct: 1},
-  {question: "What is the most spoken language in the world?", answers: ["English", "Spanish", "Mandarin", "Hindi"], correct: 2},
-  {question: "Who invented the telephone?", answers: ["Thomas Edison", "Nikola Tesla", "Alexander Graham Bell", "Albert Einstein"], correct: 2},
-  {question: "What is the largest animal on Earth?", answers: ["Elephant", "Blue Whale", "Giraffe", "Great White Shark"], correct: 1},
-  {question: "How many continents are there?", answers: ["5", "6", "7", "8"], correct: 2},
-  {question: "What is the main ingredient in guacamole?", answers: ["Tomato", "Avocado", "Pepper", "Cucumber"], correct: 1},
-  {question: "What does 'HTTP' stand for?", answers: ["Hypertext Transfer Protocol", "Hyperloop Transfer Text", "High Transfer Text Protocol", "Hyperlink Transfer Text"], correct: 0},
-  {question: "In which country is the Great Barrier Reef located?", answers: ["Australia", "USA", "Brazil", "South Africa"], correct: 0},
-  {question: "What year did World War II end?", answers: ["1940", "1942", "1945", "1950"], correct: 2},
-  {question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Emerald"], correct: 2},
-  {question: "What is the capital of Japan?", answers: ["Seoul", "Tokyo", "Beijing", "Shanghai"], correct: 1},
-  {question: "Which country is known as the Land of the Rising Sun?", answers: ["China", "South Korea", "Thailand", "Japan"], correct: 3},
-  {question: "Who discovered penicillin?", answers: ["Alexander Fleming", "Marie Curie", "Isaac Newton", "Louis Pasteur"], correct: 0},
-  {question: "What is the currency of the United Kingdom?", answers: ["Dollar", "Euro", "Pound", "Yen"], correct: 2},
-  {question: "How many hearts does an octopus have?", answers: ["1", "2", "3", "4"], correct: 2},
-  {question: "Who directed 'Jurassic Park'?", answers: ["James Cameron", "George Lucas", "Steven Spielberg", "Ridley Scott"], correct: 2},
-  {question: "What is the tallest mountain in the world?", answers: ["K2", "Kangchenjunga", "Mount Everest", "Lhotse"], correct: 2},
-  {question: "Which organ is primarily responsible for filtering toxins in the body?", answers: ["Heart", "Kidneys", "Lungs", "Liver"], correct: 1},
-  {question: "What is the capital of Egypt?", answers: ["Cairo", "Lagos", "Nairobi", "Tripoli"], correct: 0},
-  {question: "What color are emeralds?", answers: ["Red", "Blue", "Green", "Yellow"], correct: 2},
-  {question: "Which country gifted the Statue of Liberty to the United States?", answers: ["Germany", "Canada", "France", "Italy"], correct: 2},
-  {question: "Who is the author of 'Harry Potter'?", answers: ["J.R.R. Tolkien", "J.K. Rowling", "George R.R. Martin", "C.S. Lewis"], correct: 1},
-  {question: "In which city would you find the Colosseum?", answers: ["Rome", "Athens", "Paris", "Istanbul"], correct: 0},
-  {question: "What is the chemical symbol for water?", answers: ["O2", "H", "H2O", "O3"], correct: 2},
-  {question: "Which planet is closest to the Sun?", answers: ["Earth", "Venus", "Mercury", "Mars"], correct: 2},
-  {question: "What is the primary gas found in the Earth's atmosphere?", answers: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"], correct: 2},
-  {question: "How many bones are there in the human body?", answers: ["200", "204", "206", "208"], correct: 2},
-  {question: "Which ocean is the largest?", answers: ["Atlantic", "Indian", "Pacific", "Arctic"], correct: 2},
-  {question: "What does 'www' stand for in a website browser?", answers: ["Wide World Web", "World Wide Web", "Web World Width", "Web Wide World"], correct: 1},
-  {question: "Which animal is known as the Ship of the Desert?", answers: ["Camel", "Horse", "Elephant", "Lion"], correct: 0},
-  {question: "What type of tree do acorns come from?", answers: ["Maple", "Pine", "Oak", "Birch"], correct: 2},
-  {question: "Which country is famous for the dance Tango?", answers: ["Brazil", "Argentina", "Mexico", "Spain"], correct: 1},
+    // Nickelodeon
+    { question: "What is the name of SpongeBob’s pet snail?", options: ["Larry", "Patrick", "Gary", "Snaily"], answer: 2 },
+    { question: "Who are the two main characters in 'The Fairly OddParents'?", options: ["Cosmo & Wanda", "Tommy & Chuckie", "SpongeBob & Patrick", "Jimmy & Carl"], answer: 0 },
+    { question: "Which show features a character named Tommy Pickles?", options: ["Rugrats", "Hey Arnold!", "Doug", "Danny Phantom"], answer: 0 },
+    { question: "In 'Avatar: The Last Airbender', who is the last Airbender?", options: ["Katara", "Sokka", "Toph", "Aang"], answer: 3 },
+    { question: "Which character lives in a pineapple under the sea?", options: ["Patrick", "Squidward", "Sandy", "SpongeBob"], answer: 3 },
+    { question: "What is the main setting of 'Hey Arnold!'?", options: ["New York", "Hillwood", "California", "Metropolis"], answer: 1 },
+    { question: "Who is the lead character in 'Jimmy Neutron'?", options: ["Timmy Turner", "Arnold", "Jimmy Neutron", "SpongeBob"], answer: 2 },
+    { question: "Which Nickelodeon show features a fictional town called Retroville?", options: ["Rugrats", "Hey Arnold!", "Jimmy Neutron", "Avatar"], answer: 2 },
+    { question: "What animal is Sandy Cheeks in 'SpongeBob SquarePants'?", options: ["Crab", "Squirrel", "Starfish", "Octopus"], answer: 1 },
+    { question: "In 'Danny Phantom', what are Danny's powers?", options: ["Super strength", "Invisibility and ghost abilities", "Super speed", "Time travel"], answer: 1 },
+    { question: "What is the name of the main character in 'Dora the Explorer'?", options: ["Diego", "Dora", "Boots", "Backpack"], answer: 1 },
+    { question: "Who is SpongeBob's best friend?", options: ["Mr. Krabs", "Plankton", "Patrick", "Squidward"], answer: 2 },
+    { question: "What is Tommy's younger brother's name in 'Rugrats'?", options: ["Phil", "Chuckie", "Dil", "Angelica"], answer: 2 },
+    { question: "What is the name of SpongeBob's boss at the Krusty Krab?", options: ["Mr. Squidward", "Mr. Puff", "Mr. Krabs", "Plankton"], answer: 2 },
+    { question: "What instrument does Squidward play in 'SpongeBob SquarePants'?", options: ["Piano", "Clarinet", "Trumpet", "Violin"], answer: 1 }
 ];
 
 
-    let players = [];
-    let currentQuestion = 0;
-    let currentPlayerIndex = 0;
+        let currentQuestion = 0;
+        let currentPlayer = 1;
+        let players = [
+            { name: "Player 1", lives: 3 },
+            { name: "Player 2", lives: 3 },
+            { name: "Player 3", lives: 3 },
+            { name: "Player 4", lives: 3 },
+        ];
 
-    function startNameInput() {
-      const numPlayers = document.getElementById("num-players").value;
-      document.getElementById("setup-container").style.display = "none";
-      document.getElementById("name-input-modal").style.display = "flex";
-      
-      const nameInputsContainer = document.getElementById("name-inputs");
-      nameInputsContainer.innerHTML = "";
-      for (let i = 1; i <= numPlayers; i++) {
-        nameInputsContainer.innerHTML += `
-          <div>
-            <label>Player ${i} Name:</label>
-            <input type="text" id="player-name-${i}" placeholder="Enter name for Player ${i}">
-          </div>
-        `;
-      }
-    }
-
-    function finishNameInput() {
-      const numPlayers = document.getElementById("num-players").value;
-      players = [];
-      for (let i = 1; i <= numPlayers; i++) {
-        const playerName = document.getElementById(`player-name-${i}`).value || `Player ${i}`;
-        players.push({ name: playerName, score: 0, lives: 3 });
-      }
-      document.getElementById("name-input-modal").style.display = "none";
-      document.getElementById("game-container").style.display = "flex";
-      loadQuestion();
-    }
-
-    function loadQuestion() {
-      if (currentQuestion >= questions.length) currentQuestion = 0;
-      const questionObj = questions[currentQuestion];
-      document.getElementById("question").textContent = questionObj.question;
-      const answers = document.getElementsByClassName("answer");
-      questionObj.answers.forEach((answer, i) => {
-        answers[i].textContent = answer;
-      });
-      updatePlayerInfo();
-    }
-
-    function updatePlayerInfo() {
-      document.getElementById("player-setup").innerHTML = players.map(p => 
-        `<div class="player-info">${p.name}: Score - ${p.score} <span class="hearts">${'❤️'.repeat(p.lives)}${'💔'.repeat(3 - p.lives)}</span></div>`).join('');
-      document.getElementById("turn-info").textContent = `It's ${players[currentPlayerIndex].name}'s turn!`;
-    }
-
-    function checkAnswer(selected) {
-      const questionObj = questions[currentQuestion];
-      const currentPlayer = players[currentPlayerIndex];
-      if (selected === questionObj.correct) {
-        currentPlayer.score += 10;
-      } else {
-        currentPlayer.lives -= 1;
-        if (currentPlayer.lives === 0) {
-          players.splice(currentPlayerIndex, 1);
-          if (players.length === 1) return displayWinner(players[0].name);
+        function displayQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById("question").textContent = q.question;
+            document.querySelectorAll(".answer").forEach((el, index) => el.textContent = q.options[index]);
+            document.getElementById("roundInfo").textContent = `${players[currentPlayer - 1].name}'s Turn`;
         }
-      }
-      currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
-      currentQuestion++;
-      loadQuestion();
-      if (players.length === 1) displayWinner(players[0].name);
-    }
 
-    function displayWinner(winnerName) {
-      document.getElementById("game-container").style.display = "none";
-      document.getElementById("winner-screen").style.display = "flex";
-      document.getElementById("winner-name").textContent = winnerName;
-      const leaderboard = players
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 4)
-        .map((player, index) => `<li>${index + 1}. ${player.name} - ${player.score}</li>`)
-        .join('');
-      document.getElementById("top-players").innerHTML = leaderboard;
-    }
-  </script>
+        function submitAnswer(choice) {
+            const correctAnswer = questions[currentQuestion].answer;
+            if (choice - 1 !== correctAnswer) {
+                players[currentPlayer - 1].lives -= 1;
+                updateLives();
+                if (players[currentPlayer - 1].lives === 0) {
+                    checkGameOver();
+                }
+            }
+            nextTurn();
+        }
+
+        function updateLives() {
+            players.forEach((player, index) => {
+                document.getElementById(`hearts${index + 1}`).textContent = "❤️".repeat(player.lives);
+            });
+        }
+
+        function nextTurn() {
+            currentPlayer = (currentPlayer % players.length) + 1;
+            currentQuestion = (currentQuestion + 1) % questions.length;
+            displayQuestion();
+        }
+
+        function checkGameOver() {
+            const remainingPlayers = players.filter(player => player.lives > 0);
+            if (remainingPlayers.length === 1) {
+                document.getElementById("winnerName").textContent = remainingPlayers[0].name;
+                document.getElementById("winner").style.display = "block";
+            }
+        }
+
+        displayQuestion();
+    </script>
 </body>
 </html>
