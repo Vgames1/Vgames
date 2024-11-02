@@ -6,6 +6,7 @@
     <title>VGAMES</title>
     <link rel="icon" href="ILOGOT.jpeg" type="image/jpeg">
     <style>
+        /* Reset and base styles */
         * {
             margin: 0;
             padding: 0;
@@ -15,7 +16,10 @@
         body, html {
             height: 100%;
             overflow: hidden;
+            background: #1a1a1a;
         }
+        
+        /* Slide container and styling */
         .slide {
             position: absolute;
             top: 0;
@@ -25,154 +29,135 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            color: white;
-            font-size: 3em;
+            color: #fff;
+            font-size: 1.8em;
             transition: opacity 1s ease;
-        }
-        .slide1, .slide4 {
-            background: linear-gradient(135deg, pink, lightblue);
-            animation: colorChange 5s infinite alternate;
-        }
-        .slide2, .slide3 {
-            background: linear-gradient(135deg, pink, blue);
-            animation: colorChange 5s infinite alternate;
-        }
-        .hidden {
             opacity: 0;
-            pointer-events: none;
         }
+        .visible {
+            opacity: 1;
+        }
+
+        /* Slide 1 and Slide 4 gradients */
+        .slide1, .slide3 {
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            animation: colorChange 5s infinite alternate;
+        }
+        
+        /* Slide 2 and Slide 3 gradients */
+        .slide2, .slide4 {
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+            animation: colorChange 5s infinite alternate;
+        }
+
+        /* Keyframes for background animation */
         @keyframes colorChange {
-            0% { background: pink; }
-            50% { background: purple; }
-            100% { background: blue; }
+            0% { background: #ff9a9e; }
+            50% { background: #a18cd1; }
+            100% { background: #fad0c4; }
         }
-        .slide1 h1, .slide3 h1, .slide4 h1 {
-            color: yellow;
-            font-size: 5em;
-            font-weight: bold;
+
+        /* Title styles */
+        .slide h1 {
+            font-size: 1.8em;
+            color: #f5f5f5;
             animation: glow 2s infinite;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
         }
-        @keyframes glow {
-            0%, 100% { text-shadow: 0 0 10px yellow, 0 0 20px purple; }
-            50% { text-shadow: 0 0 20px pink, 0 0 30px lightblue; }
-        }
-        .slide3 h1 {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 2em;
-            color: yellow;
-        }
-        #time {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 1.5em;
-            padding: 5px 10px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            animation: bounce 1s infinite alternate;
-        }
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
-        }
+
+        /* Button container and button styles */
         #game-buttons {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            flex-direction: row;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
+
         .game-btn {
-            padding: 10px 20px;
-            font-size: 1.2em;
-            color: white;
-            background: darkblue;
-            border: none;
-            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 1em;
+            color: #333;
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: transform 0.3s, background 0.3s;
         }
         .game-btn:hover {
-            transform: scale(1.1);
-            background: blue;
+            transform: translateY(-3px);
+            background: #f0f0f0;
         }
-        /* Mobile-friendly */
+
+        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .slide1 h1, .slide3 h1, .slide4 h1 {
-                font-size: 3em;
-            }
-            #game-buttons {
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 5px;
+            .slide h1 {
+                font-size: 1.5em;
             }
             .game-btn {
-                font-size: 0.8em;
+                font-size: 0.9em;
                 padding: 8px;
             }
         }
     </style>
 </head>
 <body>
-    <div id="slide1" class="slide slide1">
+    <!-- Slide 1 -->
+    <div id="slide1" class="slide slide1 visible">
         <h1>VGAMES</h1>
     </div>
-    <div id="slide2" class="slide slide2 hidden">
-        <h1>Ready for an adventure? 🌟</h1>
+    
+    <!-- Slide 2 -->
+    <div id="slide2" class="slide slide2">
+        <h1>Ready for an adventure?</h1>
     </div>
-    <div id="slide3" class="slide slide3 hidden">
-        <h1 id="title">VILAKAZI GAMES</h1>
-        <div id="time"></div>
-        <div id="game-buttons">
-            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/aquiz.html'">AQUIZ 🧠</button>
-            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/ball.html'">BALL DIE ⚽</button>
-            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/atrivia.html'">ATRIVIA ❓</button>
-            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/scram.html'">AI-UNSCRAMBLE 🔤</button>
-            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vai.html'">VUYANI AI 🤖</button>
-            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/adventure.html'">ADVENTURE TIME 🏞️</button>
-            <button class="game-btn" onclick="window.location.href='https://vuyani1.github.io'">MORE GAMES 🎲</button>
-        </div>
-    </div>
-    <div id="slide4" class="slide slide4 hidden">
+    
+    <!-- Slide 4 (now appears before Slide 3) -->
+    <div id="slide4" class="slide slide4">
         <h1>Enjoy the Games!</h1>
+    </div>
+    
+    <!-- Slide 3 -->
+    <div id="slide3" class="slide slide3">
+        <h1>VILAKAZI GAMES</h1>
+        <div id="game-buttons">
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/aquiz.html'">AQUIZ</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/ball.html'">BALL DIE</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/atrivia.html'">ATRIVIA</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/scram.html'">UNSCRAMBLE</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vai.html'">VUYANI AI</button>
+            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/adventure.html'">ADVENTURE</button>
+            <button class="game-btn" onclick="window.location.href='https://vuyani1.github.io'">MORE GAMES</button>
+        </div>
     </div>
 
     <script>
-        // Slide Transition Timing
-        let currentSlide = 1;
-        function showSlide(slideNum) {
-            document.querySelectorAll('.slide').forEach((slide, index) => {
-                slide.classList.add('hidden');
-                if (index + 1 === slideNum) slide.classList.remove('hidden');
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('visible');
+                if (i === index) slide.classList.add('visible');
             });
         }
 
-        // Slide Timings with Loop Back
-        function startSlides() {
-            setTimeout(() => { showSlide(2); }, 3000);
-            setTimeout(() => { showSlide(3); }, 8000);
-            setTimeout(() => { showSlide(4); }, 12000);
-            setTimeout(() => { showSlide(1); startSlides(); }, 12000 + 120000); // 120000 ms = 2 minutes
+        function startSlideShow() {
+            setInterval(() => {
+                if (currentSlide === 2) {
+                    showSlide(3);  // Show slide 3 for 5 seconds
+                    setTimeout(() => {
+                        currentSlide = 0;
+                        showSlide(currentSlide);
+                    }, 5000); // 5 seconds in milliseconds
+                } else {
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    showSlide(currentSlide);
+                }
+            }, currentSlide === 2 ? 120000 : 5000);
         }
-        startSlides();
-
-        // Update title based on screen size
-        function updateTitle() {
-            const title = document.getElementById('title');
-            if (window.innerWidth < 768) title.innerText = 'VGAMES';
-            else title.innerText = 'VILAKAZI GAMES';
-        }
-        window.addEventListener('resize', updateTitle);
-        updateTitle();
-
-        // Display live time
-        function updateTime() {
-            const time = new Date();
-            document.getElementById('time').innerText = time.toLocaleTimeString();
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
+        startSlideShow();
     </script>
 </body>
 </html>
