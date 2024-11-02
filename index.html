@@ -18,7 +18,7 @@
             overflow: hidden;
             background: #1a1a1a;
         }
-        
+
         /* Slide container and styling */
         .slide {
             position: absolute;
@@ -27,77 +27,90 @@
             width: 100%;
             height: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             color: #fff;
-            font-size: 1.8em;
-            transition: opacity 1s ease;
+            font-size: 2em;
             opacity: 0;
+            transition: opacity 1s ease;
+            text-align: center;
         }
         .visible {
             opacity: 1;
+            z-index: 1;
         }
 
-        /* Slide 1 and Slide 4 gradients */
-        .slide1, .slide3 {
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            animation: colorChange 5s infinite alternate;
+        /* Slide backgrounds */
+        .slide1 {
+            background: radial-gradient(circle, #ff8a00, #ff2a6d);
+            animation: gradientAnimation 6s infinite alternate;
         }
-        
-        /* Slide 2 and Slide 3 gradients */
-        .slide2, .slide4 {
-            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-            animation: colorChange 5s infinite alternate;
+        .slide2 {
+            background: radial-gradient(circle, #6a11cb, #2575fc);
+            animation: gradientAnimation 6s infinite alternate;
+        }
+        .slide3 {
+            background: radial-gradient(circle, #ff512f, #dd2476);
+            animation: gradientAnimation 6s infinite alternate;
+        }
+        .slide4 {
+            background: radial-gradient(circle, #ffd200, #f7971e);
+            animation: gradientAnimation 6s infinite alternate;
         }
 
-        /* Keyframes for background animation */
-        @keyframes colorChange {
-            0% { background: #ff9a9e; }
-            50% { background: #a18cd1; }
-            100% { background: #fad0c4; }
+        /* Keyframes for animated gradients */
+        @keyframes gradientAnimation {
+            0% { background-size: 150%; }
+            100% { background-size: 200%; }
         }
 
-        /* Title styles */
-        .slide h1 {
-            font-size: 1.8em;
+        /* Title glow animation */
+        h1 {
             color: #f5f5f5;
-            animation: glow 2s infinite;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: glow 1.5s ease-in-out infinite alternate;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Clock style */
+        .clock {
+            font-size: 1.5em;
+            color: #e0e0e0;
+            margin-top: 10px;
         }
 
         /* Button container and button styles */
         #game-buttons {
             display: flex;
-            flex-direction: row;
-            gap: 15px;
-            margin-top: 15px;
             flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
             justify-content: center;
         }
 
         .game-btn {
-            padding: 10px 15px;
+            padding: 12px 20px;
             font-size: 1em;
-            color: #333;
-            background: #fafafa;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid #fff;
+            border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.3s, background 0.3s;
+            transition: transform 0.2s, background 0.3s;
         }
         .game-btn:hover {
-            transform: translateY(-3px);
-            background: #f0f0f0;
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.25);
         }
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
-            .slide h1 {
+            h1 {
                 font-size: 1.5em;
             }
             .game-btn {
                 font-size: 0.9em;
-                padding: 8px;
+                padding: 10px;
             }
         }
     </style>
@@ -105,31 +118,35 @@
 <body>
     <!-- Slide 1 -->
     <div id="slide1" class="slide slide1 visible">
-        <h1>VGAMES</h1>
+        <h1>Welcome to VGAMES</h1>
+        <div class="clock" id="clock1"></div>
     </div>
     
     <!-- Slide 2 -->
     <div id="slide2" class="slide slide2">
-        <h1>Ready for an adventure?</h1>
+        <h1>Ready for an Adventure?</h1>
+        <div class="clock" id="clock2"></div>
     </div>
     
-    <!-- Slide 4 (now appears before Slide 3) -->
-    <div id="slide4" class="slide slide4">
-        <h1>Enjoy the Games!</h1>
-    </div>
-    
-    <!-- Slide 3 -->
+    <!-- Slide 3 with Game Buttons -->
     <div id="slide3" class="slide slide3">
-        <h1>VILAKAZI GAMES</h1>
+        <h1>Explore Endless Fun!</h1>
         <div id="game-buttons">
-            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/aquiz.html'">AQUIZ</button>
-            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/ball.html'">BALL DIE</button>
-            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/atrivia.html'">ATRIVIA</button>
-            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/scram.html'">UNSCRAMBLE</button>
-            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/vai.html'">VUYANI AI</button>
-            <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/adventure.html'">ADVENTURE</button>
-            <button class="game-btn" onclick="window.location.href='https://vuyani1.github.io'">MORE GAMES</button>
+            <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/aquiz.html')">AQUIZ</button>
+            <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/ball.html')">BALL DIE</button>
+            <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/atrivia.html')">ATRIVIA</button>
+            <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/scram.html')">UNSCRAMBLE</button>
+            <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/vai.html')">VUYANI AI</button>
+            <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/adventure.html')">ADVENTURE</button>
+            <button class="game-btn" onclick="redirectTo('https://vuyani1.github.io')">MORE GAMES</button>
         </div>
+        <div class="clock" id="clock3"></div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div id="slide4" class="slide slide4">
+        <h1>Thank You for Playing!</h1>
+        <div class="clock" id="clock4"></div>
     </div>
 
     <script>
@@ -144,20 +161,38 @@
         }
 
         function startSlideShow() {
-            setInterval(() => {
-                if (currentSlide === 2) {
-                    showSlide(3);  // Show slide 3 for 5 seconds
+            let slideInterval = setInterval(() => {
+                if (currentSlide === 2) { // Hold Slide 3 for 2 minutes (120 seconds)
+                    showSlide(currentSlide); // Show current slide
                     setTimeout(() => {
-                        currentSlide = 0;
+                        currentSlide++;
                         showSlide(currentSlide);
-                    }, 5000); // 5 seconds in milliseconds
+                    }, 120000);
+                    clearInterval(slideInterval); // Stop interval until Slide 3 finishes
                 } else {
                     currentSlide = (currentSlide + 1) % slides.length;
                     showSlide(currentSlide);
                 }
-            }, currentSlide === 2 ? 120000 : 5000);
+            }, 5000); // 5 seconds for other slides
         }
         startSlideShow();
+
+        function updateClock() {
+            const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.querySelectorAll('.clock').forEach(clock => {
+                clock.innerText = timeString;
+            });
+        }
+        setInterval(updateClock, 1000); // Update clock every second
+
+        // Redirect only works if currently on Slide 3
+        function redirectTo(url) {
+            if (currentSlide === 2) {
+                window.location.href = url;
+            } else {
+                alert("Buttons will be active on the 'Explore Endless Fun!' slide.");
+            }
+        }
     </script>
 </body>
 </html>
