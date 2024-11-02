@@ -3,172 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-     <link rel="icon" href="thewone.png" type="image/png">
     <title>VGAMES</title>
+    <link rel="icon" href="ILOGOT.jpeg" type="image/jpeg">
     <style>
-        /* General styles for layout, fonts, and background */
-        body, html {
+        * {
             margin: 0;
             padding: 0;
-            width: 100%;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body, html {
             height: 100%;
             overflow: hidden;
-            font-family: 'Arial', sans-serif;
-            background-color: black;
-            color: white;
         }
-
-        /* Common slide styles */
         .slide {
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             display: flex;
-            align-items: center;
             justify-content: center;
-            text-align: center;
+            align-items: center;
+            color: white;
+            font-size: 3em;
+            transition: opacity 1s ease;
+        }
+        .slide1, .slide4 {
+            background: linear-gradient(135deg, pink, lightblue);
+            animation: colorChange 5s infinite alternate;
+        }
+        .slide2, .slide3 {
+            background: linear-gradient(135deg, pink, blue);
+            animation: colorChange 5s infinite alternate;
+        }
+        .hidden {
             opacity: 0;
-            transition: opacity 1s ease-in-out;
+            pointer-events: none;
         }
-
-        .visible {
-            opacity: 1;
+        @keyframes colorChange {
+            0% { background: pink; }
+            50% { background: purple; }
+            100% { background: blue; }
         }
-
-        /* Logo animation: Vilakazi Games to VGAMES */
-        .logo {
-            font-size: 4em;
-            animation: logoRetract 5s forwards;
+        .slide1 h1, .slide3 h1, .slide4 h1 {
+            color: yellow;
+            font-size: 5em;
+            font-weight: bold;
+            animation: glow 2s infinite;
         }
-
-        @keyframes logoRetract {
-            0% {content: "Vilakazi Games"; font-size: 4em;}
-            50% {content: "Vilakazi Games"; font-size: 3em;}
-            100% {content: "VGAMES"; font-size: 5em;}
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px yellow, 0 0 20px purple; }
+            50% { text-shadow: 0 0 20px pink, 0 0 30px lightblue; }
         }
-
-        .loading {
+        .slide3 h1 {
+            position: absolute;
+            top: 10px;
+            left: 10px;
             font-size: 2em;
-            margin-top: 1em;
+            color: yellow;
         }
-
-        /* Game button styles */
+        #time {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            animation: bounce 1s infinite alternate;
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
         #game-buttons {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
             gap: 10px;
         }
-
         .game-btn {
-            padding: 15px 25px;
-            font-size: 1.5em;
+            padding: 10px 20px;
+            font-size: 1.2em;
             color: white;
-            background-color: #333;
+            background: darkblue;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: transform 0.3s;
         }
-
         .game-btn:hover {
-            background-color: #555;
+            transform: scale(1.1);
+            background: blue;
         }
-
-        /* Responsive layout for mobile and PC */
+        /* Mobile-friendly */
         @media (max-width: 768px) {
-            #game-buttons {
-                flex-direction: column;
+            .slide1 h1, .slide3 h1, .slide4 h1 {
+                font-size: 3em;
             }
-            .clock {
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-        }
-
-        @media (min-width: 769px) {
             #game-buttons {
                 flex-direction: row;
+                flex-wrap: wrap;
+                gap: 5px;
             }
-        }
-
-        /* Digital clock styling */
-        .clock {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 2em;
-            padding: 10px;
-            border: 2px solid white;
-            border-radius: 10px;
-        }
-
-        /* Robot feedback link */
-        .feedback {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            cursor: pointer;
-        }
-
-        /* Slide 2 background */
-        #slide2 {
-            background-image: url('space_background.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* Footer and copyright info */
-        footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            background-color: rgba(0, 0, 0, 0.5);
-            font-size: 0.9em;
+            .game-btn {
+                font-size: 0.8em;
+                padding: 8px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Slide 1: Vilakazi Games retracting to VGAMES -->
-    <div class="slide visible" id="slide1">
-        <div class="logo">Vilakazi Games</div>
-        <div class="loading">Loading...</div>
+    <div id="slide1" class="slide slide1">
+        <h1>VGAMES</h1>
     </div>
-    <!-- Slide 2: Universal space background and message -->
-    <div class="slide" id="slide2">
-        <h1>Have Fun My Friend!</h1>
+    <div id="slide2" class="slide slide2 hidden">
+        <h1>Ready for an adventure? 🌟</h1>
     </div>
-    <!-- Slide 3: Automatic login -->
-    <div class="slide" id="slide3">
-        <h1>Logging in...</h1>
-        <div id="loginStatus" style="margin-top: 20px;"></div>
-    </div>
-    <!-- Slide 4: YouTube promotion -->
-    <div class="slide" id="slide4">
-        <div style="width: 100%; display: flex; flex-direction: column;">
-            <div style="flex: 1;">Follow us on YouTube</div>
-            <div style="flex: 1;">
-                <a href="https://youtube.com/@POOF-f5c" target="_blank">youtube.com/@POOF-f5c</a>
-            </div>
-            <div style="flex: 1;">
-                <a href="https://youtube.com/@VUYANI_SIYANDA_VILAKAZI" target="_blank">youtube.com/@VUYANI_SIYANDA_VILAKAZI</a>
-            </div>
-        </div>
-    </div>
-    <!-- Slide 5: Sponsors -->
-    <div class="slide" id="slide5" style="background-color: blue;">
-        <h1>Made possible by</h1>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Notepad%2B%2B_Logo.svg" alt="Notepad++" width="100">
-        <img src="https://facebook.com/photo/?fbid=646832160806374&set=a.646832154139708" alt="GitHub" width="100">
-        <img src="https://en.wikipedia.org/wiki/ChatGPT#/media/File:ChatGPT-Logo.svg" alt="ChatGPT" width="100">
-        <div><a href="https://vuyani1.github.io/your_random_page_here.html" target="_blank">Legal Notice</a></div>
-    </div>
-    <!-- Slide 6: Game buttons -->
-    <div class="slide" id="slide6">
+    <div id="slide3" class="slide slide3 hidden">
+        <h1 id="title">VILAKAZI GAMES</h1>
+        <div id="time"></div>
         <div id="game-buttons">
             <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/aquiz.html'">AQUIZ 🧠</button>
             <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/ball.html'">BALL DIE ⚽</button>
@@ -178,62 +133,46 @@
             <button class="game-btn" onclick="window.location.href='https://vgames1.github.io/adventure.html'">ADVENTURE TIME 🏞️</button>
             <button class="game-btn" onclick="window.location.href='https://vuyani1.github.io'">MORE GAMES 🎲</button>
         </div>
-        <div id="usernameDisplay" style="margin-top: 20px; font-size: 1.2em;"></div>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7484489054116946"
-                crossorigin="anonymous"></script>
     </div>
-    <!-- Digital clock -->
-    <div class="clock" id="clock"></div>
-    <!-- Feedback robot -->
-    <div class="feedback">
-        <a href="mailto:vuyaniphila86@gmail.com?subject=I have a problem with your website or games">
-            <img src="https://dreamstime.com/stock-illustration-robot-relaxed-position-holds-word-feedback-d-illustration-image82194493" alt="Feedback Robot" width="100">
-        </a>
+    <div id="slide4" class="slide slide4 hidden">
+        <h1>Enjoy the Games!</h1>
     </div>
-    <!-- Footer with copyright -->
-    <footer>
-        <p>© 2024 Vuyani Siyanda Vilakazi. All Rights Reserved. | Email: vuyaniphila86@gmail.com</p>
-    </footer>
 
     <script>
-        // Slide transition logic
-        let slides = document.getElementsByClassName('slide');
-        let currentSlide = 0;
-
-        function showNextSlide() {
-            slides[currentSlide].classList.remove('visible');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('visible');
+        // Slide Transition Timing
+        let currentSlide = 1;
+        function showSlide(slideNum) {
+            document.querySelectorAll('.slide').forEach((slide, index) => {
+                slide.classList.add('hidden');
+                if (index + 1 === slideNum) slide.classList.remove('hidden');
+            });
         }
 
-        // 70 seconds for the fifth slide
-        function startSlideShow() {
-            setInterval(() => {
-                if (currentSlide === 5) {
-                    setTimeout(showNextSlide, 70000); // 70 seconds for slide 6
-                } else {
-                    showNextSlide();
-                }
-            }, 5000);
+        // Slide Timings with Loop Back
+        function startSlides() {
+            setTimeout(() => { showSlide(2); }, 3000);
+            setTimeout(() => { showSlide(3); }, 8000);
+            setTimeout(() => { showSlide(4); }, 12000);
+            setTimeout(() => { showSlide(1); startSlides(); }, 12000 + 120000); // 120000 ms = 2 minutes
         }
+        startSlides();
 
-        startSlideShow();
-
-        // Digital clock logic without seconds
-        function updateClock() {
-            let now = new Date();
-            let hours = String(now.getHours()).padStart(2, '0');
-            let minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('clock').textContent = `${hours}:${minutes}`;
+        // Update title based on screen size
+        function updateTitle() {
+            const title = document.getElementById('title');
+            if (window.innerWidth < 768) title.innerText = 'VGAMES';
+            else title.innerText = 'VILAKAZI GAMES';
         }
+        window.addEventListener('resize', updateTitle);
+        updateTitle();
 
-        setInterval(updateClock, 1000); // Update the clock every second
-
-        // Automatic login simulation
-        setTimeout(() => {
-            document.getElementById('loginStatus').textContent = 'Logged in successfully!';
-            document.getElementById('usernameDisplay').textContent = 'Welcome back, User!';
-        }, 3000); // 3 seconds for login simulation
+        // Display live time
+        function updateTime() {
+            const time = new Date();
+            document.getElementById('time').innerText = time.toLocaleTimeString();
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
     </script>
 </body>
 </html>
