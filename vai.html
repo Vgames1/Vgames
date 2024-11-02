@@ -6,15 +6,15 @@
     <link rel="icon" href="ILOGOT.jpeg" type="image/jpeg">
     <title>VUYANI AI - Chat</title>
     <style>
-        /* Styling remains similar, with adjustments for responsive design */
+        /* General Styles */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            color: #e0e0e0;
             background-color: #141e30;
+            color: #e0e0e0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -100,6 +100,13 @@
     </div>
 
     <script>
+        const vgamesResponse = `
+            Hello! I'm VUYANI AI, your personal assistant developed by Vilakazi Games [VGAMES] 🌟—and with the powerful help of a super dev and Google's Gemini, I’m ready to bring you top-notch responses and assist you in the smartest ways possible.
+            Whether you’re here to play, learn, or explore, I’m here to guide you through every step. Just ask, and let's get started!
+
+            For any feedback or ideas, feel free to reach out at vilakazigames@gmail.com. Let's make your experience an extraordinary one!
+        `;
+
         function saveChatHistory(message, sender) {
             let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
             chatHistory.push({ message, sender });
@@ -143,6 +150,16 @@
             displayMessage(query, true);
             document.getElementById('query').value = '';
 
+            if (query.toLowerCase() === 'home' || query.toLowerCase() === 'exit') {
+                window.location.href = 'https://vgames1.github.io';
+                return;
+            }
+
+            if (query.toLowerCase().includes('vgames')) {
+                displayMessage(vgamesResponse, false);
+                return;
+            }
+
             const greetingKeywords = ['hello', 'hi', 'hey', 'how are you'];
             if (greetingKeywords.includes(query.toLowerCase())) {
                 displayMessage("Hello! How can I help you today?", false);
@@ -154,7 +171,7 @@
             try {
                 const searchResults = await searchSerper(query);
                 document.querySelector('.ai-response:last-child').remove(); // Remove "Thinking..." message
-                
+
                 if (searchResults.length === 0) {
                     displayMessage("I couldn't find any results on that.", false);
                 } else {
