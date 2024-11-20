@@ -16,6 +16,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: #121212;
+            color: #e0e0e0;
         }
 
         #main-container {
@@ -24,27 +26,21 @@
             align-items: center;
             width: 90%;
             max-width: 800px;
-            background: #ffffff;
+            background: #1e1e1e;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
             overflow: hidden;
         }
 
         #chat-area {
-            width: 65%;
+            width: 100%;
             height: 60vh;
             overflow-y: auto;
             padding: 10px;
-            border-right: 2px solid #ccc;
-        }
-
-        #image-area {
-            width: 35%;
-            height: 60vh;
-            overflow-y: auto;
-            padding: 10px;
-            background-color: #f7f7f7;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background: #282828;
         }
 
         .chat-bubble {
@@ -59,14 +55,14 @@
         .user-message {
             align-self: flex-end;
             background: #4CAF50;
-            color: #ffffff;
+            color: white;
             border-radius: 20px 20px 0 20px;
         }
 
         .ai-response {
             align-self: flex-start;
             background: #2196F3;
-            color: #ffffff;
+            color: white;
             border-radius: 20px 20px 20px 0;
         }
 
@@ -79,149 +75,145 @@
         #query {
             flex: 1;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #555;
             border-radius: 5px;
             font-size: 1rem;
+            background: #222;
+            color: white;
         }
 
-        #send-btn, #clear-history-btn, #show-images-btn {
+        #send-btn {
             padding: 10px 15px;
             margin-left: 5px;
             border: none;
             border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        #send-btn {
-            background-color: #2196F3;
-            color: white;
+        #send-btn:hover { background-color: #388E3C; }
+
+        .preview-container {
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #333;
         }
 
-        #clear-history-btn {
-            background-color: #f44336;
-            color: white;
+        .preview-title {
+            font-weight: bold;
+            color: #FFD700;
         }
 
-        #show-images-btn {
-            background-color: #4CAF50;
-            color: white;
+        .preview-description {
+            margin: 5px 0;
+            font-size: 0.9rem;
+            color: #ccc;
         }
 
-        #send-btn:hover { background-color: #1976D2; }
-        #clear-history-btn:hover { background-color: #d32f2f; }
-        #show-images-btn:hover { background-color: #388E3C; }
-
-        /* Night Theme */
-        body.night-mode {
-            background-color: #121212;
-            color: #e0e0e0;
+        .preview-link {
+            color: #1E90FF;
+            text-decoration: none;
         }
 
-        #main-container.night-mode {
-            background: #1E1E1E;
-            border-color: #333333;
+        .preview-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div id="main-container">
-        <h1 id="welcome-message">Welcome to VUYANI AI!</h1>
-        <div style="display: flex; width: 100%;">
-            <div id="chat-area"></div>
-            <div id="image-area"></div>
-        </div>
+        <h1 id="welcome-message">Welcome to VUYANI AI! 🤖</h1>
+        <div id="chat-area"></div>
         <div id="input-area">
             <input type="text" id="query" placeholder="Type your question here...">
             <button id="send-btn">Send</button>
-            <button id="clear-history-btn">Clear History</button>
-            <button id="show-images-btn">Show Images</button>
         </div>
     </div>
 
     <script>
+        const apiKey = "9223ce87db2f21d05313414367963972f2b835fa";
         const chatArea = document.getElementById('chat-area');
-        const imageArea = document.getElementById('image-area');
         const queryInput = document.getElementById('query');
-        const welcomeMessage = document.getElementById('welcome-message');
-        const mainContainer = document.getElementById('main-container');
 
-        let userName = localStorage.getItem('userName') || '';
-
-        function initTheme() {
-            const currentHour = new Date().getHours();
-            if (currentHour >= 20 || currentHour < 6) {
-                document.body.classList.add('night-mode');
-                mainContainer.classList.add('night-mode');
-            }
-        }
-
-        function personalizeWelcome() {
-            if (userName) {
-                welcomeMessage.textContent = `Welcome back, ${userName}!`;
-            } else {
-                welcomeMessage.textContent = `Welcome to VUYANI AI!`;
-            }
-        }
-
-        function saveChatHistory(message, sender) {
-            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-            chatHistory.push({ message, sender });
-            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-        }
-
-        function displayMessage(content, isUser = true) {
+        // Function to display a message in the chat area
+        function displayMessage(content, isUser = true, isPreview = false) {
             const bubble = document.createElement('div');
             bubble.className = `chat-bubble ${isUser ? 'user-message' : 'ai-response'}`;
             bubble.innerHTML = content;
             chatArea.appendChild(bubble);
+            if (isPreview) bubble.classList.add('preview-container');
             chatArea.scrollTop = chatArea.scrollHeight;
-            saveChatHistory(content, isUser ? 'user' : 'ai');
         }
 
-        function loadChatHistory() {
-            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-            if (chatHistory.length === 0) {
-                displayMessage("I seem to have lost our previous conversation history.", false);
-            } else {
-                chatHistory.forEach(entry => displayMessage(entry.message, entry.sender === 'user'));
+        // Function to handle API response and display web previews
+        function handleWebResponse(data) {
+            if (!data || !data.organic || data.organic.length === 0) {
+                displayMessage("I couldn't find anything useful. 😕 Try another query.", false);
+                return;
+            }
+
+            data.organic.forEach(result => {
+                const preview = `
+                    <div class="preview-container">
+                        <div class="preview-title">${result.title || "No Title"}</div>
+                        <div class="preview-description">${result.snippet || "No Description"}</div>
+                        <a class="preview-link" href="${result.url}" target="_blank">Visit Website</a>
+                    </div>
+                `;
+                displayMessage(preview, false, true);
+            });
+        }
+
+        // Function to send a query to the Serper API
+        async function sendQuery(query) {
+            displayMessage(query, true);
+
+            // Handle exit commands
+            if (/exit|leave|goodbye|bye|quit/i.test(query)) {
+                displayMessage("Goodbye! 👋 If you need me again, just type something!", false);
+                return;
+            }
+
+            try {
+                const response = await fetch("https://serper.dev/api/search", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-API-KEY": apiKey
+                    },
+                    body: JSON.stringify({ q: query })
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch results.");
+                const data = await response.json();
+                handleWebResponse(data);
+            } catch (error) {
+                displayMessage("There was an error fetching the results. 😔 Please try again.", false);
             }
         }
 
+        // Event listener for send button
         document.getElementById('send-btn').addEventListener('click', () => {
             const query = queryInput.value.trim();
-            if (!query) return;
-
-            // Handle special cases
-            if (query.toLowerCase().startsWith("my name is")) {
-                userName = query.split("my name is")[1].trim();
-                localStorage.setItem('userName', userName);
-                displayMessage(`Nice to meet you, ${userName}! I'll remember that.`, false);
-                personalizeWelcome();
-                return;
+            if (query) {
+                sendQuery(query);
+                queryInput.value = '';
             }
-
-            if (query.toLowerCase() === "end topic") {
-                displayMessage("Got it! Starting fresh. 😊", false);
-                return;
-            }
-
-            displayMessage(query, true);
-            queryInput.value = '';
-            // Process response
         });
 
-        document.getElementById('clear-history-btn').addEventListener('click', () => {
-            localStorage.removeItem('chatHistory');
-            chatArea.innerHTML = '';
-            displayMessage("Chat history cleared!", false);
-        });
-
-        // Initial setup
-        window.addEventListener('load', () => {
-            initTheme();
-            personalizeWelcome();
-            loadChatHistory();
+        // Event listener for Enter key
+        queryInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                const query = queryInput.value.trim();
+                if (query) {
+                    sendQuery(query);
+                    queryInput.value = '';
+                }
+            }
         });
     </script>
 </body>
