@@ -30,7 +30,6 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-            overflow: hidden;
         }
 
         #chat-area {
@@ -139,7 +138,13 @@
         const chatArea = document.getElementById('chat-area');
         const queryInput = document.getElementById('query');
 
-        // Function to display a message in the chat area
+        // Load chat history from local storage
+        const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+
+        function saveChatHistory() {
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+        }
+
         function displayMessage(content, isUser = true, isPreview = false) {
             const bubble = document.createElement('div');
             bubble.className = `chat-bubble ${isUser ? 'user-message' : 'ai-response'}`;
@@ -149,7 +154,25 @@
             chatArea.scrollTop = chatArea.scrollHeight;
         }
 
-        // Function to handle API response and display web previews
+        // Load previous messages
+        chatHistory.forEach(({ message, isUser }) => displayMessage(message, isUser));
+
+        async function fetchWebResults(query) {
+            const response = await fetch("https://serper.dev/api/search", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-API-KEY": apiKey
+                },
+                body: JSON.stringify({ q: query })
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch results.");
+            }
+            return response.json();
+        }
+
         function handleWebResponse(data) {
             if (!data || !data.organic || data.organic.length === 0) {
                 displayMessage("I couldn't find anything useful. 😕 Try another query.", false);
@@ -168,35 +191,37 @@
             });
         }
 
-        // Function to send a query to the Serper API
         async function sendQuery(query) {
             displayMessage(query, true);
+            chatHistory.push({ message: query, isUser: true });
+            saveChatHistory();
 
-            // Handle exit commands
-            if (/exit|leave|goodbye|bye|quit/i.test(query)) {
-                displayMessage("Goodbye! 👋 If you need me again, just type something!", false);
+            if (query.toLowerCase() === "delete chat history") {
+                localStorage.removeItem('chatHistory');
+                chatArea.innerHTML = "";
+                displayMessage("Chat history deleted. 🗑️", false);
+                return;
+            }
+
+            if (/time|date/i.test(query)) {
+                const now = new Date();
+                const response = query.toLowerCase().includes("time")
+                    ? `The current time is ${now.toLocaleTimeString()}. 🕒`
+                    : `Today's date is ${now.toLocaleDateString()}. 📅`;
+                displayMessage(response, false);
+                chatHistory.push({ message: response, isUser: false });
+                saveChatHistory();
                 return;
             }
 
             try {
-                const response = await fetch("https://serper.dev/api/search", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-API-KEY": apiKey
-                    },
-                    body: JSON.stringify({ q: query })
-                });
-
-                if (!response.ok) throw new Error("Failed to fetch results.");
-                const data = await response.json();
+                const data = await fetchWebResults(query);
                 handleWebResponse(data);
             } catch (error) {
-                displayMessage("There was an error fetching the results. 😔 Please try again.", false);
+                displayMessage("An error occurred while fetching web results. 😔", false);
             }
         }
 
-        // Event listener for send button
         document.getElementById('send-btn').addEventListener('click', () => {
             const query = queryInput.value.trim();
             if (query) {
@@ -205,7 +230,6 @@
             }
         });
 
-        // Event listener for Enter key
         queryInput.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
                 const query = queryInput.value.trim();
