@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="ILOGOT.jpeg" type="image/jpeg">
-    <title>VUYANI AI Chat</title>
+    <title>VUYANI AI - Chat</title>
     <style>
         /* General Styles */
         body, html {
@@ -13,16 +13,9 @@
             width: 100%;
             height: 100%;
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        body.dark-theme {
-            background-color: #141e30;
-            color: #e0e0e0;
         }
 
         #main-container {
@@ -30,16 +23,28 @@
             flex-direction: column;
             align-items: center;
             width: 90%;
-            max-width: 600px;
+            max-width: 800px;
             background: #ffffff;
-            border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            height: 80vh;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
         }
 
-        body.dark-theme #main-container {
-            background: #243b55;
+        #chat-area {
+            width: 65%;
+            height: 60vh;
+            overflow-y: auto;
+            padding: 10px;
+            border-right: 2px solid #ccc;
+        }
+
+        #image-area {
+            width: 35%;
+            height: 60vh;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #f7f7f7;
         }
 
         .chat-bubble {
@@ -49,24 +54,20 @@
             margin: 5px 0;
             font-size: 1rem;
             display: inline-block;
-            word-wrap: break-word;
         }
 
         .user-message {
             align-self: flex-end;
-            background: #ff4c4c;
+            background: #4CAF50;
             color: #ffffff;
+            border-radius: 20px 20px 0 20px;
         }
 
         .ai-response {
             align-self: flex-start;
-            background: #e0e0e0;
-            color: #333;
-        }
-
-        body.dark-theme .ai-response {
-            background: #333f50;
-            color: #ffdd57;
+            background: #2196F3;
+            color: #ffffff;
+            border-radius: 20px 20px 20px 0;
         }
 
         #input-area {
@@ -78,159 +79,150 @@
         #query {
             flex: 1;
             padding: 10px;
-            border: none;
+            border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
-            outline: none;
         }
 
-        #send-btn, #clear-btn {
+        #send-btn, #clear-history-btn, #show-images-btn {
             padding: 10px 15px;
-            background-color: #ff4c4c;
-            color: white;
+            margin-left: 5px;
             border: none;
             border-radius: 5px;
-            margin-left: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        #send-btn:hover, #clear-btn:hover {
-            background-color: #ff1a1a;
-        }
-
-        .dots {
-            display: inline-block;
-            position: relative;
-            width: 30px;
-        }
-
-        .dots span {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            margin: 0 2px;
-            background-color: currentColor;
-            border-radius: 50%;
-            animation: dot-flash 1.5s infinite ease-in-out;
-        }
-
-        .dots span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .dots span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes dot-flash {
-            0%, 80%, 100% {
-                transform: scale(0);
-            }
-            40% {
-                transform: scale(1);
-            }
-        }
-
-        #preview-container {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.8);
+        #send-btn {
+            background-color: #2196F3;
             color: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
-        #preview-container a {
-            color: #ffdd57;
-            text-decoration: none;
-            display: block;
-            margin-top: 5px;
+        #clear-history-btn {
+            background-color: #f44336;
+            color: white;
         }
 
-        #preview-container img {
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-            vertical-align: middle;
+        #show-images-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #send-btn:hover { background-color: #1976D2; }
+        #clear-history-btn:hover { background-color: #d32f2f; }
+        #show-images-btn:hover { background-color: #388E3C; }
+
+        /* Night Theme */
+        body.night-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        #main-container.night-mode {
+            background: #1E1E1E;
+            border-color: #333333;
         }
     </style>
 </head>
 <body>
     <div id="main-container">
-        <h1 style="color: #ff4c4c; margin-bottom: 20px;">VUYANI AI Chat</h1>
-        <div id="chat-area" style="width: 100%; overflow-y: auto; flex-grow: 1; padding-bottom: 10px;"></div>
+        <h1 id="welcome-message">Welcome to VUYANI AI!</h1>
+        <div style="display: flex; width: 100%;">
+            <div id="chat-area"></div>
+            <div id="image-area"></div>
+        </div>
         <div id="input-area">
-            <input type="text" id="query" placeholder="Type your question here..." />
+            <input type="text" id="query" placeholder="Type your question here...">
             <button id="send-btn">Send</button>
-            <button id="clear-btn">Clear</button>
+            <button id="clear-history-btn">Clear History</button>
+            <button id="show-images-btn">Show Images</button>
         </div>
     </div>
 
-    <div id="preview-container">
-        <p>Are you sure you want to leave? Check out these:</p>
-        <a href="https://vgames1.github.io">
-            <img src="preview-vgames.png" alt="VGAMES Preview"> VGAMES
-        </a>
-        <a href="https://vcloud24.github.io">
-            <img src="preview-vcloud.png" alt="VCloud Preview"> VCloud
-        </a>
-        <a href="https://vuyani1.github.io">
-            <img src="preview-vuyani.png" alt="Vuyani Preview"> Vuyani
-        </a>
-    </div>
-
     <script>
-        function switchTheme() {
+        const chatArea = document.getElementById('chat-area');
+        const imageArea = document.getElementById('image-area');
+        const queryInput = document.getElementById('query');
+        const welcomeMessage = document.getElementById('welcome-message');
+        const mainContainer = document.getElementById('main-container');
+
+        let userName = localStorage.getItem('userName') || '';
+
+        function initTheme() {
             const currentHour = new Date().getHours();
-            document.body.classList.toggle('dark-theme', currentHour >= 20 || currentHour < 6);
+            if (currentHour >= 20 || currentHour < 6) {
+                document.body.classList.add('night-mode');
+                mainContainer.classList.add('night-mode');
+            }
+        }
+
+        function personalizeWelcome() {
+            if (userName) {
+                welcomeMessage.textContent = `Welcome back, ${userName}!`;
+            } else {
+                welcomeMessage.textContent = `Welcome to VUYANI AI!`;
+            }
+        }
+
+        function saveChatHistory(message, sender) {
+            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            chatHistory.push({ message, sender });
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
         }
 
         function displayMessage(content, isUser = true) {
-            const chatArea = document.getElementById('chat-area');
             const bubble = document.createElement('div');
             bubble.className = `chat-bubble ${isUser ? 'user-message' : 'ai-response'}`;
             bubble.innerHTML = content;
             chatArea.appendChild(bubble);
             chatArea.scrollTop = chatArea.scrollHeight;
+            saveChatHistory(content, isUser ? 'user' : 'ai');
         }
 
-        async function handleInput() {
-            const query = document.getElementById('query').value.trim();
-            if (!query) return;
-            displayMessage(query, true);
-            document.getElementById('query').value = '';
-
-            const thinking = document.createElement('div');
-            thinking.className = 'dots ai-response';
-            thinking.innerHTML = '<span></span><span></span><span></span>';
-            document.getElementById('chat-area').appendChild(thinking);
-
-            // Simulate processing
-            setTimeout(() => {
-                thinking.remove();
-                displayMessage("Here's what I found for you!");
-            }, 2000);
-        }
-
-        document.getElementById('send-btn').addEventListener('click', handleInput);
-        document.getElementById('clear-btn').addEventListener('click', () => {
-            document.getElementById('chat-area').innerHTML = '';
-        });
-
-        document.getElementById('query').addEventListener('input', (e) => {
-            if (e.target.value.toLowerCase().includes('exit')) {
-                document.getElementById('preview-container').style.display = 'block';
+        function loadChatHistory() {
+            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            if (chatHistory.length === 0) {
+                displayMessage("I seem to have lost our previous conversation history.", false);
             } else {
-                document.getElementById('preview-container').style.display = 'none';
+                chatHistory.forEach(entry => displayMessage(entry.message, entry.sender === 'user'));
             }
+        }
+
+        document.getElementById('send-btn').addEventListener('click', () => {
+            const query = queryInput.value.trim();
+            if (!query) return;
+
+            // Handle special cases
+            if (query.toLowerCase().startsWith("my name is")) {
+                userName = query.split("my name is")[1].trim();
+                localStorage.setItem('userName', userName);
+                displayMessage(`Nice to meet you, ${userName}! I'll remember that.`, false);
+                personalizeWelcome();
+                return;
+            }
+
+            if (query.toLowerCase() === "end topic") {
+                displayMessage("Got it! Starting fresh. 😊", false);
+                return;
+            }
+
+            displayMessage(query, true);
+            queryInput.value = '';
+            // Process response
         });
 
-        switchTheme();
-        setInterval(switchTheme, 1000);
+        document.getElementById('clear-history-btn').addEventListener('click', () => {
+            localStorage.removeItem('chatHistory');
+            chatArea.innerHTML = '';
+            displayMessage("Chat history cleared!", false);
+        });
+
+        // Initial setup
+        window.addEventListener('load', () => {
+            initTheme();
+            personalizeWelcome();
+            loadChatHistory();
+        });
     </script>
 </body>
 </html>
