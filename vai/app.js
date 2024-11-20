@@ -1,3 +1,5 @@
+
+
 import { getCurrentTime, fetchImages, secureApiKey } from './hidden/config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
