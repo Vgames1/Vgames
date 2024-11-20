@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="ILOGOT.jpeg" type="image/jpeg">
+    <title>VUYANI AI Chat</title>
+    <style>
+        /* General Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        body.dark-theme {
+            background-color: #141e30;
+            color: #e0e0e0;
+        }
+
+        #main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 600px;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            height: 80vh;
+        }
+
+        body.dark-theme #main-container {
+            background: #243b55;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 20px;
+            margin: 5px 0;
+            font-size: 1rem;
+            display: inline-block;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: #ff4c4c;
+            color: #ffffff;
+        }
+
+        .ai-response {
+            align-self: flex-start;
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        body.dark-theme .ai-response {
+            background: #333f50;
+            color: #ffdd57;
+        }
+
+        #input-area {
+            display: flex;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        #query {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        #send-btn, #clear-btn {
+            padding: 10px 15px;
+            background-color: #ff4c4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-left: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #send-btn:hover, #clear-btn:hover {
+            background-color: #ff1a1a;
+        }
+
+        .dots {
+            display: inline-block;
+            position: relative;
+            width: 30px;
+        }
+
+        .dots span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin: 0 2px;
+            background-color: currentColor;
+            border-radius: 50%;
+            animation: dot-flash 1.5s infinite ease-in-out;
+        }
+
+        .dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes dot-flash {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        #preview-container {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #preview-container a {
+            color: #ffdd57;
+            text-decoration: none;
+            display: block;
+            margin-top: 5px;
+        }
+
+        #preview-container img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div id="main-container">
+        <h1 style="color: #ff4c4c; margin-bottom: 20px;">VUYANI AI Chat</h1>
+        <div id="chat-area" style="width: 100%; overflow-y: auto; flex-grow: 1; padding-bottom: 10px;"></div>
+        <div id="input-area">
+            <input type="text" id="query" placeholder="Type your question here..." />
+            <button id="send-btn">Send</button>
+            <button id="clear-btn">Clear</button>
+        </div>
+    </div>
+
+    <div id="preview-container">
+        <p>Are you sure you want to leave? Check out these:</p>
+        <a href="https://vgames1.github.io">
+            <img src="preview-vgames.png" alt="VGAMES Preview"> VGAMES
+        </a>
+        <a href="https://vcloud24.github.io">
+            <img src="preview-vcloud.png" alt="VCloud Preview"> VCloud
+        </a>
+        <a href="https://vuyani1.github.io">
+            <img src="preview-vuyani.png" alt="Vuyani Preview"> Vuyani
+        </a>
+    </div>
+
+    <script>
+        function switchTheme() {
+            const currentHour = new Date().getHours();
+            document.body.classList.toggle('dark-theme', currentHour >= 20 || currentHour < 6);
+        }
+
+        function displayMessage(content, isUser = true) {
+            const chatArea = document.getElementById('chat-area');
+            const bubble = document.createElement('div');
+            bubble.className = `chat-bubble ${isUser ? 'user-message' : 'ai-response'}`;
+            bubble.innerHTML = content;
+            chatArea.appendChild(bubble);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        async function handleInput() {
+            const query = document.getElementById('query').value.trim();
+            if (!query) return;
+            displayMessage(query, true);
+            document.getElementById('query').value = '';
+
+            const thinking = document.createElement('div');
+            thinking.className = 'dots ai-response';
+            thinking.innerHTML = '<span></span><span></span><span></span>';
+            document.getElementById('chat-area').appendChild(thinking);
+
+            // Simulate processing
+            setTimeout(() => {
+                thinking.remove();
+                displayMessage("Here's what I found for you!");
+            }, 2000);
+        }
+
+        document.getElementById('send-btn').addEventListener('click', handleInput);
+        document.getElementById('clear-btn').addEventListener('click', () => {
+            document.getElementById('chat-area').innerHTML = '';
+        });
+
+        document.getElementById('query').addEventListener('input', (e) => {
+            if (e.target.value.toLowerCase().includes('exit')) {
+                document.getElementById('preview-container').style.display = 'block';
+            } else {
+                document.getElementById('preview-container').style.display = 'none';
+            }
+        });
+
+        switchTheme();
+        setInterval(switchTheme, 1000);
+    </script>
+</body>
+</html>
