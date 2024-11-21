@@ -6,200 +6,238 @@
     <title>Vilakazi Games AI</title>
     <style>
         :root {
-            --bg-color: #ffffff;
-            --text-color: #000000;
-            --primary-color: #0078d7;
+            --bg-light: #f0f4f8;
+            --bg-dark: #1e293b;
+            --text-light: #1f2937;
+            --text-dark: #e2e8f0;
+            --card-light: #ffffff;
+            --card-dark: #334155;
+            --accent-light: #3b82f6;
+            --accent-dark: #60a5fa;
         }
-        [data-theme="dark"] {
-            --bg-color: #121212;
-            --text-color: #ffffff;
-            --primary-color: #1e90ff;
-        }
+
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--bg-light);
+            color: var(--text-light);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            transition: all 0.3s;
+            transition: background-color 0.3s, color 0.3s;
         }
+
+        body.dark {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
         header {
+            width: 100%;
+            padding: 20px;
             text-align: center;
-            margin-bottom: 20px;
-        }
-        header h1 {
-            color: var(--primary-color);
-        }
-        .chat-container {
-            width: 90%;
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid var(--primary-color);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .messages {
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-            background-color: var(--bg-color);
-        }
-        .messages div {
-            margin-bottom: 10px;
-        }
-        .messages .user {
-            text-align: right;
-            color: var(--primary-color);
-        }
-        .messages .ai {
-            text-align: left;
-        }
-        .input-container {
-            display: flex;
-            border-top: 1px solid var(--primary-color);
-        }
-        .input-container input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            outline: none;
-            font-size: 16px;
-        }
-        .input-container button {
-            padding: 10px;
-            border: none;
-            background-color: var(--primary-color);
-            color: var(--text-color);
+            font-size: 24px;
+            font-weight: bold;
+            background-color: var(--accent-light);
+            color: white;
             cursor: pointer;
         }
-        footer {
-            margin-top: 10px;
-            font-size: 12px;
-            text-align: center;
+
+        body.dark header {
+            background-color: var(--accent-dark);
         }
-        .link-preview {
-            display: flex;
-            flex-direction: column;
-            margin-top: 10px;
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin-top: 20px;
         }
-        .link-preview a {
-            margin: 5px 0;
-            color: var(--primary-color);
-            text-decoration: none;
+
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--accent-light);
+            outline: none;
+        }
+
+        .messages {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: var(--card-light);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark .messages {
+            background-color: var(--card-dark);
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .user {
+            background-color: var(--accent-light);
+            color: white;
+        }
+
+        .bot {
+            background-color: var(--card-light);
+            border: 1px solid var(--accent-light);
+            color: var(--text-light);
+        }
+
+        body.dark .bot {
+            background-color: var(--card-dark);
+            border: 1px solid var(--accent-dark);
+            color: var(--text-dark);
+        }
+
+        .clear-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--accent-light);
+        }
+
+        body.dark .clear-btn {
+            color: var(--accent-dark);
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Vilakazi Games AI</h1>
-        <p>Developed by Vilakazi Games, powered by serper.dev</p>
-    </header>
-    <div class="chat-container">
+    <header onclick="window.location.href='https://vcloud24.github.io/lo'">Vilakazi Games AI</header>
+    <div class="container">
+        <input type="text" id="userInput" placeholder="Type your query here..." onkeydown="handleInput(event)" />
+        <button class="clear-btn" onclick="clearHistory()">🗑️</button>
         <div class="messages" id="messages"></div>
-        <div class="input-container">
-            <input type="text" id="userInput" placeholder="Type something..." autocomplete="off">
-            <button onclick="sendMessage()">Send</button>
-        </div>
     </div>
-    <footer>
-        <p>&copy; Vilakazi Games | <a href="mailto:vuyaniphila86@gmail.com">Contact Us</a></p>
-    </footer>
     <script>
         const apiKey = "365c6214456a159b5e47a90913005ff7986557cc";
-        const messagesDiv = document.getElementById("messages");
-        const userInput = document.getElementById("userInput");
-        let username = "";
-        let chatMemory = JSON.parse(localStorage.getItem("chatMemory")) || [];
+        const apiEndpoint = "https://api.serper.dev/search";
+        const messages = document.getElementById("messages");
+        const input = document.getElementById("userInput");
 
-        function applyTheme() {
+        let userName = localStorage.getItem("userName") || "";
+        let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
+
+        // Load chat history
+        chatHistory.forEach(({ text, type }) => addMessage(text, type));
+
+        // Theme switching
+        function updateTheme() {
             const hour = new Date().getHours();
-            const theme = hour >= 20 || hour < 6 ? "dark" : "light";
-            document.body.setAttribute("data-theme", theme);
+            document.body.className = hour >= 20 || hour < 6 ? "dark" : "";
         }
 
-        function displayMessage(content, sender = "ai") {
-            const message = document.createElement("div");
-            message.className = sender;
-            message.textContent = content;
-            messagesDiv.appendChild(message);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        // Add message to chat
+        function addMessage(text, type) {
+            const div = document.createElement("div");
+            div.className = `message ${type}`;
+            div.textContent = text;
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
         }
 
-        function saveChatMemory() {
-            localStorage.setItem("chatMemory", JSON.stringify(chatMemory));
+        // Save chat history
+        function saveChat(text, type) {
+            chatHistory.push({ text, type });
+            localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
         }
 
-        async function fetchAPI(endpoint) {
-            const response = await fetch(`https://api.serper.dev/${endpoint}`, {
-                headers: { "X-API-KEY": apiKey }
-            });
-            return response.json();
+        // Handle input
+        async function handleInput(event) {
+            if (event.key !== "Enter") return;
+            const query = input.value.trim();
+            if (!query) return;
+
+            input.value = "";
+
+            addMessage(query, "user");
+            saveChat(query, "user");
+
+            // Clear history
+            if (query.toLowerCase() === "clear history") {
+                localStorage.clear();
+                chatHistory = [];
+                messages.innerHTML = "";
+                addMessage("History cleared.", "bot");
+                return;
+            }
+
+            // Greet user
+            if (["hi", "hello", "sawubona"].includes(query.toLowerCase())) {
+                const greeting = `Hey, ${userName || "friend"}! How can I assist you?`;
+                addMessage(greeting, "bot");
+                saveChat(greeting, "bot");
+                return;
+            }
+
+            // Save user name
+            if (!userName) {
+                userName = query;
+                localStorage.setItem("userName", userName);
+                const welcome = `Hello, ${userName}! I've noted your name.`;
+                addMessage(welcome, "bot");
+                saveChat(welcome, "bot");
+                return;
+            }
+
+            // Time request
+            if (query.toLowerCase() === "time") {
+                const currentTime = `Current time: ${new Date().toLocaleTimeString()}`;
+                addMessage(currentTime, "bot");
+                saveChat(currentTime, "bot");
+                return;
+            }
+
+            // Query Serper API
+            try {
+                const response = await fetch(apiEndpoint, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-API-KEY": apiKey
+                    },
+                    body: JSON.stringify({ q: query })
+                });
+
+                const data = await response.json();
+                const results = data?.organic?.map(
+                    (item) => `${item.title}\n${item.snippet || "No description."}\n${item.url || ""}`
+                ).join("\n\n") || "No results found.";
+
+                addMessage(results, "bot");
+                saveChat(results, "bot");
+            } catch (error) {
+                const errorMsg = "Failed to fetch results. Please try again.";
+                addMessage(errorMsg, "bot");
+                saveChat(errorMsg, "bot");
+            }
         }
 
-        async function handleCommand(command) {
-            if (command === "end topic") {
-                chatMemory = [];
-                saveChatMemory();
-                return "Topic ended. Chat memory cleared.";
-            }
-            if (command === "exit") {
-                return `
-                    Here are your links:
-                    <div class="link-preview">
-                        <a href="https://vgames1.github.io" target="_blank">vgames1.github.io</a>
-                        <a href="https://vuyani1.github.io" target="_blank">vuyani1.github.io</a>
-                        <a href="https://vcloud24.github.io" target="_blank">vcloud24.github.io</a>
-                    </div>
-                `;
-            }
-            if (command.toLowerCase().includes("who are you")) {
-                return `Hi! I'm VGAI, an AI developed by Vilakazi Games and powered by serper.dev.`;
-            }
-            if (command.toLowerCase().includes("time")) {
-                const now = new Date();
-                return `Current time: ${now.toLocaleTimeString()}`;
-            }
-            if (command.toLowerCase().includes("date")) {
-                const today = new Date();
-                return `Today's date: ${today.toDateString()}`;
-            }
-            if (command.toLowerCase().includes("location")) {
-                const data = await fetchAPI("geolocation");
-                return `Your location is: ${data.city}, ${data.country}`;
-            }
-            if (command.toLowerCase().includes("weather")) {
-                const data = await fetchAPI("weather");
-                return `Current weather: ${data.weather[0].description}, ${data.main.temp}°C`;
-            }
-            if (command.toLowerCase().includes("ip address")) {
-                const data = await fetchAPI("ip");
-                return `Your IP address is: ${data.ip}`;
-            }
-            return "Sorry, I don't understand that command.";
+        // Clear history
+        function clearHistory() {
+            localStorage.clear();
+            chatHistory = [];
+            messages.innerHTML = "";
+            addMessage("History cleared.", "bot");
         }
 
-        async function sendMessage() {
-            const userText = userInput.value.trim();
-            if (!userText) return;
-            displayMessage(userText, "user");
-            chatMemory.push({ sender: "user", text: userText });
-            saveChatMemory();
-            userInput.value = "";
-
-            let aiResponse = await handleCommand(userText.toLowerCase());
-            displayMessage(aiResponse);
-            chatMemory.push({ sender: "ai", text: aiResponse });
-            saveChatMemory();
-        }
-
-        applyTheme();
-        chatMemory.forEach(msg => displayMessage(msg.text, msg.sender));
-        setInterval(applyTheme, 60000); // Update theme every minute
+        // Initialize
+        updateTheme();
+        setInterval(updateTheme, 60000); // Check theme every minute
     </script>
 </body>
 </html>
