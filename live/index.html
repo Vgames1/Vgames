@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Stream</title>
+  <link rel="icon" href="live.ico">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <img src="live1.jpeg" alt="Live Stream" class="header-image">
+  </header>
+
+  <main>
+    <div id="videoContainer">
+      <video id="liveVideo" controls autoplay>
+        <!-- Live stream or uploaded video will appear here -->
+        <source src="" type="video/mp4">
+        Your browser does not support HTML video.
+      </video>
+      <img id="offlineImage" src="endoflive.jpeg" alt="Stream Offline" style="display: none;">
+    </div>
+
+    <div id="commentsSection">
+      <h3>Comment Section</h3>
+      <textarea id="commentInput" placeholder="Type your comment here"></textarea>
+      <button id="sendComment">
+        <img src="comment.jpeg" alt="Send Comment">
+      </button>
+      <div id="commentsDisplay"></div>
+    </div>
+  </main>
+
+  <footer>
+    <p>🎤 Vuyani Siyanda Vilakazi 🎤 | Born: East Rand, South Africa 🇿🇦 | Age: 17 🎶</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
