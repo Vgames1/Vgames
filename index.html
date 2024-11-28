@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VGAMES</title>
+    <title>VGAMES - Christmas Edition</title>
     <link rel="icon" href="ILOGOT.jpeg" type="image/jpeg">
     <style>
         /* Reset and base styles */
@@ -11,15 +11,17 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
         }
+
         body, html {
             height: 100%;
             overflow: hidden;
-            background: #1a1a1a;
+            background: #2c3e50 url('https://cdn.pixabay.com/photo/2016/11/18/15/40/snowflakes-1833656_1280.png') repeat;
+            color: white;
         }
 
-        /* Slide container and styling */
+        /* Christmas Slide Styles */
         .slide {
             position: absolute;
             top: 0;
@@ -30,56 +32,27 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: #fff;
-            font-size: 2em;
+            text-align: center;
             opacity: 0;
             transition: opacity 1s ease;
-            text-align: center;
         }
         .visible {
             opacity: 1;
             z-index: 1;
         }
 
-        /* Slide backgrounds */
-        .slide1 {
-            background: radial-gradient(circle, #ff8a00, #ff2a6d);
-            animation: gradientAnimation 6s infinite alternate;
-        }
-        .slide2 {
-            background: radial-gradient(circle, #6a11cb, #2575fc);
-            animation: gradientAnimation 6s infinite alternate;
-        }
-        .slide3 {
-            background: radial-gradient(circle, #ff512f, #dd2476);
-            animation: gradientAnimation 6s infinite alternate;
-        }
-        .slide4 {
-            background: radial-gradient(circle, #ffd200, #f7971e);
-            animation: gradientAnimation 6s infinite alternate;
-        }
-
-        /* Keyframes for animated gradients */
-        @keyframes gradientAnimation {
-            0% { background-size: 150%; }
-            100% { background-size: 200%; }
-        }
-
-        /* Title glow animation */
+        /* Festive Text Styling */
         h1 {
-            color: #f5f5f5;
-            animation: glow 1.5s ease-in-out infinite alternate;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            font-size: 2.5em;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.8);
         }
 
-        /* Clock style */
-        .clock {
-            font-size: 1.5em;
-            color: #e0e0e0;
-            margin-top: 10px;
-        }
+        .slide1 { background: #e74c3c; }
+        .slide2 { background: #16a085; }
+        .slide3 { background: #d35400; }
+        .slide4 { background: #2980b9; }
 
-        /* Button container and button styles */
+        /* Buttons */
         #game-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -90,212 +63,103 @@
 
         .game-btn {
             padding: 12px 20px;
-            font-size: 1em;
+            font-size: 1.1em;
+            background: linear-gradient(45deg, #ff6b6b, #f7e859);
             color: #fff;
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid #fff;
-            border-radius: 10px;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
             cursor: pointer;
             transition: transform 0.2s, background 0.3s;
         }
+
         .game-btn:hover {
-            transform: translateY(-4px);
-            background: rgba(255, 255, 255, 0.25);
+            background: linear-gradient(45deg, #f7e859, #ff6b6b);
+            transform: scale(1.1);
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1.5em;
-            }
-            .game-btn {
-                font-size: 0.9em;
-                padding: 10px;
-            }
+        /* Snow Animation */
+        @keyframes snow {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+
+        body {
+            animation: snow 10s linear infinite;
+        }
+
+        /* Floating Widget */
+        #botIframe {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 300px;
+            height: 500px;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            z-index: 1000;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #close-widget {
+            position: fixed;
+            bottom: 520px;
+            right: 10px;
+            background: red;
+            color: white;
+            border: none;
+            font-size: 1em;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        #close-widget:hover {
+            background: darkred;
         }
     </style>
 </head>
 <body>
     <!-- Slide 1 -->
     <div id="slide1" class="slide slide1 visible">
-        <h1>Welcome to VGAMES</h1>
-        <div class="clock" id="clock1"></div>
+        <h1>🎄 Welcome to VGAMES! 🎁</h1>
     </div>
     
     <!-- Slide 2 -->
     <div id="slide2" class="slide slide2">
-        <h1>Ready for an Adventure?</h1>
-        <div class="clock" id="clock2"></div>
+        <h1>🎅 Ready for a Festive Adventure? 🌟</h1>
     </div>
     
-    <!-- Slide 3 with Game Buttons -->
+    <!-- Slide 3 -->
     <div id="slide3" class="slide slide3">
-        <h1>Explore Endless Fun!</h1>
+        <h1>❄️ Explore the Joy of Christmas Games! 🎮</h1>
         <div id="game-buttons">
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/aquiz.html')">AQUIZ</button>
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/ball.html')">BALL DIE</button>
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/atrivia.html')">ATRIVIA</button>
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/scram.html')">UNSCRAMBLE</button>
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/vai.html')">VUYANI AI</button>
-            <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/adventure.html')">ADVENTURE</button>
-            <button class="game-btn" onclick="redirectTo('https://vuyani1.github.io')">MORE GAMES</button>
         </div>
-        <div class="clock" id="clock3"></div>
     </div>
-
+    
     <!-- Slide 4 -->
     <div id="slide4" class="slide slide4">
-        <h1>Thank You for Playing!</h1>
-        <div class="clock" id="clock4"></div>
+        <h1>🎁 Thank You for Visiting VGAMES! 🎄</h1>
     </div>
 
-    <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.remove('visible');
-                if (i === index) slide.classList.add('visible');
-            });
-        }
-
-        function startSlideShow() {
-            let slideInterval = setInterval(() => {
-                if (currentSlide === 2) { // Hold Slide 3 for 2 minutes (120 seconds)
-                    showSlide(currentSlide); // Show current slide
-                    setTimeout(() => {
-                        currentSlide++;
-                        showSlide(currentSlide);
-                    }, 120000);
-                    clearInterval(slideInterval); // Stop interval until Slide 3 finishes
-                } else {
-                    currentSlide = (currentSlide + 1) % slides.length;
-                    showSlide(currentSlide);
-                }
-            }, 5000); // 5 seconds for other slides
-        }
-        startSlideShow();
-
-        function updateClock() {
-            const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            document.querySelectorAll('.clock').forEach(clock => {
-                clock.innerText = timeString;
-            });
-        }
-        setInterval(updateClock, 1000); // Update clock every second
-
-        // Redirect only works if currently on Slide 3
-        function redirectTo(url) {
-            if (currentSlide === 2) {
-                window.location.href = url;
-            } else {
-                alert("Buttons will be active on the 'Explore Endless Fun!' slide.");
-            }
-        }
-    </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        fetch('https://vcloud24.github.io/bot.html')
-            .then(() => {
-                console.log('Connected to monitoring system.');
-            })
-            .catch(() => {
-                console.error('Failed to connect to monitoring system.');
-            });
-    });
-</script>
-<a href="https://vcloud24.github.io/bot.html" target="_blank">Visit Monitoring System</a>
-<div style="display: none;">
-    <iframe src="https://vcloud24.github.io/bot.html" style="width: 0; height: 0; border: 0;"></iframe>
-</div>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VGAMES Index</title>
-    <link rel="icon" href="ILOGOT.jpeg" type="image/jpeg">
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, pink, blue);
-            color: white;
-            text-align: center;
-            overflow: hidden;
-        }
-        .offline-banner {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(45deg, red, orange);
-            color: white;
-            font-weight: bold;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-            z-index: 9999;
-        }
-        .offline-banner h2 {
-            margin: 0;
-            font-size: 1.5em;
-        }
-        .offline-banner p {
-            margin: 5px 0;
-            font-size: 1.2em;
-        }
-        .close-button {
-            background-color: white;
-            color: red;
-            border: none;
-            padding: 5px 15px;
-            font-size: 1em;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .close-button:hover {
-            background-color: lightcoral;
-            color: white;
-        }
-    </style>
-</head>
-<body>
-    <div id="offline-banner" class="offline-banner">
-        <h2>You're Offline!</h2>
-        <p>Turn on Data or Wi-Fi to continue.</p>
-        <p>If the problem persists, contact <a href="mailto:vuyaniphila86@gmail.com" style="color: yellow;">vuyaniphila86@gmail.com</a>.</p>
-        <button class="close-button" onclick="hideOfflineBanner()">Close</button>
-    </div>
+    <!-- Floating Widget -->
+    <iframe id="botIframe" src="https://vcloud24.github.io/bot2.html"></iframe>
+    <button id="close-widget" onclick="closeWidget()">X</button>
 
     <script>
-        // Function to check online/offline status
-        function checkConnection() {
-            const offlineBanner = document.getElementById('offline-banner');
-            if (navigator.onLine) {
-                offlineBanner.style.display = 'none';
-            } else {
-                offlineBanner.style.display = 'block';
-            }
+        // Close the widget
+        function closeWidget() {
+            document.getElementById('botIframe').style.display = 'none';
+            document.getElementById('close-widget').style.display = 'none';
         }
-
-        // Function to hide the offline banner
-        function hideOfflineBanner() {
-            document.getElementById('offline-banner').style.display = 'none';
-        }
-
-        // Check connection on load and listen for status changes
-        window.onload = checkConnection;
-        window.addEventListener('online', checkConnection);
-        window.addEventListener('offline', checkConnection);
     </script>
 </body>
 </html>
-<!-- Embed the Bot as a floating widget -->
-<iframe src="https://vcloud24.github.io/bot2.html" width="300" height="500" style="position: fixed; bottom: 10px; right: 10px; border: none; z-index: 1000; border-radius: 15px;" id="botIframe"></iframe>
