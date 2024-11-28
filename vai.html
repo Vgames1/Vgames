@@ -3,27 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vilakazi Games AI</title>
+    <title>Vilakazi Games AI - Christmas Edition</title>
     <style>
         :root {
-            --bg-light: #f0f4f8;
+            --bg-light: #fff9f5;
             --bg-dark: #1e293b;
             --text-light: #1f2937;
             --text-dark: #e2e8f0;
             --card-light: #ffffff;
             --card-dark: #334155;
-            --accent-light: #3b82f6;
-            --accent-dark: #60a5fa;
+            --accent-light: #e63946;
+            --accent-dark: #6f1d1b;
+            --festive-green: #38b000;
         }
 
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: var(--bg-light);
             color: var(--text-light);
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow: hidden;
             transition: background-color 0.3s, color 0.3s;
         }
 
@@ -41,10 +43,19 @@
             background-color: var(--accent-light);
             color: white;
             cursor: pointer;
+            position: relative;
         }
 
         body.dark header {
             background-color: var(--accent-dark);
+        }
+
+        header::before {
+            content: "🎅";
+            position: absolute;
+            left: 20px;
+            top: 5px;
+            font-size: 2em;
         }
 
         .container {
@@ -114,18 +125,65 @@
         body.dark .clear-btn {
             color: var(--accent-dark);
         }
+
+        /* Snowflakes */
+        .snowflakes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1.5em;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        .snowflake:nth-child(odd) {
+            animation-duration: 7s;
+        }
+
+        .snowflake:nth-child(even) {
+            animation-duration: 5s;
+        }
     </style>
 </head>
 <body>
-    <header onclick="window.location.href='https://vcloud24.github.io/lo'">Vilakazi Games AI</header>
+    <header onclick="window.location.href='https://vcloud24.github.io/lo'">Vilakazi Games AI 🎄</header>
     <div class="container">
         <input type="text" id="userInput" placeholder="Type your query here..." onkeydown="handleInput(event)" />
         <button class="clear-btn" onclick="clearHistory()">🗑️</button>
         <div class="messages" id="messages"></div>
     </div>
+
+    <!-- Snowflake Animation -->
+    <div class="snowflakes" aria-hidden="true">
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+    </div>
+
     <script>
         const apiKey = "365c6214456a159b5e47a90913005ff7986557cc";
-        const apiEndpoint = "https://api.serper.dev/search";
+        const apiEndpoint = "https://serper.dev";
         const messages = document.getElementById("messages");
         const input = document.getElementById("userInput");
 
@@ -178,7 +236,7 @@
 
             // Greet user
             if (["hi", "hello", "sawubona"].includes(query.toLowerCase())) {
-                const greeting = `Hey, ${userName || "friend"}! How can I assist you?`;
+                const greeting = `Hey, ${userName || "friend"}! How can I assist you this festive season?`;
                 addMessage(greeting, "bot");
                 saveChat(greeting, "bot");
                 return;
@@ -229,15 +287,13 @@
 
         // Clear history
         function clearHistory() {
-            localStorage.clear();
             chatHistory = [];
+            localStorage.clear();
             messages.innerHTML = "";
             addMessage("History cleared.", "bot");
         }
 
-        // Initialize
         updateTheme();
-        setInterval(updateTheme, 60000); // Check theme every minute
     </script>
 </body>
 </html>
