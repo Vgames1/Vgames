@@ -3,25 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VGAMES - Christmas Edition</title>
+    <title>VGAMES</title>
     <link rel="icon" href="ILOGOT.jpeg" type="image/jpeg">
     <style>
-        /* Reset and base styles */
+        /* Base Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-family: Arial, sans-serif;
         }
-
         body, html {
             height: 100%;
-            overflow: hidden;
-            background: #2c3e50 url('https://cdn.pixabay.com/photo/2016/11/18/15/40/snowflakes-1833656_1280.png') repeat;
-            color: white;
+            background: linear-gradient(to bottom, #00416a, #e4e5e6);
         }
 
-        /* Christmas Slide Styles */
+        /* Slide styles */
         .slide {
             position: absolute;
             top: 0;
@@ -32,27 +29,35 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
+            color: white;
+            font-size: 2em;
             opacity: 0;
             transition: opacity 1s ease;
+            text-align: center;
         }
         .visible {
             opacity: 1;
             z-index: 1;
         }
 
-        /* Festive Text Styling */
+        /* Slide Backgrounds */
+        .slide1 { background: radial-gradient(circle, #ff5757, #7d00a3); }
+        .slide2 { background: radial-gradient(circle, #00ff9e, #0a7096); }
+        .slide3 { background: radial-gradient(circle, #f0a202, #003f91); }
+        .slide4 { background: radial-gradient(circle, #3e92cc, #deecfc); }
+
+        /* Animated title */
         h1 {
-            font-size: 2.5em;
-            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.8);
+            color: #fff;
+            animation: glow 1.5s ease-in-out infinite alternate;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #fff; }
+            to { text-shadow: 0 0 25px #ff6ec4; }
         }
 
-        .slide1 { background: #e74c3c; }
-        .slide2 { background: #16a085; }
-        .slide3 { background: #d35400; }
-        .slide4 { background: #2980b9; }
-
-        /* Buttons */
+        /* Game Buttons */
         #game-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -60,105 +65,140 @@
             margin-top: 20px;
             justify-content: center;
         }
-
         .game-btn {
             padding: 12px 20px;
-            font-size: 1.1em;
-            background: linear-gradient(45deg, #ff6b6b, #f7e859);
+            font-size: 1em;
             color: #fff;
-            border: none;
-            border-radius: 15px;
-            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid #fff;
+            border-radius: 10px;
             cursor: pointer;
             transition: transform 0.2s, background 0.3s;
         }
-
         .game-btn:hover {
-            background: linear-gradient(45deg, #f7e859, #ff6b6b);
-            transform: scale(1.1);
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.25);
         }
 
-        /* Snow Animation */
-        @keyframes snow {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 100%; }
-        }
-
-        body {
-            animation: snow 10s linear infinite;
-        }
-
-        /* Floating Widget */
-        #botIframe {
+        /* Widget Style */
+        #widget {
             position: fixed;
-            bottom: 10px;
-            right: 10px;
+            bottom: 20px;
+            right: 20px;
             width: 300px;
-            height: 500px;
-            border: 2px solid #fff;
-            border-radius: 10px;
-            z-index: 1000;
-            background: white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        #close-widget {
-            position: fixed;
-            bottom: 520px;
-            right: 10px;
-            background: red;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.8);
             color: white;
-            border: none;
-            font-size: 1em;
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 1001;
+            border: 2px solid #fff;
+            border-radius: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
-
-        #close-widget:hover {
-            background: darkred;
+        #widget-header {
+            padding: 10px;
+            background: linear-gradient(to right, #ff512f, #f09819);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+        }
+        #widget-content {
+            flex-grow: 1;
+            padding: 10px;
+            text-align: center;
+        }
+        .widget-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <!-- Slide 1 -->
     <div id="slide1" class="slide slide1 visible">
-        <h1>🎄 Welcome to VGAMES! 🎁</h1>
+        <h1>Welcome to VGAMES</h1>
     </div>
-    
+
     <!-- Slide 2 -->
     <div id="slide2" class="slide slide2">
-        <h1>🎅 Ready for a Festive Adventure? 🌟</h1>
+        <h1>Ready for the Adventure?</h1>
     </div>
-    
+
     <!-- Slide 3 -->
     <div id="slide3" class="slide slide3">
-        <h1>❄️ Explore the Joy of Christmas Games! 🎮</h1>
+        <h1>Explore Endless Fun!</h1>
         <div id="game-buttons">
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/aquiz.html')">AQUIZ</button>
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/ball.html')">BALL DIE</button>
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/atrivia.html')">ATRIVIA</button>
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/scram.html')">UNSCRAMBLE</button>
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/vai.html')">VUYANI AI</button>
+            <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/adventure.html')">ADVENTURE</button>
         </div>
     </div>
-    
+
     <!-- Slide 4 -->
     <div id="slide4" class="slide slide4">
-        <h1>🎁 Thank You for Visiting VGAMES! 🎄</h1>
+        <h1>Thank You for Playing!</h1>
     </div>
 
     <!-- Floating Widget -->
-    <iframe id="botIframe" src="https://vcloud24.github.io/bot2.html"></iframe>
-    <button id="close-widget" onclick="closeWidget()">X</button>
+    <div id="widget">
+        <div id="widget-header">
+            <span>Help Widget</span>
+            <button class="widget-close" onclick="closeWidget()">×</button>
+        </div>
+        <div id="widget-content">
+            <p>How can we assist you?</p>
+        </div>
+    </div>
 
     <script>
-        // Close the widget
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('visible');
+                if (i === index) slide.classList.add('visible');
+            });
+        }
+
+        function startSlideShow() {
+            let slideInterval = setInterval(() => {
+                if (currentSlide === 2) { // Hold Slide 3 for 5 minutes (300 seconds)
+                    showSlide(currentSlide);
+                    setTimeout(() => {
+                        currentSlide++;
+                        showSlide(currentSlide);
+                    }, 300000); // 300000ms = 5 minutes
+                    clearInterval(slideInterval);
+                } else {
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    showSlide(currentSlide);
+                }
+            }, 5000);
+        }
+        startSlideShow();
+
+        function redirectTo(url) {
+            if (currentSlide === 2) {
+                window.location.href = url;
+            } else {
+                alert("Buttons are active on 'Explore Endless Fun!' slide.");
+            }
+        }
+
+        // Widget close function
         function closeWidget() {
-            document.getElementById('botIframe').style.display = 'none';
-            document.getElementById('close-widget').style.display = 'none';
+            const widget = document.getElementById('widget');
+            widget.style.display = 'none';
         }
     </script>
 </body>
