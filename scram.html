@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-Unscramble</title>
-   <link rel="icon" href="thewone.png" type="image/png">
+    <title>🎄 Merry Xmas Unscramble 🎄</title>
+    <link rel="icon" href="thewone.png" type="image/png">
     <style>
-        /* General reset */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
             font-family: 'Arial', sans-serif;
-            background: black;
+            background: #001f3f; /* Dark festive background */
             color: white;
             display: flex;
             justify-content: center;
@@ -21,89 +20,90 @@
             overflow: hidden;
         }
 
-        /* Main container */
         #main-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            background: radial-gradient(circle, white 20%, black 80%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 5px solid gold;
+            border-radius: 20px;
+            box-shadow: 0 0 20px gold;
+            width: 90%;
+            max-width: 500px;
         }
 
-        /* Scrambled word display - gold and giant size */
-        #scrambled-word {
-            font-size: 60px;
-            margin-bottom: 20px;
+        h1 {
+            font-size: 36px;
             color: gold;
-            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px red;
         }
 
-        /* Input area */
+        p {
+            color: #ffcccb;
+            margin-bottom: 20px;
+        }
+
+        #scrambled-word {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #ffcc00;
+            text-shadow: 0 0 5px white;
+        }
+
         input[type="text"] {
-            width: 60%;
+            width: 80%;
             padding: 15px;
             font-size: 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             margin-bottom: 20px;
             text-align: center;
             outline: none;
+            box-shadow: 0 0 10px white;
         }
 
-        input[type="text"]:focus {
-            box-shadow: 0 0 10px 2px white;
-        }
-
-        /* Submit button - black text */
         #submit-btn {
             padding: 10px 20px;
-            font-size: 18px;
+            font-size: 20px;
             background-color: #ff4c4c;
             border: none;
-            border-radius: 5px;
-            color: black;
+            border-radius: 10px;
+            color: white;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
         #submit-btn:hover {
             background-color: #ff1a1a;
         }
 
-        /* Response section */
         #response {
             margin-top: 20px;
             font-size: 22px;
+        }
+
+        #timer, #score {
+            font-size: 22px;
+            margin: 10px 0;
+        }
+
+        .milestone {
+            color: lime;
+            font-size: 28px;
+            text-shadow: 0 0 5px white;
+        }
+
+        #secret-code {
+            font-size: 36px;
+            color: red;
+            background: black;
+            padding: 10px;
+            border: 2px solid lime;
+            margin-top: 20px;
             display: none;
         }
 
-        /* Timer display */
-        #timer {
-            font-size: 24px;
-            color: white;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        /* Score display */
-        #score {
-            font-size: 24px;
-            color: white;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-        }
-
-        /* Home button */
         #home-btn {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
+            margin-top: 20px;
             padding: 10px 20px;
             background-color: pink;
             color: white;
@@ -111,17 +111,18 @@
             border-radius: 5px;
             cursor: pointer;
             text-align: center;
-            transition: background-color 0.3s;
         }
 
-        #home-btn:hover {
-            background-color: #ff66b2;
-        }
-
-        /* Responsive styles */
         @media (max-width: 600px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            #scrambled-word {
+                font-size: 36px;
+            }
+
             input[type="text"] {
-                width: 80%;
                 font-size: 16px;
             }
 
@@ -129,101 +130,609 @@
                 font-size: 16px;
             }
 
-            #scrambled-word {
-                font-size: 40px;
+            #timer, #score {
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
     <div id="main-container">
-        <h1>AI-Unscramble</h1>
-        <p style="color: red;">Unscramble the letters to form a name!</p>
-
-        <div id="timer">Time Left: <span id="time">60</span>s</div>
-        <div id="score">Score: <span id="score-value">0</span></div>
+        <h1>🎄 Merry Xmas Unscramble 🎅</h1>
+        <p>Unscramble the letters to find a name! 🎁✨</p>
+        <div id="timer">⏱ Time Left: <span id="time">60</span>s</div>
+        <div id="score">⭐ Score: <span id="score-value">0</span></div>
         <div id="scrambled-word">Loading...</div>
-
         <input type="text" id="user-input" placeholder="Type your answer here..." />
-        <button id="submit-btn">Submit</button>
-
+        <button id="submit-btn">Submit 🎯</button>
         <div id="response"></div>
-        <div id="home-btn" onclick="goHome()">Home</div>
+        <div id="secret-code"></div>
+        <div id="home-btn" onclick="goHome()">🏠 Back Home</div>
     </div>
 
     <script>
-        const names = ['Albert Einstein', 'Isaac Newton', 'Marie Curie', 'Charles Darwin', 'Galileo Galilei', 'Ada Lovelace'];
-        let currentScrambledWord = '';
+        const names = [
+    'Santa Claus',
+    'Frosty Snowman',
+    'Rudolph',
+    'Elves Workshop',
+    'Winter Wonderland',
+    'Jack Frost',
+    'Mrs. Claus',
+    'The Grinch',
+    'Holiday Cheer',
+    'Candy Cane',
+    'Mistletoe Magic',
+    'Nutcracker',
+    'Snowflakes',
+    'Reindeer Games',
+    'Yule Log',
+    'Sugarplum Fairy',
+    'Silent Night',
+    'Frostbite',
+    'Snowman Parade',
+    'Jingle Bells',
+    'Christmas Tree',
+    'North Pole',
+    'Gingerbread House',
+    'Tinsel Town',
+    'Polar Express',
+    'Holly Jolly',
+    'Peppermint Bark',
+    'Little Drummer Boy',
+    'Snowy Owl',
+    'Twelve Days',
+    'Deck the Halls',
+    'Caroling Choir',
+    'Silver Bells',
+    'Christmas Eve',
+    'Eggnog Delight',
+    'Magic Sleigh',
+    'Icicle Lights',
+    'Festive Spirit',
+    'Joyful Tidings',
+    'Star of Bethlehem',
+    'Noel Celebration',
+    'Angel Wings',
+    'Bethlehem Night',
+    'Silent Snowfall',
+    'Cranberry Sauce',
+    'Peaceful Night',
+    'Evergreen Forest',
+    'Ornament Sparkle',
+    'Holiday Traditions',
+    'White Christmas',
+    'Christmas Stocking',
+    'Holiday Feast',
+    'Chestnut Roast',
+    'Winter Solstice',
+    'Pinecone Garland',
+    'Red-Nosed Reindeer',
+    'Twinkling Lights',
+    'Holiday Wreath',
+    'St. Nicholas',
+    'Chimney Magic',
+    'Fireside Glow',
+    'Season of Giving',
+    'Holiday Bliss',
+    'Hot Cocoa',
+    'Snowy Landscape',
+    'December Nights',
+    'Christmas Market',
+    'Cozy Fireplace',
+    'Crimson Ribbon',
+    'Golden Star',
+    'Midnight Mass',
+    'Carrot Nose',
+    'Santa’s Workshop',
+    'Blizzard Bells',
+    'Winter Mittens',
+    'Christmas Carols',
+    'Tinsel Sparkle',
+    'Snow Globe',
+    'Winter Magic',
+    'Glistening Snow',
+    'Ice Skates',
+    'Holiday Bells',
+    'Christmas Spirit',
+    'Reindeer Sleigh',
+    'Candy Cane Lane',
+    'Frosty Air',
+    'Holiday Parade',
+    'Christmas Cookie',
+    'Santa’s Sack',
+    'Magic Reindeer',
+    'Sugar Cookies',
+    'Winter Cabin',
+    'Elf Hat',
+    'Snow Angel',
+    'Gift Wrap',
+    'Jolly Santa',
+    'Holiday Memories',
+    'Golden Sleigh',
+    'Christmas Garland',
+    'Icicle Stars',
+    'Winter Frost',
+    'Starlit Night',
+    'Wreath of Joy',
+    'Snowman Family',
+    'Merry Bells',
+    'Winter Wonderland',
+    'Christmas Snow',
+    'Holiday Stars',
+    'Candy Cane Forest',
+    'Santa’s Reindeer',
+    'Frosted Window',
+    'Jingle Jangle',
+    'Icicle Wonderland',
+    'Reindeer Hoofprints',
+    'Frozen River',
+    'Snowfall Serenade',
+    'Yuletide Cheer',
+    'Santa’s Elves',
+    'Baking Cookies',
+    'Snowy Peaks',
+    'Christmas Countdown',
+    'Mistletoe Moment',
+    'Glowing Tree',
+    'North Pole Village',
+    'Warm Fireplace',
+    'Gift Exchange',
+    'Snowy Night Sky',
+    'Festive Lights',
+    'Candy Cane Wishes',
+    'Tinsel Twinkle',
+    'Reindeer Antlers',
+    'Holly Berries',
+    'Merry Mornings',
+    'Jolly Carolers',
+    'Snowy Mountains',
+    'Poinsettia Bouquet',
+    'Yule Tide',
+    'Wishing Star',
+    'Christmas Wish',
+    'Starry Night',
+    'Holiday Snowfall',
+    'Polar Bear',
+    'Christmas Spruce',
+    'Reindeer Sleigh Ride',
+    'Winter Wonderland Lane',
+    'Candy Cane Delight',
+    'Frosted Fir Tree',
+    'Sugarplum Dance',
+    'Snowflake Delight',
+    'Cozy Cabin',
+    'Winter Wonderland Party',
+    'Snowman’s Nose',
+    'Holly Jolly Season',
+    'Holiday Moments',
+    'Santa’s Little Helpers',
+    'Frosty Nights',
+    'Peppermint Dreams',
+    'Christmas Joy',
+    'Jingle All the Way',
+    'Sleigh Ride',
+    'Snowball Fight',
+    'Wondrous Winter',
+    'Santa’s Secret',
+    'Christmas Eve Dinner',
+    'Sleigh Bells Ring',
+    'Frosted Pines',
+    'Reindeer Flight',
+    'Christmas Tinsel',
+    'Merry Wishes'
+    'Snowstorm Bliss',
+    'Twilight Snowfall',
+    'Santa’s List',
+    'Ice Crystal',
+    'Winter Sparkles',
+    'Sleigh Bells',
+    'Merry Moments',
+    'Holiday Wishes',
+    'Pine Needle Breeze',
+    'Tinsel Dream',
+    'Christmas Spirit',
+    'Sparkling Frost',
+    'Jolly Holly',
+    'Winter Sunrise',
+    'Frosty Shadows',
+    'Red Ribbon',
+    'Yuletide Magic',
+    'Snowy Grove',
+    'Winter Cheer',
+    'Frosty Friends',
+    'Merry Time',
+    'North Pole Expedition',
+    'Holiday Embrace',
+    'Twinkle Lights',
+    'Evergreen Glow',
+    'Jingle Sparkle',
+    'Christmas Carols',
+    'Frosty Hug',
+    'Snowfall Wishes',
+    'Santa’s Reindeer Sleigh',
+    'Magic Snowflakes',
+    'Winter Lights',
+    'Frozen Dream',
+    'Tinsel Heart',
+    'Holly Leaf',
+    'Snowball Dance',
+    'Wandering Santa',
+    'Gift of Snow',
+    'Shimmering Snowflakes',
+    'Jolly Elf',
+    'Frosted Berries',
+    'Winter Breeze',
+    'Frosty Footprints',
+    'Glistening Night',
+    'Holiday Spice',
+    'Festive Feast',
+    'Jingle Joy',
+    'Winter Eve',
+    'Snowy Path',
+    'Pine Forest',
+    'Frosty Noel',
+    'Gingerbread Delight',
+    'Glittering Snow',
+    'Snowy Skies',
+    'Candy Cane Delight',
+    'Chilly Christmas',
+    'Glowing Mornings',
+    'Pinecone Snow',
+    'North Pole Lights',
+    'Silent Christmas',
+    'Christmas Morning Glow',
+    'Shiny Baubles',
+    'Christmas Rejoice',
+    'Festive Wishes',
+    'Winter Solstice Dream',
+    'Snowstorm Dance',
+    'Magical Mornings',
+    'Frosty Kingdom',
+    'Reindeer Wonder',
+    'Snowflake Wishes',
+    'Frosted Pinecones',
+    'Sleigh Ride Magic',
+    'Holiday Frost',
+    'Yuletide Gifts',
+    'Winter Wonderland Dreams',
+    'Merry Tidings',
+    'Starry Frost',
+    'Jolly Jingle',
+    'Snowy Meadows',
+    'Holly Glow',
+    'Frosty Festivities',
+    'Snowfall Dreams',
+    'Merry Ice',
+    'Jingle Snowflakes',
+    'Winter Light',
+    'Glistening Icicles',
+    'Silent Night Sky',
+    'Frozen World',
+    'Caroling Cheer',
+    'Winter Crown',
+    'Reindeer Joy',
+    'Snowflakes Glow',
+    'Cinnamon Spice',
+    'Winter Glow',
+    'Snow Angel Dreams',
+    'Magical Wonderland',
+    'Christmas Joyride',
+    'Holly Jolly Moments',
+    'Tinsel Glow',
+    'Snow Crystal',
+    'Gingerbread Magic',
+    'Santa’s Journey',
+    'Frosty Wonderland',
+    'Holiday Glow',
+    'Mistletoe Dream',
+    'Winter Whispers',
+    'Christmas Glow',
+    'Santa’s Sleigh Ride',
+    'Tinsel Sparkles',
+    'Cinnamon Snowflakes',
+    'Winter Radiance',
+    'Frosty Wishes',
+    'Snowfall Bliss',
+    'Yule Wish',
+    'Peppermint Snow',
+    'Christmas Feels',
+    'Reindeer Parade',
+    'Merry Night',
+    'Icicle Chill',
+    'Jolly Lights',
+    'Snowstorm Nights',
+    'Mistletoe Blessings',
+    'Holiday Glee',
+    'Frozen Decorations',
+    'Santa’s Workshop Magic',
+    'Glitter Snowflakes',
+    'Snowy Delight',
+    'Magic in the Snow',
+    'Jingle Joyful',
+    'Winter Radiance',
+    'Christmas Snowfall',
+    'Reindeer Snowfall',
+    'Tinsel Holiday',
+    'Yule Celebration',
+    'Snowman Wonder',
+    'Holly Hues',
+    'Christmas Sparkles',
+    'Snowflake Radiance',
+    'Merry Day',
+    'Frosted Glow',
+    'Sugarplum Dreams',
+    'Snow Magic',
+    'Holiday Happiness',
+    'Jolly Reindeer',
+    'Christmas Breeze',
+    'North Pole Christmas',
+    'Frosted Joy',
+    'Snowflakes Tinsel',
+    'Gingerbread Wishes',
+    'Yule Tidings',
+    'Holly Noel',
+    'Snowdreams',
+    'Tinsel Fantasy',
+    'Christmas Frost',
+    'Winter Glee',
+    'Magic of Christmas',
+    'Peppermint Cheer',
+    'Winter Joy',
+    'Snowfall Parade',
+    'Frosty Wishes',
+    'Candy Cane Dreams',
+    'Snowflake Wreath',
+    'Glittering Stars',
+    'Christmas Trees',
+    'Frozen Light',
+    'Jingle Lights'
+    'Winter Spark',
+    'Snow Crystal Glow',
+    'Frosty Dreamscape',
+    'Glistening Pines',
+    'Jingle Tinsel',
+    'Holiday Magic',
+    'Winter’s Embrace',
+    'Snowfall Symphony',
+    'Tinsel Twirl',
+    'Frosted Wishes',
+    'Christmas Eve Glow',
+    'Snowy Bliss',
+    'North Star Frost',
+    'Yuletide Journey',
+    'Icicle Sparkle',
+    'Winter Whimsy',
+    'Snowy Lights',
+    'Mistletoe Moments',
+    'Sugar Frost',
+    'Twinkling Snowflakes',
+    'Frosty Dreams',
+    'Winter Song',
+    'Snow Flurry',
+    'Jingle Bells Joy',
+    'Frost’s Kiss',
+    'Chilly Cheer',
+    'Holiday Spirits',
+    'Magic of Yule',
+    'Warming Fireside',
+    'Frosted Mornings',
+    'Pine and Snow',
+    'Christmas Nightfall',
+    'Frozen Wishes',
+    'Snowy Pathways',
+    'Snowflake Bliss',
+    'Winter Memories',
+    'Jolly Glow',
+    'Twilight Tinsel',
+    'Snowstorm Joy',
+    'Winter Night Lights',
+    'Glowing Christmas',
+    'Winter’s Heart',
+    'Tinsel Dreamer',
+    'Frosty Whispers',
+    'Snow Dreamer',
+    'Merry Skies',
+    'Silent Snow',
+    'Snow Glistens',
+    'Winter Wonderland Magic',
+    'Tinsel Dreams',
+    'Frosted Pines',
+    'Gingerbread Frost',
+    'Holiday Lightshow',
+    'Peppermint Chill',
+    'Frosty Mist',
+    'Snowfall Parade',
+    'Santa’s Snowfall',
+    'Yuletide Sparkles',
+    'Icicle Glow',
+    'Jolly Journey',
+    'Christmas Spirit Dance',
+    'Glittering Pines',
+    'Frozen Bells',
+    'Snowy Glow',
+    'Snowflake Magic',
+    'Winter Serenade',
+    'Frosty Kisses',
+    'Sugar Snowflakes',
+    'Holiday Bells',
+    'Tinsel Parade',
+    'Frost’s Touch',
+    'Glitter Snowfall',
+    'Snowball Fight',
+    'Sparkling Christmas',
+    'Winter Glisten',
+    'Frozen Firelight',
+    'Snowy Wishes',
+    'Yule Time',
+    'Christmas Dreamer',
+    'Merry Mornings',
+    'Snow Flurry Dreams',
+    'Pinecone Delight',
+    'Snowy Trails',
+    'Christmas Snowfall',
+    'Jingle Bells Sparkle',
+    'Snowflake Waltz',
+    'Frosted Dreams',
+    'Tinsel Twinkle',
+    'Winter Frosted Path',
+    'Ice Crystal Dreams',
+    'Candy Cane Glow',
+    'Frosted Woods',
+    'Snow Blanket',
+    'Winter Reflection',
+    'Jolly Snow',
+    'Frozen Beauty',
+    'Winter Firelight',
+    'Frosty Serenity',
+    'Silent Snowfall',
+    'Frozen Pathways',
+    'Tinsel Wishes',
+    'Snowy Wonderland',
+    'Christmas Ember',
+    'North Pole Snow',
+    'Frosted Evergreens',
+    'Holiday Frost',
+    'Jingle Snowfall',
+    'Twinkling Tinsel',
+    'Pine Frost',
+    'Winter’s Embrace',
+    'Frosty Sparkle',
+    'Christmas Glowup',
+    'Snow Mist',
+    'Yuletide Glow',
+    'Silent Frost',
+    'Reindeer Sparkle',
+    'Frosted Flurries',
+    'Jolly Tinsels',
+    'Winter Snowflake',
+    'Snowy Jingles',
+    'Peppermint Snowfall',
+    'Frosted Starry Night',
+    'Tinsel Wishes',
+    'Chilly Dreamscape',
+    'Jingle Bells Sparkle',
+    'Winter Holly',
+    'Frozen Holiday',
+    'Frosty Yuletide',
+    'Winter Joyride',
+    'Glittered Snowfall',
+    'Frosted Morning Glow',
+    'Winter’s Joy',
+    'Tinsel Sparkles',
+    'Snowman’s Smile',
+    'Frosted Carols',
+    'Jolly Wonderland',
+    'Christmas Snowstorm',
+    'Tinsel Whispers',
+    'Yule Spirit',
+    'Winter Magic Lights',
+    'Glowing Snowflakes',
+    'Merry Moments',
+    'Frosty Noel',
+    'Sparkling Pines',
+    'Tinsel Morning',
+    'Holiday Hues',
+    'Jingle Journey',
+    'Frozen Angel',
+    'Winter Candlelight',
+    'Christmas Memories',
+    'Snowflake Serenade',
+    'Ice Snowfall',
+    'Frozen Heart',
+    'Frost’s Dream',
+    'Twilight Frost',
+    'Snowy Tinsel',
+    'Winter Fireside',
+    'Frosty Jingle Bells',
+    'Sugar Snowfall',
+    'Holiday Glisten',
+    'Frozen Star',
+    'Snow Angels Dream',
+    'Jingle Dreamer',
+    'Winter Eve Glow',
+    'Frosted Horizon',
+    'Snow Kissed Pines',
+    'Tinsel Frost',
+    'Frosty Wishes Glow',
+    'Winter Snow Dreams'
+];
+
+
         let correctAnswer = '';
         let score = 0;
+        const timeLimit = 60;
         let timer;
-        const timeLimit = 60; // 1 minute timer
 
         function scramble(word) {
-            return word.split('').sort(() => 0.5 - Math.random()).join('');
+            return word.split('').sort(() => Math.random() - 0.5).join('');
         }
 
         function loadNewScramble() {
             const randomIndex = Math.floor(Math.random() * names.length);
             correctAnswer = names[randomIndex];
-            currentScrambledWord = scramble(correctAnswer.replace(/\s+/g, '')); // Scramble without spaces
-            document.getElementById('scrambled-word').textContent = currentScrambledWord;
-            document.getElementById('response').style.display = 'none';
+            document.getElementById('scrambled-word').textContent = scramble(correctAnswer.replace(/\s+/g, ''));
+            document.getElementById('response').textContent = '';
             startTimer();
         }
 
         function startTimer() {
             let timeLeft = timeLimit;
-            document.getElementById('time').innerText = timeLeft;
+            document.getElementById('time').textContent = timeLeft;
+            clearInterval(timer);
             timer = setInterval(() => {
                 timeLeft--;
-                document.getElementById('time').innerText = timeLeft;
+                document.getElementById('time').textContent = timeLeft;
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    alert("Time's up! You lose!");
-                    endGame();
+                    alert("🎅 Time's up! Try again! 🎄");
+                    score = 0;
+                    document.getElementById('score-value').textContent = score;
                 }
             }, 1000);
         }
 
-        document.getElementById('submit-btn').addEventListener('click', function() {
-            let userAnswer = document.getElementById('user-input').value.trim();
-            let responseDiv = document.getElementById('response');
+        function checkAnswer() {
+            const userInput = document.getElementById('user-input').value.trim().toLowerCase();
+            const response = document.getElementById('response');
 
-            if (userAnswer.toLowerCase() === "vuyani2007") {
-                score += 500; // Cheat code
-                responseDiv.textContent = 'How did you know? 🎉 You earned 500 points!';
-                responseDiv.style.color = 'lime';
-            } else if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-                score += 5; // Correct answer earns 5 points
-                responseDiv.textContent = 'Correct! 🎉 The answer is: ' + correctAnswer;
-                responseDiv.style.color = 'lime';
+            if (userInput === "merryx-mas") {
+                score += 500;
+                response.textContent = "🎉 Secret code activated! +500 points!";
+                response.style.color = 'gold';
+            } else if (userInput === correctAnswer.toLowerCase()) {
+                score += 5;
+                response.textContent = ✅ Correct! ${correctAnswer};
+                response.style.color = 'lime';
             } else {
-                responseDiv.textContent = 'Incorrect! Try again.';
-                responseDiv.style.color = 'red';
+                response.textContent = "❌ Incorrect. Try again!";
+                response.style.color = 'red';
             }
 
-            document.getElementById('score-value').innerText = score;
-            responseDiv.style.display = 'block';
-            loadNewScramble(); // Load a new scramble
-        });
+            document.getElementById('score-value').textContent = score;
 
-        document.getElementById('user-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('submit-btn').click();
+            if (score >= 5000) {
+                response.innerHTML = <span class="milestone">🎉 Congratulations! You've reached 5000 points! 🎊</span>;
             }
-        });
 
-        function endGame() {
-            alert(`Game Over! Your score is: ${score}`);
-            // Optionally, reset the game
-            score = 0;
-            document.getElementById('score-value').innerText = score;
-            loadNewScramble(); // Restart fetching questions
+            if (score >= 1000000) {
+                document.getElementById('secret-code').style.display = 'block';
+                document.getElementById('secret-code').textContent = "🌟 Code: christmas-xmas20242512 🌟";
+            }
+
+            loadNewScramble();
         }
 
+        document.getElementById('submit-btn').addEventListener('click', checkAnswer);
+
+        document.getElementById('user-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
         function goHome() {
-            window.location.href = "https://vgames1.github.io/vgames.github.io/";
+            window.location.href = "https://vuyani1.github.io/";
         }
 
         window.onload = loadNewScramble;
