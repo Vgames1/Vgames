@@ -254,3 +254,126 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGAMES Website</title>
+    <style>
+        /* Website Content Style */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #1e1e2f, #283046);
+            color: white;
+            overflow-x: hidden;
+        }
+        .content {
+            padding: 20px;
+        }
+
+        /* Pop-up Widget */
+        #popup-ad {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(45deg, #ff007f, #7f00ff);
+            color: white;
+            box-shadow: 0px -5px 20px rgba(255, 0, 127, 0.5);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transform: translateY(100%);
+            transition: transform 0.5s ease-in-out;
+            z-index: 1000;
+        }
+        #popup-ad.show {
+            transform: translateY(0);
+        }
+        #popup-ad .message {
+            font-size: 18px;
+            animation: glowing 1.5s infinite;
+        }
+        @keyframes glowing {
+            0% { text-shadow: 0 0 5px #ff007f, 0 0 10px #ff007f, 0 0 20px #7f00ff; }
+            50% { text-shadow: 0 0 10px #7f00ff, 0 0 20px #ff007f, 0 0 30px #ff007f; }
+            100% { text-shadow: 0 0 5px #ff007f, 0 0 10px #7f00ff, 0 0 20px #ff007f; }
+        }
+        #popup-ad .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            background: white;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #ff007f;
+            color: white;
+        }
+        .close-btn {
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 20px;
+            background: none;
+            border: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Welcome to VGAMES!</h1>
+        <p>Enjoy our amazing games and features!</p>
+    </div>
+
+    <div id="popup-ad">
+        <div class="message">Download the <strong>VGAMES Mobile Edition</strong> now!</div>
+        <div class="buttons">
+            <button class="btn" id="download-btn">Download</button>
+            <button class="close-btn" id="close-btn">X</button>
+        </div>
+    </div>
+
+    <script>
+        // Check if the device is a PC
+        function isPC() {
+            return !(/Android|iPhone|iPad|iPod|BlackBerry|Windows Phone|webOS/i.test(navigator.userAgent));
+        }
+
+        // Show pop-up ad only on PC
+        document.addEventListener("DOMContentLoaded", () => {
+            const popupAd = document.getElementById("popup-ad");
+            const downloadBtn = document.getElementById("download-btn");
+            const closeBtn = document.getElementById("close-btn");
+
+            if (isPC()) {
+                setTimeout(() => {
+                    popupAd.classList.add("show");
+                }, 2000); // Delay showing the pop-up by 2 seconds
+            }
+
+            
+// Download button functionality
+downloadBtn.addEventListener("click", () => {
+    window.location.href = "https://vgames1.github.io/vgames_loading.html";
+});
+
+            // Close button functionality
+            closeBtn.addEventListener("click", () => {
+                popupAd.classList.remove("show");
+            });
+        });
+    </script>
+</body>
+</html>
