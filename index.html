@@ -95,28 +95,6 @@
             transform: translateY(-2px);
             background: rgba(255, 255, 255, 0.25);
         }
-
-        /* Widget container */
-        #bot-widget {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            z-index: 1000;
-            border-radius: 12px;
-            border: 2px solid #fff;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-        }
-        #close-btn {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: red;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 0.8em;
-            border-radius: 0 12px 0 12px;
-        }
     </style>
 </head>
 <body>
@@ -150,12 +128,6 @@
     <div id="slide4" class="slide slide4">
         <h1>Thank You for Playing!</h1>
         <div class="clock" id="clock4"></div>
-    </div>
-
-    <!-- Bot Widget -->
-    <div id="bot-widget">
-        <button id="close-btn" onclick="removeWidget()">X</button>
-        <iframe src="https://vcloud24.github.io/bot2.html" width="250" height="400" style="border: none;"></iframe>
     </div>
 
     <script>
@@ -201,10 +173,6 @@
                 alert("Buttons are only active during Slide 3.");
             }
         }
-
-        function removeWidget() {
-            document.getElementById('bot-widget').remove();
-        }
     </script>
 </body>
 </html>
@@ -213,74 +181,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VGAMES Pop-Up Ad</title>
+    <title>VGAMES Website</title>
     <style>
-        /* Pop-up styling */
-        #popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #fff;
-            border-radius: 10px;
+        /* Website Content Style */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #1e1e2f, #283046);
+            color: white;
+            overflow-x: hidden;
+        }
+        .content {
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 9999;
-            text-align: center;
-            display: none;
         }
-        #popup h2 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
+
+        /* Pop-up Widget */
+        #popup-ad {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(45deg, #ff007f, #7f00ff);
+            color: white;
+            box-shadow: 0px -5px 20px rgba(255, 0, 127, 0.5);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transform: translateY(100%);
+            transition: transform 0.5s ease-in-out;
+            z-index: 1000;
         }
-        #popup button {
-            padding: 10px 20px;
+        #popup-ad.show {
+            transform: translateY(0);
+        }
+        #popup-ad .message {
+            font-size: 18px;
+            animation: glowing 1.5s infinite;
+        }
+        @keyframes glowing {
+            0% { text-shadow: 0 0 5px #ff007f, 0 0 10px #ff007f, 0 0 20px #7f00ff; }
+            50% { text-shadow: 0 0 10px #7f00ff, 0 0 20px #ff007f, 0 0 30px #ff007f; }
+            100% { text-shadow: 0 0 5px #ff007f, 0 0 10px #7f00ff, 0 0 20px #ff007f; }
+        }
+        #popup-ad .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            background: white;
+            color: black;
             border: none;
+            padding: 10px 20px;
+            font-size: 16px;
             border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
             cursor: pointer;
         }
-        #popup button:hover {
-            background-color: #0056b3;
+        .btn:hover {
+            background: #ff007f;
+            color: white;
+        }
+        .close-btn {
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 20px;
+            background: none;
+            border: none;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <div id="popup">
-        <h2>Download VGAMES Mobile Edition</h2>
-        <p>Tap the button below to download <strong>_VGAMES_Mobile_Edition_18432587.apk</strong> now!</p>
-        <button id="downloadButton">Download Now</button>
+    <div class="content">
+        <h1>Welcome to VGAMES!</h1>
+        <p>Enjoy our amazing games and features!</p>
+    </div>
+
+    <div id="popup-ad">
+        <div class="message">Download the <strong>VGAMES Mobile Edition</strong> now!</div>
+        <div class="buttons">
+            <button class="btn" id="download-btn">Download</button>
+            <button class="close-btn" id="close-btn">X</button>
+        </div>
     </div>
 
     <script>
-        // Show pop-up only on PC
+        // Check if the device is a PC
         function isPC() {
-            return !/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            return !(/Android|iPhone|iPad|iPod|BlackBerry|Windows Phone|webOS/i.test(navigator.userAgent));
         }
 
-        window.onload = function () {
-            if (isPC()) {
-                const popup = document.getElementById('popup');
-                popup.style.display = 'block';
+        // Show pop-up ad only on PC
+        document.addEventListener("DOMContentLoaded", () => {
+            const popupAd = document.getElementById("popup-ad");
+            const downloadBtn = document.getElementById("download-btn");
+            const closeBtn = document.getElementById("close-btn");
 
-                // Download APK on button click
-                document.getElementById('downloadButton').onclick = function () {
-                    const a = document.createElement('a');
-                    a.href = '_VGAMES_Mobile_Edition_18432587.apk'; // APK File URL
-                    a.download = '_VGAMES_Mobile_Edition_18432587.apk';
-                    a.click();
-                };
+            if (isPC()) {
+                setTimeout(() => {
+                    popupAd.classList.add("show");
+                }, 2000); // Delay showing the pop-up by 2 seconds
             }
-        };
+
+            // Download button functionality
+            downloadBtn.addEventListener("click", () => {
+                window.location.href = "_VGAMES_Mobile_Edition_18432587.apk";
+            });
+
+            // Close button functionality
+            closeBtn.addEventListener("click", () => {
+                popupAd.classList.remove("show");
+            });
+        });
     </script>
 </body>
 </html>
-if ('serviceWorker' in navigator && 'PushManager' in window) {
-    navigator.serviceWorker.register('service-worker.js')
-        .then(function(registration) {
-            console.log('Service Worker registered with scope:', registration.scope);
-        }).catch(function(error) {
-            console.error('Service Worker registration failed:', error);
-        });
-}
