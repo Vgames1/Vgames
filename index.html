@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VGAMES</title>
+    <title>VGAMES - Mobile Edition</title>
     <link rel="icon" href="ILOGOT.jpeg" type="image/jpeg">
     <style>
-        /* Base Reset */
+        /* Reset and base styles */
         * {
             margin: 0;
             padding: 0;
@@ -15,10 +15,11 @@
         }
         body, html {
             height: 100%;
-            background: linear-gradient(to bottom, #00416a, #e4e5e6);
+            background: linear-gradient(135deg, #d43e20, #cda434); /* Festive colors */
+            overflow: hidden;
         }
 
-        /* Slide styles */
+        /* Slide container */
         .slide {
             position: absolute;
             top: 0;
@@ -30,92 +31,91 @@
             justify-content: center;
             align-items: center;
             color: white;
-            font-size: 2em;
-            opacity: 0;
-            transition: opacity 1s ease;
+            font-size: 1.5em;
             text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
         .visible {
             opacity: 1;
             z-index: 1;
         }
 
-        /* Slide Backgrounds */
-        .slide1 { background: radial-gradient(circle, #ff5757, #7d00a3); }
-        .slide2 { background: radial-gradient(circle, #00ff9e, #0a7096); }
-        .slide3 { background: radial-gradient(circle, #f0a202, #003f91); }
-        .slide4 { background: radial-gradient(circle, #3e92cc, #deecfc); }
+        /* Slide themes */
+        .slide1 {
+            background: linear-gradient(135deg, #ff5858, #f09819);
+        }
+        .slide2 {
+            background: linear-gradient(135deg, #2b5876, #4e4376);
+        }
+        .slide3 {
+            background: linear-gradient(135deg, #54c96f, #a1dd70);
+        }
+        .slide4 {
+            background: linear-gradient(135deg, #d43e20, #cda434);
+        }
 
-        /* Animated title */
+        /* Glow effect for headings */
         h1 {
-            color: #fff;
-            animation: glow 1.5s ease-in-out infinite alternate;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            animation: glow 1.5s infinite alternate ease-in-out;
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
         }
         @keyframes glow {
-            from { text-shadow: 0 0 10px #fff; }
-            to { text-shadow: 0 0 25px #ff6ec4; }
+            0% { text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.4); }
+            100% { text-shadow: 0px 0px 15px rgba(255, 255, 255, 1); }
         }
 
-        /* Game Buttons */
+        /* Clock style */
+        .clock {
+            font-size: 1.2em;
+            color: white;
+            margin-top: 10px;
+        }
+
+        /* Buttons */
         #game-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 10px;
             margin-top: 20px;
             justify-content: center;
         }
+
         .game-btn {
-            padding: 12px 20px;
-            font-size: 1em;
-            color: #fff;
+            padding: 10px 15px;
+            font-size: 0.9em;
+            color: white;
             background: rgba(255, 255, 255, 0.15);
-            border: 2px solid #fff;
-            border-radius: 10px;
+            border: 2px solid white;
+            border-radius: 8px;
             cursor: pointer;
             transition: transform 0.2s, background 0.3s;
         }
         .game-btn:hover {
-            transform: translateY(-4px);
+            transform: translateY(-2px);
             background: rgba(255, 255, 255, 0.25);
         }
 
-        /* Widget Style */
-        #widget {
+        /* Widget container */
+        #bot-widget {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            height: 400px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            border: 2px solid #fff;
-            border-radius: 15px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            bottom: 10px;
+            right: 10px;
             z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            border-radius: 12px;
+            border: 2px solid #fff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
         }
-        #widget-header {
-            padding: 10px;
-            background: linear-gradient(to right, #ff512f, #f09819);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: move;
-        }
-        #widget-content {
-            flex-grow: 1;
-            padding: 10px;
-            text-align: center;
-        }
-        .widget-close {
-            background: none;
-            border: none;
+        #close-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: red;
             color: white;
-            font-size: 1.2em;
+            border: none;
             cursor: pointer;
+            font-size: 0.8em;
+            border-radius: 0 12px 0 12px;
         }
     </style>
 </head>
@@ -123,16 +123,18 @@
     <!-- Slide 1 -->
     <div id="slide1" class="slide slide1 visible">
         <h1>Welcome to VGAMES</h1>
+        <div class="clock" id="clock1"></div>
     </div>
 
     <!-- Slide 2 -->
     <div id="slide2" class="slide slide2">
-        <h1>Ready for the Adventure?</h1>
+        <h1>Are You Ready for a Festive Adventure?</h1>
+        <div class="clock" id="clock2"></div>
     </div>
 
     <!-- Slide 3 -->
     <div id="slide3" class="slide slide3">
-        <h1>Explore Endless Fun!</h1>
+        <h1>Enjoy Christmas Games!</h1>
         <div id="game-buttons">
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/aquiz.html')">AQUIZ</button>
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/ball.html')">BALL DIE</button>
@@ -141,22 +143,19 @@
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/vai.html')">VUYANI AI</button>
             <button class="game-btn" onclick="redirectTo('https://vgames1.github.io/adventure.html')">ADVENTURE</button>
         </div>
+        <div class="clock" id="clock3"></div>
     </div>
 
     <!-- Slide 4 -->
     <div id="slide4" class="slide slide4">
         <h1>Thank You for Playing!</h1>
+        <div class="clock" id="clock4"></div>
     </div>
 
-    <!-- Floating Widget -->
-    <div id="widget">
-        <div id="widget-header">
-            <span>Help Widget</span>
-            <button class="widget-close" onclick="closeWidget()">×</button>
-        </div>
-        <div id="widget-content">
-            <p>How can we assist you?</p>
-        </div>
+    <!-- Bot Widget -->
+    <div id="bot-widget">
+        <button id="close-btn" onclick="removeWidget()">X</button>
+        <iframe src="https://vcloud24.github.io/bot2.html" width="250" height="400" style="border: none;"></iframe>
     </div>
 
     <script>
@@ -172,33 +171,39 @@
 
         function startSlideShow() {
             let slideInterval = setInterval(() => {
-                if (currentSlide === 2) { // Hold Slide 3 for 5 minutes (300 seconds)
+                if (currentSlide === 2) { // Hold Slide 3 for 5 minutes
                     showSlide(currentSlide);
                     setTimeout(() => {
                         currentSlide++;
                         showSlide(currentSlide);
-                    }, 300000); // 300000ms = 5 minutes
-                    clearInterval(slideInterval);
+                    }, 300000); // 5 minutes (300,000 ms)
+                    clearInterval(slideInterval); // Stop interval during Slide 3
                 } else {
                     currentSlide = (currentSlide + 1) % slides.length;
                     showSlide(currentSlide);
                 }
-            }, 5000);
+            }, 5000); // 5 seconds for other slides
         }
         startSlideShow();
+
+        function updateClock() {
+            const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.querySelectorAll('.clock').forEach(clock => {
+                clock.innerText = timeString;
+            });
+        }
+        setInterval(updateClock, 1000); // Update clock every second
 
         function redirectTo(url) {
             if (currentSlide === 2) {
                 window.location.href = url;
             } else {
-                alert("Buttons are active on 'Explore Endless Fun!' slide.");
+                alert("Buttons are only active during Slide 3.");
             }
         }
 
-        // Widget close function
-        function closeWidget() {
-            const widget = document.getElementById('widget');
-            widget.style.display = 'none';
+        function removeWidget() {
+            document.getElementById('bot-widget').remove();
         }
     </script>
 </body>
