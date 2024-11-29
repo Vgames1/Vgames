@@ -32,7 +32,7 @@
         }
 
         h1 {
-            font-size: 36px;
+            font-size: 28px;
             color: gold;
             margin-bottom: 10px;
             text-shadow: 0 0 10px red;
@@ -44,7 +44,7 @@
         }
 
         #scrambled-word {
-            font-size: 48px;
+            font-size: 36px;
             margin-bottom: 20px;
             color: #ffcc00;
             text-shadow: 0 0 5px white;
@@ -52,8 +52,8 @@
 
         input[type="text"] {
             width: 80%;
-            padding: 15px;
-            font-size: 20px;
+            padding: 10px;
+            font-size: 18px;
             border: none;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -63,8 +63,8 @@
         }
 
         #submit-btn {
-            padding: 10px 20px;
-            font-size: 20px;
+            padding: 10px 15px;
+            font-size: 18px;
             background-color: #ff4c4c;
             border: none;
             border-radius: 10px;
@@ -78,36 +78,20 @@
 
         #response {
             margin-top: 20px;
-            font-size: 22px;
+            font-size: 20px;
         }
 
         #timer, #score {
-            font-size: 22px;
+            font-size: 18px;
             margin: 10px 0;
-        }
-
-        .milestone {
-            color: lime;
-            font-size: 28px;
-            text-shadow: 0 0 5px white;
-        }
-
-        #secret-code {
-            font-size: 36px;
-            color: red;
-            background: black;
-            padding: 10px;
-            border: 2px solid lime;
-            margin-top: 20px;
-            display: none;
         }
 
         #home-btn {
             margin-top: 20px;
-            padding: 10px 20px;
+            padding: 10px;
             background-color: pink;
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
             text-align: center;
@@ -119,7 +103,7 @@
             }
 
             #scrambled-word {
-                font-size: 36px;
+                font-size: 28px;
             }
 
             input[type="text"] {
@@ -131,7 +115,7 @@
             }
 
             #timer, #score {
-                font-size: 18px;
+                font-size: 16px;
             }
         }
     </style>
@@ -146,12 +130,11 @@
         <input type="text" id="user-input" placeholder="Type your answer here..." />
         <button id="submit-btn">Submit 🎯</button>
         <div id="response"></div>
-        <div id="secret-code"></div>
         <div id="home-btn" onclick="goHome()">🏠 Back Home</div>
     </div>
 
     <script>
-        const names = [
+            const names = [
     'Santa Claus',
     'Frosty Snowman',
     'Rudolph',
@@ -656,86 +639,46 @@
     'Tinsel Frost',
     'Frosty Wishes Glow',
     'Winter Snow Dreams'
-];
-
-
-        let correctAnswer = '';
         let score = 0;
-        const timeLimit = 60;
-        let timer;
 
-        function scramble(word) {
+        const scrambledWordElement = document.getElementById('scrambled-word');
+        const userInput = document.getElementById('user-input');
+        const response = document.getElementById('response');
+        const scoreElement = document.getElementById('score-value');
+
+        let currentWord = '';
+        let currentScramble = '';
+
+        function scrambleWord(word) {
             return word.split('').sort(() => Math.random() - 0.5).join('');
         }
 
-        function loadNewScramble() {
-            const randomIndex = Math.floor(Math.random() * names.length);
-            correctAnswer = names[randomIndex];
-            document.getElementById('scrambled-word').textContent = scramble(correctAnswer.replace(/\s+/g, ''));
-            document.getElementById('response').textContent = '';
-            startTimer();
-        }
-
-        function startTimer() {
-            let timeLeft = timeLimit;
-            document.getElementById('time').textContent = timeLeft;
-            clearInterval(timer);
-            timer = setInterval(() => {
-                timeLeft--;
-                document.getElementById('time').textContent = timeLeft;
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    alert("🎅 Time's up! Try again! 🎄");
-                    score = 0;
-                    document.getElementById('score-value').textContent = score;
-                }
-            }, 1000);
+        function loadNewWord() {
+            currentWord = names[Math.floor(Math.random() * names.length)];
+            currentScramble = scrambleWord(currentWord);
+            scrambledWordElement.textContent = currentScramble;
         }
 
         function checkAnswer() {
-            const userInput = document.getElementById('user-input').value.trim().toLowerCase();
-            const response = document.getElementById('response');
-
-            if (userInput === "merryx-mas") {
-                score += 500;
-                response.textContent = "🎉 Secret code activated! +500 points!";
-                response.style.color = 'gold';
-            } else if (userInput === correctAnswer.toLowerCase()) {
-                score += 5;
-                response.textContent = ✅ Correct! ${correctAnswer};
-                response.style.color = 'lime';
+            const input = userInput.value.trim().toUpperCase();
+            if (input === 'START') {
+                score -= 3000;
+                response.textContent = 'Game started with -3000 points!';
+            } else if (input === 'BBB2') {
+                response.textContent = 'Game started with no debt!';
+            } else if (input.toLowerCase() === currentWord.toLowerCase()) {
+                score += 100;
+                response.textContent = 'Correct! 🎉';
             } else {
-                response.textContent = "❌ Incorrect. Try again!";
-                response.style.color = 'red';
+                response.textContent = 'Wrong answer! Try again.';
             }
-
-            document.getElementById('score-value').textContent = score;
-
-            if (score >= 5000) {
-                response.innerHTML = <span class="milestone">🎉 Congratulations! You've reached 5000 points! 🎊</span>;
-            }
-
-            if (score >= 1000000) {
-                document.getElementById('secret-code').style.display = 'block';
-                document.getElementById('secret-code').textContent = "🌟 Code: christmas-xmas20242512 🌟";
-            }
-
-            loadNewScramble();
+            scoreElement.textContent = score;
+            userInput.value = '';
+            loadNewWord();
         }
 
         document.getElementById('submit-btn').addEventListener('click', checkAnswer);
-
-        document.getElementById('user-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                checkAnswer();
-            }
-        });
-
-        function goHome() {
-            window.location.href = "https://vuyani1.github.io/";
-        }
-
-        window.onload = loadNewScramble;
+        loadNewWord();
     </script>
 </body>
 </html>
