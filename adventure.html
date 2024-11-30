@@ -105,145 +105,153 @@
         }
 
         // Story Variables
-const scenes = [
-    {
-        text: "You wake up in a mysterious village shrouded in mist. The air feels heavy with untold secrets.",
-        choices: [
-            { text: "Explore the village center.", nextScene: 1 },
-            { text: "Head towards the dark forest.", nextScene: 2 },
-            { text: "Knock on the mysterious house.", nextScene: 3 },
-            { text: "Speak to the strange man watching you from the shadows.", nextScene: 4 },
-        ]
-    },
-    // Scene 1: Village Center
-    {
-        text: "The village center is bustling with activity. Villagers glance at you curiously, whispering among themselves. A merchant beckons you to his stall.",
-        choices: [
-            { text: "Approach the merchant.", nextScene: 5 },
-            { text: "Ignore him and explore the nearby market.", nextScene: 6 },
-            { text: "Sit by the fountain and observe your surroundings.", nextScene: 7 },
-        ]
-    },
-    // Scene 2: Dark Forest
-    {
-        text: "The dark forest looms ahead. A faint howl echoes, sending shivers down your spine. The path splits into three.",
-        choices: [
-            { text: "Take the left path.", nextScene: 8 },
-            { text: "Take the middle path.", nextScene: 9 },
-            { text: "Take the right path.", nextScene: 10 },
-        ]
-    },
-    // Scene 3: Mysterious House
-    {
-        text: "The door creaks open, revealing a dimly lit room. An old woman greets you with a knowing smile.",
-        choices: [
-            { text: "Enter and speak with her.", nextScene: 11 },
-            { text: "Ask her about the village.", nextScene: 12 },
-            { text: "Politely excuse yourself and leave.", nextScene: 13 },
-        ]
-    },
-    // Scene 4: Mysterious Man
-    {
-        text: "The man in the shadows steps forward. His eyes are sharp, and his voice low. 'You're not from around here, are you?' he asks.",
-        choices: [
-            { text: "Tell him the truth.", nextScene: 14 },
-            { text: "Lie and claim you're a traveler.", nextScene: 15 },
-            { text: "Ignore him and walk away.", nextScene: 16 },
-        ]
-    },
-    // Scene 5: Merchant’s Stall
-    {
-        text: "The merchant shows you a collection of strange artifacts. 'Each of these holds a story,' he says. One item glows faintly.",
-        choices: [
-            { text: "Buy the glowing artifact.", nextScene: 17 },
-            { text: "Ask about the artifact.", nextScene: 18 },
-            { text: "Walk away.", nextScene: 19 },
-        ]
-    },
-    // Scene 6: Exploring the Market
-    {
-        text: "The market is lively. You hear snippets of conversations about missing villagers and strange occurrences in the forest.",
-        choices: [
-            { text: "Talk to the fruit vendor.", nextScene: 20 },
-            { text: "Eavesdrop on a group of villagers.", nextScene: 21 },
-            { text: "Continue walking through the market.", nextScene: 22 },
-        ]
-    },
-    // Scene 7: Fountain Observation
-    {
-        text: "As you sit by the fountain, a child approaches you with a note. 'The shadows are watching,' it reads.",
-        choices: [
-            { text: "Ask the child about the note.", nextScene: 23 },
-            { text: "Keep the note and look around for suspicious activity.", nextScene: 24 },
-            { text: "Ignore it and continue sitting.", nextScene: 25 },
-        ]
-    },
-    // Scene 8: Left Path in the Forest
-    {
-        text: "The left path leads to a clearing with strange carvings on the trees. You feel like you're being watched.",
-        choices: [
-            { text: "Examine the carvings.", nextScene: 26 },
-            { text: "Call out to see if anyone is there.", nextScene: 27 },
-            { text: "Quickly leave the clearing.", nextScene: 28 },
-        ]
-    },
-    // Scene 9: Middle Path in the Forest
-    {
-        text: "The middle path grows darker as you walk. Suddenly, a pair of glowing eyes appears in the shadows.",
-        choices: [
-            { text: "Approach cautiously.", nextScene: 29 },
-            { text: "Prepare to defend yourself.", nextScene: 30 },
-            { text: "Run back to the village.", nextScene: 31 },
-        ]
-    },
-    // Scene 10: Right Path in the Forest
-    {
-        text: "The right path leads to a small abandoned cabin. The door is slightly ajar.",
-        choices: [
-            { text: "Enter the cabin.", nextScene: 32 },
-            { text: "Inspect the area around the cabin.", nextScene: 33 },
-            { text: "Ignore the cabin and keep walking.", nextScene: 34 },
-        ]
-    },
-    // Scene 11: Inside the Mysterious House
-    {
-        text: "Inside the house, the old woman offers you tea. 'Beware the forest,' she says cryptically.",
-        choices: [
-            { text: "Ask her to elaborate.", nextScene: 35 },
-            { text: "Politely drink the tea.", nextScene: 36 },
-            { text: "Refuse the tea and leave.", nextScene: 37 },
-        ]
-    },
-    // Add several more paths with rich branching narratives...
-    // Expanding Faction Paths, Rivalries, Artifact Usage
-    {
-        text: "The village factions, the Lumina Knights and the Shadow Clan, offer you differing alliances.",
-        choices: [
-            { text: "Join the Lumina Knights.", nextScene: 38 },
-            { text: "Side with the Shadow Clan.", nextScene: 39 },
-            { text: "Refuse both factions.", nextScene: 40 },
-        ]
-    },
-    {
-        text: "The glowing artifact starts resonating with the mural you found in the underground temple.",
-        choices: [
-            { text: "Activate the artifact.", nextScene: 41 },
-            { text: "Hide it and leave the temple.", nextScene: 42 },
-            { text: "Seek guidance from the village elder.", nextScene: 43 },
-        ]
-    },
-    // Final Choices and Outcomes
-    {
-        text: "The village's fate hangs in the balance. Your choices will shape its destiny.",
-        choices: [
-            { text: "Lead the village to prosperity.", nextScene: 44 },
-            { text: "Embrace the darkness and rule with fear.", nextScene: 45 },
-            { text: "Abandon the village and seek new adventures.", nextScene: 46 },
-        ]
-    },
-];
+        const scenes = [
+            // Scene 0: Intro
+            {
+                text: "You wake up in a mysterious village shrouded in mist. The air feels heavy with untold secrets.",
+                choices: [
+                    { text: "Explore the village center.", nextScene: 1 },
+                    { text: "Head towards the dark forest.", nextScene: 2 },
+                    { text: "Knock on the mysterious house.", nextScene: 3 },
+                    { text: "Speak to the strange man watching you from the shadows.", nextScene: 4 },
+                ]
+            },
+            // Scene 1: Village Center
+            {
+                text: "The village center is bustling with activity. Villagers glance at you curiously, whispering among themselves. A merchant beckons you to his stall.",
+                choices: [
+                    { text: "Approach the merchant.", nextScene: 5 },
+                    { text: "Ignore him and explore the nearby market.", nextScene: 6 },
+                    { text: "Sit by the fountain and observe your surroundings.", nextScene: 7 },
+                ]
+            },
+            // Scene 2: Dark Forest
+            {
+                text: "The dark forest looms ahead. A faint howl echoes, sending shivers down your spine. The path splits into three.",
+                choices: [
+                    { text: "Take the left path.", nextScene: 8 },
+                    { text: "Take the middle path.", nextScene: 9 },
+                    { text: "Take the right path.", nextScene: 10 },
+                ]
+            },
+            // Scene 3: Mysterious House
+            {
+                text: "The door creaks open, revealing a dimly lit room. An old woman greets you with a knowing smile.",
+                choices: [
+                    { text: "Enter and speak with her.", nextScene: 11 },
+                    { text: "Ask her about the village.", nextScene: 12 },
+                    { text: "Politely excuse yourself and leave.", nextScene: 13 },
+                ]
+            },
+            // Scene 4: Mysterious Man
+            {
+                text: "The man in the shadows steps forward. His eyes are sharp, and his voice low. 'You're not from around here, are you?' he asks.",
+                choices: [
+                    { text: "Tell him the truth.", nextScene: 14 },
+                    { text: "Lie and claim you're a traveler.", nextScene: 15 },
+                    { text: "Ignore him and walk away.", nextScene: 16 },
+                ]
+            },
+            // Scene 5: Merchant’s Stall
+            {
+                text: "The merchant shows you a collection of strange artifacts. 'Each of these holds a story,' he says. One item glows faintly.",
+                choices: [
+                    { text: "Buy the glowing artifact.", nextScene: 17 },
+                    { text: "Ask about the artifact.", nextScene: 18 },
+                    { text: "Walk away.", nextScene: 19 },
+                ]
+            },
+            // Scene 6: Exploring the Market
+            {
+                text: "The market is lively. You hear snippets of conversations about missing villagers and strange occurrences in the forest.",
+                choices: [
+                    { text: "Talk to the fruit vendor.", nextScene: 20 },
+                    { text: "Eavesdrop on a group of villagers.", nextScene: 21 },
+                    { text: "Continue walking through the market.", nextScene: 22 },
+                ]
+            },
+            // Scene 7: Fountain Observation
+            {
+                text: "As you sit by the fountain, a child approaches you with a note. 'The shadows are watching,' it reads.",
+                choices: [
+                    { text: "Ask the child about the note.", nextScene: 23 },
+                    { text: "Keep the note and look around for suspicious activity.", nextScene: 24 },
+                    { text: "Ignore it and continue sitting.", nextScene: 25 },
+                ]
+            },
+            // Scene 8: Left Path in the Forest
+            {
+                text: "The left path leads to a clearing with strange carvings on the trees. You feel like you're being watched.",
+                choices: [
+                    { text: "Examine the carvings.", nextScene: 26 },
+                    { text: "Call out to see if anyone is there.", nextScene: 27 },
+                    { text: "Quickly leave the clearing.", nextScene: 28 },
+                ]
+            },
+            // Scene 9: Middle Path in the Forest
+            {
+                text: "The middle path grows darker as you walk. Suddenly, a pair of glowing eyes appears in the shadows.",
+                choices: [
+                    { text: "Approach cautiously.", nextScene: 29 },
+                    { text: "Prepare to defend yourself.", nextScene: 30 },
+                    { text: "Run back to the village.", nextScene: 31 },
+                ]
+            },
+            // Scene 10: Right Path in the Forest
+            {
+                text: "The right path leads to a small abandoned cabin. The door is slightly ajar.",
+                choices: [
+                    { text: "Enter the cabin.", nextScene: 32 },
+                    { text: "Inspect the area around the cabin.", nextScene: 33 },
+                    { text: "Ignore the cabin and keep walking.", nextScene: 34 },
+                ]
+            },
+            // Scene 11: Inside the Mysterious House
+            {
+                text: "Inside the house, the old woman offers you tea. 'Beware the forest,' she says cryptically.",
+                choices: [
+                    { text: "Ask her to elaborate.", nextScene: 35 },
+                    { text: "Politely drink the tea.", nextScene: 36 },
+                    { text: "Refuse the tea and leave.", nextScene: 37 },
+                ]
+            },
+            // Scene 12: Ask About the Village
+            {
+                text: "The old woman tells you that the village has been cursed, and only a brave soul can lift it.",
+                choices: [
+                    { text: "Ask her how you can break the curse.", nextScene: 38 },
+                    { text: "Leave the house immediately.", nextScene: 39 },
+                ]
+            },
+            // Add several more paths with rich branching narratives...
+            {
+                text: "The village factions, the Lumina Knights and the Shadow Clan, offer you differing alliances.",
+                choices: [
+                    { text: "Join the Lumina Knights.", nextScene: 40 },
+                    { text: "Side with the Shadow Clan.", nextScene: 41 },
+                    { text: "Refuse both factions.", nextScene: 42 },
+                ]
+            },
+            {
+                text: "The glowing artifact starts resonating with the mural you found in the underground temple.",
+                choices: [
+                    { text: "Activate the artifact.", nextScene: 43 },
+                    { text: "Hide it and leave the temple.", nextScene: 44 },
+                    { text: "Seek guidance from the village elder.", nextScene: 45 },
+                ]
+            },
+            // Final Choices and Outcomes
+            {
+                text: "The village's fate hangs in the balance. Your choices will shape its destiny.",
+                choices: [
+                    { text: "Lead the village to prosperity.", nextScene: 46 },
+                    { text: "Embrace the darkness and rule with fear.", nextScene: 47 },
+                    { text: "Abandon the village and seek new adventures.", nextScene: 48 },
+                ]
+            },
+        ];
 
- // Function to start the story
+        // Function to start the story
         function startStory() {
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('story-screen').style.display = 'block';
@@ -261,21 +269,9 @@ const scenes = [
             scene.choices.forEach(choice => {
                 const button = document.createElement('button');
                 button.textContent = choice.text;
-                button.onclick = () => showScene(choice.nextScene); // Show next scene when button is clicked
+                button.onclick = () => showScene(choice.nextScene); // Show next scene based on choice
                 choicesDiv.appendChild(button);
             });
-
-            // If no choices are left, end the game
-            if (scene.choices.length === 0) {
-                endGame(sceneIndex);
-            }
-        }
-
-        // Function to end the game
-        function endGame(sceneIndex) {
-            document.getElementById('story-screen').style.display = 'none';
-            document.getElementById('end-screen').style.display = 'block';
-            document.getElementById('end-message').textContent = `Your adventure ends here at scene ${sceneIndex}. Thanks for playing!`;
         }
 
         // Function to restart the game
