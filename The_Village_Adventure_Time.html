@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Village - Adventure Time</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(90deg, red, blue, green, yellow);
+            animation: backgroundColorChange 10s infinite;
+        }
+
+        @keyframes backgroundColorChange {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #security-check, #game-content {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1, h2, p {
+            margin: 0 0 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Security Check -->
+    <div id="security-check" style="display: block;">
+        <p>Please complete the security checks to proceed:</p>
+        <div>
+            <label>Enter one of the following: 1234, BOT, or 4321:</label>
+            <input id="code-input" type="text">
+            <button onclick="checkCode()">Submit</button>
+        </div>
+        <div id="auth-message" style="display: none;">
+            <p>Authenticate your device (PIN, Pattern, or Fingerprint):</p>
+            <button onclick="deviceAuthentication()">Authenticate</button>
+        </div>
+        <p id="error-message" style="color: red;"></p>
+    </div>
+
+    <!-- Game Screens -->
+    <div id="game-content" style="display: none;">
+        <div id="start-screen">
+            <h1>ADVENTURE TIME</h1>
+            <h2>The Village</h2>
+            <button onclick="startStory()">START</button>
+        </div>
+
+        <div id="story-screen" style="display: none;">
+            <p id="story-text"></p>
+            <div id="choices"></div>
+        </div>
+
+        <div id="end-screen" style="display: none;">
+            <p id="end-message"></p>
+            <button onclick="restartGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Security Measures
+        function checkCode() {
+            const input = document.getElementById('code-input').value;
+            if (["1234", "BOT", "4321"].includes(input.toUpperCase())) {
+                document.getElementById('auth-message').style.display = 'block';
+                document.getElementById('error-message').textContent = '';
+            } else {
+                document.getElementById('error-message').textContent = 'Incorrect code! Try again.';
+            }
+        }
+
+        function deviceAuthentication() {
+            alert('Device authenticated!');
+            document.getElementById('security-check').style.display = 'none';
+            document.getElementById('game-content').style.display = 'block';
+        }
+
+        // Story Variables
+        const scenes = [
+            {
+                text: "You wake up in a mysterious village shrouded in mist. A sense of adventure beckons.",
+                choices: [
+                    { text: "Explore the village center.", nextScene: 1 },
+                    { text: "Head towards the dark forest.", nextScene: 2 },
+                    { text: "Knock on the mysterious house.", nextScene: 3 },
+                ]
+            },
+            {
+                text: "The village center is bustling with activity. A merchant approaches you with a strange object.",
+                choices: [
+                    { text: "Buy the object.", nextScene: 4 },
+                    { text: "Ignore the merchant.", nextScene: 5 }
+                ]
+            },
+            {
+                text: "The forest is dark and eerie. You hear a growl nearby.",
+                choices: [
+                    { text: "Investigate the sound.", nextScene: 6 },
+                    { text: "Run back to the village.", nextScene: 7 },
+                    { text: "Climb a tree to get a better view.", nextScene: 8 }
+                ]
+            },
+            {
+                text: "The house door creaks open to reveal an old woman. She invites you in.",
+                choices: [
+                    { text: "Enter the house.", nextScene: 9 },
+                    { text: "Politely decline and leave.", nextScene: 10 },
+                    { text: "Ask her about the village.", nextScene: 11 }
+                ]
+            },
+        ];
+
+        function startStory() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('story-screen').style.display = 'block';
+            showScene(0);
+        }
+
+        function showScene(sceneIndex) {
+            const scene = scenes[sceneIndex];
+            document.getElementById('story-text').textContent = scene.text;
+            const choicesDiv = document.getElementById('choices');
+            choicesDiv.innerHTML = '';
+
+            scene.choices.forEach(choice => {
+                const button = document.createElement('button');
+                button.textContent = choice.text;
+                button.onclick = () => showScene(choice.nextScene);
+                choicesDiv.appendChild(button);
+            });
+
+            if (scene.choices.length === 0) {
+                endGame(sceneIndex);
+            }
+        }
+
+        function endGame(sceneIndex) {
+            document.getElementById('story-screen').style.display = 'none';
+            document.getElementById('end-screen').style.display = 'block';
+            document.getElementById('end-message').textContent = `Your adventure ends here at scene ${sceneIndex}. Thanks for playing!`;
+        }
+
+        function restartGame() {
+            document.getElementById('end-screen').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
