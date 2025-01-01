@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGAMES Website</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #4e54c8, #8f94fb);
+            font-family: 'Arial', sans-serif;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .magical-container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 3em;
+            text-shadow: 0 0 10px #fff, 0 0 20px #e3e3ff;
+        }
+
+        button {
+            background-color: #6a11cb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2575fc;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 8px;
+            border: none;
+            width: 80%;
+            margin: 10px 0;
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
+            margin-bottom: 10px;
+        }
+
+        .tab {
+            background: #6a11cb;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        .tab:hover {
+            background: #2575fc;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 5px #6a11cb;
+            }
+            to {
+                box-shadow: 0 0 20px #2575fc;
+            }
+        }
+
+        iframe {
+            width: 100%;
+            height: 80vh;
+            border: none;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .viewer-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="magical-container">
+        <h1>VGAMES Website</h1>
+        <p>Welcome to the magical world of VGAMES! Enter a URL to explore:</p>
+
+        <form id="browser-form" onsubmit="addTab(); return false;">
+            <input type="text" id="url-input" placeholder="Enter a URL (e.g., https://example.com)">
+            <button type="submit">Browse</button>
+        </form>
+
+        <div id="browse-options">
+            <p>Or choose a magical world to browse:</p>
+            <ul>
+                <li><a href="#" onclick="addTab('https://sflix2.to/')">SFlix</a></li>
+                <li><a href="#" onclick="addTab('https://ww.yesmovies.ag/')">YesMovies</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="tab-container" id="tab-container"></div>
+
+    <div class="viewer-container" id="viewer-container">
+        <iframe id="web-viewer"></iframe>
+    </div>
+
+    <script>
+        const tabContainer = document.getElementById('tab-container');
+        const viewerContainer = document.getElementById('viewer-container');
+        const webViewer = document.getElementById('web-viewer');
+        let tabs = [];
+
+        function addTab(url, isRedirect = false) {
+            const urlInput = url || document.getElementById('url-input').value;
+            if (!urlInput) {
+                alert('Please enter a valid URL.');
+                return;
+            }
+
+            const formattedUrl = urlInput.startsWith('http://') || urlInput.startsWith('https://') ? urlInput : `https://${urlInput}`;
+            const tabId = `tab-${Date.now()}`;
+
+            const tab = {
+                id: tabId,
+                url: formattedUrl,
+                isRedirect,
+                element: createTabElement(tabId, formattedUrl)
+            };
+
+            tabs.push(tab);
+            tabContainer.appendChild(tab.element);
+            switchTab(tab);
+
+            if (isRedirect) {
+                setTimeout(() => closeTab(tabId), 10000); // Close tab after 10 seconds if it's a redirect
+            }
+        }
+
+        function createTabElement(tabId, url) {
+            const tabElement = document.createElement('div');
+            tabElement.classList.add('tab');
+            tabElement.id = tabId;
+            tabElement.innerText = new URL(url).hostname;
+            tabElement.onclick = (e) => {
+                e.preventDefault();
+                switchTab(tabs.find(tab => tab.id === tabId));
+            };
+
+            const closeButton = document.createElement('span');
+            closeButton.innerText = ' ✖';
+            closeButton.style.cursor = 'pointer';
+            closeButton.onclick = (e) => {
+                e.stopPropagation();
+                closeTab(tabId);
+            };
+
+            tabElement.appendChild(closeButton);
+
+            const fullscreenButton = document.createElement('span');
+            fullscreenButton.innerText = ' ⛶';
+            fullscreenButton.style.cursor = 'pointer';
+            fullscreenButton.style.marginLeft = '5px';
+            fullscreenButton.onclick = (e) => {
+                e.stopPropagation();
+                openFullscreen(tabId);
+            };
+
+            tabElement.appendChild(fullscreenButton);
+
+            return tabElement;
+        }
+
+        function switchTab(tab) {
+            if (!tab) return;
+
+            webViewer.src = tab.url;
+            viewerContainer.style.display = 'flex';
+        }
+
+        function closeTab(tabId) {
+            const tabIndex = tabs.findIndex(tab => tab.id === tabId);
+            if (tabIndex === -1) return;
+
+            const tab = tabs[tabIndex];
+            tab.element.remove();
+            tabs.splice(tabIndex, 1);
+
+            if (webViewer.src === tab.url) {
+                webViewer.src = '';
+                viewerContainer.style.display = 'none';
+            }
+        }
+
+        function openFullscreen(tabId) {
+            const tab = tabs.find(tab => tab.id === tabId);
+            if (!tab) return;
+
+            const iframe = document.createElement('iframe');
+            iframe.src = tab.url;
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = 'none';
+
+            const fullscreenContainer = document.createElement('div');
+            fullscreenContainer.style.position = 'fixed';
+            fullscreenContainer.style.top = '0';
+            fullscreenContainer.style.left = '0';
+            fullscreenContainer.style.width = '100vw';
+            fullscreenContainer.style.height = '100vh';
+            fullscreenContainer.style.background = 'black';
+            fullscreenContainer.style.zIndex = '9999';
+            fullscreenContainer.appendChild(iframe);
+
+            fullscreenContainer.onclick = () => {
+                document.body.removeChild(fullscreenContainer);
+            };
+
+            document.body.appendChild(fullscreenContainer);
+        }
+
+        // Prevent navigation outside the website
+        window.addEventListener('beforeunload', (event) => {
+            event.preventDefault();
+            event.returnValue = '';
+        });
+
+        // Simulate providing fixed IP and location info
+        function injectIpAndLocation() {
+            console.log('Simulating IP: IPv6: 2001:4860:7:62c::fe, IPv4: 165.165.109.135, Cape Town, South Africa');
+        }
+
+        injectIpAndLocation();
+
+        // Enable fullscreen with F11
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F11') {
+                e.preventDefault();
+                document.documentElement.requestFullscreen();
+            }
+        });
+    </script>
+</body>
+</html>
